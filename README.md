@@ -142,7 +142,7 @@ The [Phase 2 identity design](./SPEC.md#26-onchaination-identity) uses a partici
 
 ### Run it locally
 
-Install [Node.js](https://nodejs.org/) **22.12 or newer** (Node 24 LTS recommended), then run from the repository root:
+Install [Node.js](https://nodejs.org/) **24 or newer**, then run from the repository root:
 
 ```sh
 npm ci
