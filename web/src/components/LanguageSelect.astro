@@ -1,0 +1,44 @@
+---
+import { contentRoute, type Item } from '../lib/content';
+import { languageName } from '../lib/languages';
+
+interface Props {
+  item: Item;
+  languages: string[];
+  requestedLanguage: string;
+}
+
+const { item, languages, requestedLanguage } = Astro.props;
+---
+
+<section class="language-switcher" aria-labelledby="language-title">
+  <p class="eyebrow" id="language-title">
+    Language
+  </p>
+  <details class="language-menu">
+    <summary>
+      <span class="sr-only">Choose page language. Current: </span>
+      <span lang={requestedLanguage}>{languageName(requestedLanguage)}</span>
+      <span class="language-menu-indicator" aria-hidden="true">
+        ▼
+      </span>
+    </summary>
+    <nav aria-label="Content language">
+      {languages.map((language) => (
+        <a
+          href={contentRoute(item, language)}
+          class:list={{ 'is-unavailable': !item.translations[language] }}
+          lang={item.translations[language] ? language : 'en'}
+          aria-current={requestedLanguage === language ? 'page' : undefined}
+          aria-label={
+            item.translations[language]
+              ? undefined
+              : `${languageName(language)} — translation unavailable; opens the English fallback`
+          }
+        >
+          {languageName(language)}
+        </a>
+      ))}
+    </nav>
+  </details>
+</section>

@@ -1,0 +1,57 @@
+<section
+  class="discussion"
+  data-pagefind-ignore
+  aria-labelledby="discussion-title"
+>
+  <p class="eyebrow">Keep the conversation going</p>
+  <h2 id="discussion-title">💬 Discussion</h2>
+  <p class="muted">
+    Comments live in Telegram. They appear here once this page is shared in our
+    updates channel.
+  </p>
+  <details class="discussion-embed">
+    <summary>Load Telegram comments</summary>
+    <div id="telegram-comments"></div>
+  </details>
+  <p class="small muted">
+    Nothing here yet? Visit{' '}
+    <a
+      class="symbol-link underlined-link"
+      href="https://t.me/onchaination_info"
+    >
+      <span class="link-label">the updates channel</span>
+      <span class="link-symbol" aria-hidden="true">
+        ↗
+      </span>
+    </a>{' '}
+    or join{' '}
+    <a
+      class="symbol-link underlined-link"
+      href="https://t.me/onchaination_group"
+    >
+      <span class="link-label">the community forum</span>
+      <span class="link-symbol" aria-hidden="true">
+        ↗
+      </span>
+    </a>
+    .
+  </p>
+</section>
+<script>
+  const details =
+    document.querySelector<HTMLDetailsElement>('.discussion-embed');
+  details?.addEventListener('toggle', () => {
+    if (!details.open || details.dataset.loaded) return;
+    details.dataset.loaded = 'true';
+    const script = document.createElement('script');
+    script.src = 'https://telegram.org/js/telegram-widget.js?22';
+    script.async = true;
+    script.dataset.telegramDiscussion = 'onchaination_info';
+    script.dataset.commentsLimit = '5';
+    const dark = document.documentElement.dataset.theme === 'dark';
+    script.dataset.dark = dark ? '1' : '0';
+    script.dataset.color = dark ? 'eeeeee' : '111111';
+    script.dataset.colorful = '0';
+    document.querySelector('#telegram-comments')?.append(script);
+  });
+</script>

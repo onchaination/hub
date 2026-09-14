@@ -1,0 +1,284 @@
+---
+import '../styles/global.css';
+import ThemeSelect from '../components/ThemeSelect.astro';
+import { SITE, REPO, sections, sectionKeys } from '../lib/site';
+interface Props {
+  title: string;
+  description?: string;
+  markdown?: string;
+  noindex?: boolean;
+  language?: string;
+  canonicalPath?: string;
+  socialImage?: string;
+  socialImageAlt?: string;
+  alternates?: { language: string; route: string }[];
+}
+const {
+  title,
+  description = 'An open group learning, building and sharing value onchain.',
+  markdown,
+  noindex = false,
+  language = 'en',
+  canonicalPath,
+  socialImage,
+  socialImageAlt = `${title} · Onchaination`,
+  alternates = [],
+} = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = SITE + (canonicalPath ?? path);
+const socialImageUrl = socialImage ? SITE + socialImage : undefined;
+const openGraphLocale = (value: string) => {
+  const locale = new Intl.Locale(value).maximize();
+  return `${locale.language}_${locale.region}`;
+};
+const alternateOpenGraphLocales = alternates
+  .map((alternate) => alternate.language)
+  .filter((alternate) => alternate !== language)
+  .map(openGraphLocale);
+---
+
+<!doctype html>
+<html lang={language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Onchaination</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ffffff" />
+    <script is:inline>
+      // Apply before paint; without JavaScript, CSS still follows the system.
+      (() => {
+        const key = 'onchaination-theme';
+        const system = window.matchMedia('(prefers-color-scheme: dark)');
+        const normalize = (value) =>
+          value === 'light' || value === 'dark' ? value : 'system';
+        let preference = 'system';
+        try {
+          preference = normalize(localStorage.getItem(key));
+        } catch {
+          // Storage may be unavailable; the selector still works this visit.
+        }
+        const apply = () => {
+          const theme =
+            preference === 'system'
+              ? system.matches
+                ? 'dark'
+                : 'light'
+              : preference;
+          document.documentElement.dataset.theme = theme;
+          document.querySelector('meta[name="theme-color"]').content =
+            theme === 'dark' ? '#111111' : '#ffffff';
+          document.querySelectorAll('[data-theme-select]').forEach((select) => {
+            select.value = preference;
+          });
+        };
+        apply();
+        system.addEventListener('change', apply);
+        window.addEventListener('storage', (event) => {
+          if (event.key === key || event.key === null) {
+            preference = normalize(event.newValue);
+            apply();
+          }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+          document.querySelectorAll('[data-theme-select]').forEach((select) => {
+            select.closest('label').hidden = false;
+            select.addEventListener('change', () => {
+              preference = normalize(select.value);
+              try {
+                localStorage.setItem(key, preference);
+              } catch {
+                // Keep the in-memory preference when storage is blocked.
+              }
+              apply();
+            });
+          });
+          apply();
+        });
+      })();
+    </script>
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    {alternates.map((alternate) => (
+      <link
+        rel="alternate"
+        hreflang={alternate.language}
+        href={SITE + alternate.route}
+      />
+    ))}
+    {alternates.length > 0 && (
+      <link
+        rel="alternate"
+        hreflang="x-default"
+        href={
+          SITE +
+          alternates.find((alternate) => alternate.language === 'en')!.route
+        }
+      />
+    )}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="describedby" href={`${SITE}/llms.txt`} />
+    {markdown && (
+      <link rel="alternate" type="text/markdown" href={SITE + markdown} />
+    )}
+    <meta property="og:title" content={`${title} · Onchaination`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={markdown ? 'article' : 'website'} />
+    <meta property="og:site_name" content="Onchaination" />
+    <meta property="og:locale" content={openGraphLocale(language)} />
+    {alternateOpenGraphLocales.map((locale) => (
+      <meta property="og:locale:alternate" content={locale} />
+    ))}
+    {socialImageUrl && (
+      <>
+        <meta property="og:image" content={socialImageUrl} />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={socialImageAlt} />
+      </>
+    )}
+    <meta
+      name="twitter:card"
+      content={socialImageUrl ? 'summary_large_image' : 'summary'}
+    />
+    <meta name="twitter:title" content={`${title} · Onchaination`} />
+    <meta name="twitter:description" content={description} />
+    {socialImageUrl && (
+      <>
+        <meta name="twitter:image" content={socialImageUrl} />
+        <meta name="twitter:image:alt" content={socialImageAlt} />
+      </>
+    )}
+  </head>
+  <body>
+    <a class="skip-link" href="#main" lang="en">
+      Skip to content
+    </a>
+    <header class="site-header" lang="en">
+      <div class="shell header-inner">
+        <a class="brand" href="/" aria-label="Onchaination home">
+          <span class="brand-mark" aria-hidden="true">
+            ▣
+          </span>{' '}
+          Onchaination
+        </a>
+        <nav class="desktop-nav" aria-label="Main navigation">
+          {sectionKeys.map((key) => (
+            <a
+              href={`/${key}`}
+              aria-current={path.startsWith('/' + key) ? 'page' : undefined}
+            >
+              {sections[key].label}
+            </a>
+          ))}
+        </nav>
+        <ThemeSelect class="desktop-theme" />
+        <a class="search-link" href="/search">
+          <span aria-hidden="true">⌕</span> Search <kbd>/</kbd>
+        </a>
+        <details class="mobile-menu">
+          <summary>Menu</summary>
+          <nav aria-label="Mobile navigation">
+            <ThemeSelect />
+            {sectionKeys.map((key) => (
+              <a
+                class="symbol-link"
+                href={`/${key}`}
+                aria-current={path.startsWith('/' + key) ? 'page' : undefined}
+              >
+                <span class="link-symbol" aria-hidden="true">
+                  {sections[key].emoji}
+                </span>{' '}
+                <span class="link-label">{sections[key].label}</span>
+              </a>
+            ))}
+          </nav>
+        </details>
+      </div>
+    </header>
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="site-footer" lang="en">
+      <div class="shell footer-top">
+        <div>
+          <a class="brand" href="/">
+            <span aria-hidden="true">▣</span> Onchaination
+          </a>
+          <p>
+            An open group learning, building
+            <br />
+            and sharing value onchain.
+          </p>
+        </div>
+        <nav aria-label="Community links">
+          <a class="symbol-link" href={REPO}>
+            <span class="link-label">GitHub</span>
+            <span class="link-symbol" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+          <a class="symbol-link" href="https://t.me/onchaination_group">
+            <span class="link-label">Telegram</span>
+            <span class="link-symbol" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+          <a class="symbol-link" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
+            <span class="link-label">Contribute</span>
+            <span class="link-symbol" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+          <a href="/about">Our principles</a>
+          <a class="symbol-link" href="/llms.txt">
+            <span class="link-label">For agents</span>
+            <span class="link-symbol" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+        </nav>
+      </div>
+      <div class="shell footer-bottom">
+        <span>Open knowledge. Shared progress.</span>
+        <span>Built in public · Markdown first</span>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener('keydown', (event) => {
+        if (
+          event.key === '/' &&
+          !event.ctrlKey &&
+          !event.metaKey &&
+          !event.altKey &&
+          !(
+            event.target instanceof Element &&
+            event.target.closest('input, textarea, select, [contenteditable]')
+          )
+        ) {
+          event.preventDefault();
+          window.location.href = '/search';
+        }
+      });
+      document
+        .querySelectorAll<HTMLButtonElement>('.copy-code')
+        .forEach((button) => {
+          button.addEventListener('click', async () => {
+            try {
+              await navigator.clipboard.writeText(
+                button.parentElement?.querySelector('code')?.textContent ?? '',
+              );
+              button.textContent = 'Copied!';
+            } catch {
+              button.textContent = 'Select code to copy';
+            }
+            setTimeout(() => {
+              button.textContent = 'Copy';
+            }, 2400);
+          });
+        });
+    </script>
+  </body>
+</html>

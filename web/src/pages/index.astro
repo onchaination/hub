@@ -1,0 +1,123 @@
+---
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import Site from '../layouts/Site.astro';
+import ContentRows from '../components/ContentRows.astro';
+import { loadItems, root } from '../lib/content';
+import { sections, sectionKeys, REPO } from '../lib/site';
+const items = loadItems();
+// The project's charter owns the homepage introduction.
+const readme = readFileSync(resolve(root, 'README.md'), 'utf8');
+const introduction = readme.match(
+  /<!-- home:intro -->\s*([\s\S]*?)\s*<!-- \/home:intro -->/,
+)?.[1];
+if (!introduction) throw new Error('README.md needs a home:intro block');
+const tags = [...new Set(items.flatMap((item) => item.tags))].sort();
+---
+
+<Site title="Learn, build, and share value onchain">
+  <div class="shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">
+          <span class="open-dot" aria-hidden="true"></span> An open knowledge
+          hub
+        </p>
+        <h1>
+          Understand more.
+          <br />
+          <span class="muted">Do something useful.</span>
+        </h1>
+        <p class="hero-lede">{introduction}</p>
+        <div class="actions">
+          <a class="button primary" href="/learn">
+            Start learning <span aria-hidden="true">→</span>
+          </a>
+          <a class="button" href="https://t.me/onchaination_group">
+            Join the conversation ↗
+          </a>
+        </div>
+        <p class="hero-note">For curious humans and capable agents.</p>
+      </div>
+      <div class="hero-note-block">
+        <span class="large-mark" aria-hidden="true">
+          ▣
+        </span>
+        <p>
+          Open by default.
+          <br />
+          Useful by contribution.
+        </p>
+        <span class="eyebrow">Chain neutral · Built in public</span>
+      </div>
+    </section>
+    <section class="path-grid" aria-label="Choose your path">
+      {sectionKeys.map((key, index) => (
+        <a class="path" href={`/${key}`}>
+          <span class="path-top">
+            <span>{sections[key].emoji}</span>
+            <span class="eyebrow">0{index + 1} /</span>
+          </span>
+          <h2>
+            {sections[key].label} <span aria-hidden="true">↗</span>
+          </h2>
+          <p class="path-purpose">{sections[key].purpose}</p>
+          <p class="muted small">{sections[key].description}</p>
+        </a>
+      ))}
+    </section>
+    <section class="browse-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">A small place to start</p>
+          <h2>One topic. Four ways in.</h2>
+        </div>
+        <a class="text-link symbol-link" href="/search">
+          <span class="link-label">Search all knowledge</span>
+          <span class="link-symbol" aria-hidden="true">
+            ↗
+          </span>
+        </a>
+      </div>
+      <p class="muted">
+        Follow a transaction from your first question to a result you can
+        verify.
+      </p>
+      <ContentRows items={items} />
+    </section>
+    <section class="topic-section">
+      <p class="eyebrow">Connect the dots</p>
+      <h2>Explore a topic</h2>
+      <div class="topic-links">
+        {tags.map((tag) => (
+          <a href={`/tags/${tag}`}>
+            #{tag}
+            <span>
+              {items.filter((item) => item.tags.includes(tag)).length}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+    <section class="contribute-banner">
+      <div>
+        <p class="eyebrow">Made better, together</p>
+        <h2>
+          Your next discovery
+          <br />
+          could help someone else.
+        </h2>
+      </div>
+      <div>
+        <p>
+          Fix a sentence. Explain a concept. Share a procedure.
+          <br />
+          Small, useful contributions are how this grows.
+        </p>
+        <a class="button primary" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
+          Make your first contribution ↗
+        </a>
+      </div>
+    </section>
+  </div>
+</Site>

@@ -1,0 +1,23 @@
+---
+import type { Part } from '../lib/content';
+import Widget from '../widgets/Widget';
+interface Props {
+  parts: Part[];
+}
+const { parts } = Astro.props;
+---
+
+{parts.map((part) => {
+  if ('html' in part) return <Fragment set:html={part.html} />;
+  return (
+    <>
+      <Widget name={part.name} props={part.props} client:visible />
+      <noscript>
+        <p>
+          The calculator needs JavaScript. The formula and worked example below
+          work without it.
+        </p>
+      </noscript>
+    </>
+  );
+})}

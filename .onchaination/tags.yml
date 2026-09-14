@@ -1,0 +1,13 @@
+# Canonical topic names; aliases also work in search and tag URLs.
+transactions:
+  aliases: [transaction, tx]
+fees:
+  aliases: [fee, gas]
+wallets:
+  aliases: [wallet]
+ethereum:
+  aliases: [eth]
+solana:
+  aliases: [sol]
+security:
+  aliases: [safety]

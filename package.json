@@ -1,0 +1,13 @@
+{
+  "name": "onchaination-hub",
+  "private": true,
+  "workspaces": ["web"],
+  "engines": { "node": ">=22.12.0" },
+  "scripts": {
+    "dev": "npm run dev -w web",
+    "check": "npm run check -w web",
+    "test": "npm run test -w web",
+    "build": "npm run build -w web",
+    "preview": "npm run preview -w web"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "@onchaination/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "check": "tsx scripts/validate.ts && astro check",
+    "test": "tsx --test tests/*.test.ts",
+    "test:e2e": "playwright test",
+    "build": "tsx scripts/validate.ts && astro build && pagefind --site dist && tsx scripts/check-build.ts",
+    "preview": "astro preview",
+    "format": "prettier --write src scripts tests e2e astro.config.mjs playwright.config.ts"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.5",
+    "@fontsource/inter": "^4.5.15",
+    "astro": "^7.3.2",
+    "github-slugger": "^2.0.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "satori": "^0.33.4",
+    "sharp": "^0.35.4",
+    "shiki": "^3.12.0",
+    "yaml": "^2.8.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@playwright/test": "^1.55.0",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "pagefind": "^1.4.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^1.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}

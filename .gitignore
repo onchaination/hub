@@ -1,0 +1,12 @@
+.tmp
+.idea
+.vscode
+.DS_Store
+.env
+.env.local
+node_modules
+*.code-workspace
+web/dist/
+web/.astro/
+playwright-report/
+test-results/

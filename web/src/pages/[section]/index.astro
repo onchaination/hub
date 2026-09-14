@@ -1,0 +1,37 @@
+---
+import Site from '../../layouts/Site.astro';
+import Markdown from '../../components/Markdown.astro';
+import ContentRows from '../../components/ContentRows.astro';
+import { loadItems, sectionContent } from '../../lib/content';
+import { sectionKeys, sections, type Section } from '../../lib/site';
+export function getStaticPaths() {
+  return sectionKeys.map((section) => ({ params: { section } }));
+}
+const section = Astro.params.section as Section;
+const items = loadItems();
+const info = sections[section];
+const { parts } = await sectionContent(section, items);
+---
+
+<Site
+  title={info.label}
+  description={info.description}
+  markdown={`/${section}/README.md`}
+>
+  <div class="shell section-page">
+    <header class="page-heading">
+      <p class="eyebrow">{info.purpose}</p>
+      <h1>
+        {info.emoji} {info.label}
+      </h1>
+      <p class="lead">{info.description}</p>
+    </header>
+    <ContentRows
+      items={items.filter((item) => item.section === section)}
+      showSection={false}
+    />
+    <div class="prose section-guide">
+      <Markdown parts={parts} />
+    </div>
+  </div>
+</Site>

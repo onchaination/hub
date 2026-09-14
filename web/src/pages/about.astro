@@ -1,0 +1,27 @@
+---
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import Site from '../layouts/Site.astro';
+import Markdown from '../components/Markdown.astro';
+import { loadItems, renderMarkdown, root } from '../lib/content';
+const source = readFileSync(resolve(root, 'README.md'), 'utf8');
+const constitution = source.match(
+  /<!-- constitution -->\s*([\s\S]*?)\s*<!-- \/constitution -->/,
+)?.[1];
+if (!constitution) throw new Error('README.md needs a constitution block');
+const { parts } = await renderMarkdown(constitution, 'README.md', loadItems());
+---
+
+<Site title="Our principles">
+  <div class="reading-page">
+    <p class="eyebrow">A lightweight constitution</p>
+    <h1>
+      Open knowledge.
+      <br />
+      Shared progress.
+    </h1>
+    <div class="prose">
+      <Markdown parts={parts} />
+    </div>
+  </div>
+</Site>

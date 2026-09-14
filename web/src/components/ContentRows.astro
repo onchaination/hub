@@ -1,0 +1,62 @@
+---
+import { contentRoute, translateItem, type Item } from '../lib/content';
+import { languageName } from '../lib/languages';
+import { sections } from '../lib/site';
+interface Props {
+  items: Item[];
+  showSection?: boolean;
+  language?: string;
+}
+const { items, showSection = true, language = 'en' } = Astro.props;
+---
+
+<div class="content-rows">
+  {items.map((original, index) => {
+    const item = translateItem(original, language);
+    return (
+      <article class="content-row">
+        <span class="row-number" aria-hidden="true">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <div class="row-copy">
+          {showSection && (
+            <span class="eyebrow row-section">
+              {sections[item.section].emoji} {sections[item.section].label}
+            </span>
+          )}
+          <h3>
+            <a
+              class="symbol-link"
+              href={contentRoute(item, language)}
+              lang={item.language}
+            >
+              <span class="link-label">{item.title}</span>
+              <span class="link-symbol row-arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          </h3>
+          <p lang={item.language}>{item.description}</p>
+          <div class="tags">
+            {item.tags.map((tag) => (
+              <a href={`/tags/${tag}`}>#{tag}</a>
+            ))}
+          </div>
+          {Object.keys(item.translations).length > 1 && (
+            <div
+              class="language-links small"
+              aria-label={`Languages for ${item.title}`}
+            >
+              {Object.keys(item.translations).map((language) => (
+                <a href={contentRoute(item, language)} lang={language}>
+                  {languageName(language)}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+        {item.level && <span class="row-level">{item.level}</span>}
+      </article>
+    );
+  })}
+</div>
