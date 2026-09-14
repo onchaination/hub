@@ -17,7 +17,7 @@ export function getStaticPaths() {
 }
 const tag = Astro.params.tag!;
 if (Astro.props.canonical !== tag)
-  return Astro.redirect(`/tags/${Astro.props.canonical}`, 301);
+  return Astro.redirect(`/tags/${Astro.props.canonical}/`, 301);
 const items = loadItems().filter((item) => item.tags.includes(tag));
 const aliases = Object.entries(tagAliases())
   .filter(([key, value]) => key !== value && value === tag)
