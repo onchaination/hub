@@ -26,11 +26,9 @@ const {
 } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const canonicalPathname = canonicalPath ?? path;
-const canonical =
-  SITE +
-  (canonicalPathname.endsWith('/')
-    ? canonicalPathname
-    : `${canonicalPathname}/`);
+const pageUrl = (pathname: string) =>
+  SITE + (pathname.endsWith('/') ? pathname : `${pathname}/`);
+const canonical = pageUrl(canonicalPathname);
 const socialImageUrl = socialImage ? SITE + socialImage : undefined;
 const openGraphLocale = (value: string) => {
   const locale = new Intl.Locale(value).maximize();
@@ -108,17 +106,16 @@ const alternateOpenGraphLocales = alternates
       <link
         rel="alternate"
         hreflang={alternate.language}
-        href={SITE + alternate.route}
+        href={pageUrl(alternate.route)}
       />
     ))}
     {alternates.length > 0 && (
       <link
         rel="alternate"
         hreflang="x-default"
-        href={
-          SITE +
-          alternates.find((alternate) => alternate.language === 'en')!.route
-        }
+        href={pageUrl(
+          alternates.find((alternate) => alternate.language === 'en')!.route,
+        )}
       />
     )}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

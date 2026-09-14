@@ -81,6 +81,13 @@ for (const file of pages) {
     !canonical || canonical.endsWith('/'),
     `${file}: Canonical URL needs a trailing slash: ${canonical}`,
   );
+  for (const alternate of html.matchAll(
+    /<link rel="alternate" hreflang="[^"]+" href="([^"]+)"/g,
+  ))
+    assert(
+      alternate[1].endsWith('/'),
+      `${file}: Alternate URL needs a trailing slash: ${alternate[1]}`,
+    );
   assert(
     !html.includes('__VITE_PRELOAD__'),
     `${file}: Unresolved dynamic import preload marker`,

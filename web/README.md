@@ -13,25 +13,25 @@ npm run build     # static output + Pagefind + output validation
 npm run preview   # preview the complete build, including search
 ```
 
-Use Node 22.12+ or Node 24 LTS. Search needs a production build; in development the search page explains this and lists every page.
+Use Node 24 LTS. Search needs a production build; in development the search page explains this and lists every page.
 
 ## Where things live
 
-| File or folder | Responsibility |
-| --- | --- |
-| `../learn`, `../tools`, `../strategies`, `../skills` | Canonical content and nearby images |
-| `src/lib/content.ts` | Read, validate, connect, and render Markdown |
-| `src/lib/site.ts` | Canonical site URL, repository, four paths |
-| `src/pages` | Static routes, raw Markdown/assets, `llms.txt`, sitemap |
-| `src/layouts/Site.astro` | Shared document, navigation, footer |
-| `src/components` | Content rows, Markdown, AI context, Telegram discussion |
-| `src/widgets/schema.ts` | Strict directive parameter schemas |
-| `src/widgets/registry.ts` | Stable widget IDs → React components |
-| `src/widgets/NetworkFee.tsx` | Example widget; arithmetic lives in `fee.ts` |
-| `src/integrations/ai` | Context generation and ordinary provider links |
-| `src/styles/global.css` | Monochrome design and responsive layout |
-| `tests` | Content contracts and arithmetic regression tests |
-| `e2e` | Browser checks against the built site |
+| File or folder                                       | Responsibility                                          |
+| ---------------------------------------------------- | ------------------------------------------------------- |
+| `../learn`, `../tools`, `../strategies`, `../skills` | Canonical content and nearby images                     |
+| `src/lib/content.ts`                                 | Read, validate, connect, and render Markdown            |
+| `src/lib/site.ts`                                    | Canonical site URL, repository, four paths              |
+| `src/pages`                                          | Static routes, raw Markdown/assets, `llms.txt`, sitemap |
+| `src/layouts/Site.astro`                             | Shared document, navigation, footer                     |
+| `src/components`                                     | Content rows, Markdown, AI context, Telegram discussion |
+| `src/widgets/schema.ts`                              | Strict directive parameter schemas                      |
+| `src/widgets/registry.ts`                            | Stable widget IDs → React components                    |
+| `src/widgets/NetworkFee.tsx`                         | Example widget; arithmetic lives in `fee.ts`            |
+| `src/integrations/ai`                                | Context generation and ordinary provider links          |
+| `src/styles/global.css`                              | Monochrome design and responsive layout                 |
+| `tests`                                              | Content contracts and arithmetic regression tests       |
+| `e2e`                                                | Browser checks against the built site                   |
 
 There is deliberately one small content pipeline. Adding an item folder with en.md, or a translated language file in an existing folder, requires no code change. Each item folder owns one stable ID. Keep that folder name when moving between sections; section moves may need redirects for old inbound links. Related pages use explicit IDs first, then shared tags.
 
