@@ -64,7 +64,7 @@ The artifact is `web/dist/`. All its files, including `pagefind`, must be publis
 
 Link `@onchaination_chat` as the discussion group for `@onchaination_info`. Keep `@onchaination_group` as the separate forum. Post each newly published page's **clean canonical URL** once in the updates channel, without UTM parameters. Editing a page does not require reposting it.
 
-The [official discussion widget](https://core.telegram.org/widgets/discussion) discovers a thread from the channel and the page's canonical link. The site embeds it when the reader selects “Load Telegram comments.” No per-page IDs, comment store, or posting bot are used. External Telegram availability and channel configuration require a live deployment to verify fully.
+The [official discussion widget](https://core.telegram.org/widgets/discussion) discovers a thread from the channel and the page's canonical link. The site opens and embeds it when the discussion scrolls into view; the “Load Telegram comments” control remains as a fallback when automatic loading is unavailable. No per-page IDs, comment store, or posting bot are used. External Telegram availability and channel configuration require a live deployment to verify fully.
 
 ## Phase 2
 

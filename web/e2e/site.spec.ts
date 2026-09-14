@@ -5,6 +5,10 @@ test('navigation, static pages and clean canonical links', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     'Understand more.',
   );
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    'content',
+    'https://onchaination.org/og.png',
+  );
   await page.getByRole('link', { name: 'Start learning' }).click();
   await expect(page).toHaveURL(/\/learn\/?$/);
   await page.locator('.content-row h3 a').click();
@@ -14,7 +18,7 @@ test('navigation, static pages and clean canonical links', async ({ page }) => {
   await page.goto('/learn/transactions?utm_source=test');
   await expect(page.locator('link[rel=canonical]')).toHaveAttribute(
     'href',
-    'https://onchaination.org/learn/transactions',
+    'https://onchaination.org/learn/transactions/',
   );
   await expect(page.locator('link[type="text/markdown"]')).toHaveAttribute(
     'href',
@@ -81,7 +85,7 @@ test('languages are discovered, linked, and fall back without duplicate items', 
   await expect(page.locator('html')).toHaveAttribute('lang', 'uk');
   await expect(page.locator('link[rel=canonical]')).toHaveAttribute(
     'href',
-    'https://onchaination.org/learn/transactions',
+    'https://onchaination.org/learn/transactions/',
   );
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     'content',
@@ -97,7 +101,7 @@ test('languages are discovered, linked, and fall back without duplicate items', 
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.locator('link[rel=canonical]')).toHaveAttribute(
     'href',
-    'https://onchaination.org/tools/network-fee',
+    'https://onchaination.org/tools/network-fee/',
   );
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     'content',
@@ -132,7 +136,7 @@ test('Pagefind searches body text and aliases, filters types, and handles no res
   await expect(page).toHaveURL(/\/tags\/fees\/?$/);
 });
 
-test('AI clipboard denial has a selectable fallback; Telegram loads only on demand', async ({
+test('AI clipboard denial has a fallback; Telegram loads when discussion is viewed', async ({
   page,
 }) => {
   const requests: string[] = [];
@@ -158,7 +162,8 @@ test('AI clipboard denial has a selectable fallback; Telegram loads only on dema
     'Copy the selected text manually',
   );
   await expect(page.locator('#ai-context')).toHaveValue(/step by step/);
-  await page.getByText('Load Telegram comments', { exact: true }).click();
+  await page.locator('.discussion').scrollIntoViewIfNeeded();
+  await expect(page.locator('.discussion-embed')).toHaveAttribute('open', '');
   await expect(page.locator('#telegram-comments script')).toHaveAttribute(
     'data-telegram-discussion',
     'onchaination_info',

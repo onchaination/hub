@@ -25,7 +25,12 @@ const {
   alternates = [],
 } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const canonical = SITE + (canonicalPath ?? path);
+const canonicalPathname = canonicalPath ?? path;
+const canonical =
+  SITE +
+  (canonicalPathname.endsWith('/')
+    ? canonicalPathname
+    : `${canonicalPathname}/`);
 const socialImageUrl = socialImage ? SITE + socialImage : undefined;
 const openGraphLocale = (value: string) => {
   const locale = new Intl.Locale(value).maximize();

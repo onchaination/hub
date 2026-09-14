@@ -2,7 +2,7 @@
   "name": "onchaination-hub",
   "private": true,
   "workspaces": ["web"],
-  "engines": { "node": ">=22.12.0" },
+  "engines": { "node": ">=24.0.0" },
   "scripts": {
     "dev": "npm run dev -w web",
     "check": "npm run check -w web",

@@ -1,6 +1,6 @@
 # ▣ Onchaination — Implementation Specification v0.1
 
-**Status:** Staged implementation; phase 1 foundation implemented
+**Status:** Phase 1
 **Project:** Onchaination  
 **Canonical repository:** `github.com/onchaination/hub`  
 **Website:** `onchaination.org`
@@ -31,7 +31,7 @@ Concrete phase 1 choices:
 - Clean language `.md` representations preserve the source, including front matter and inert widget comments, at its relative path. Section indexes and nearby assets are published too.
 - Canonical tag pages connect all paths; alias URLs redirect to canonical tags. Pagefind indexes only knowledge articles and offers a type filter. `fees`, `#fees`, and the configured alias `gas` share search behavior.
 - AI provider links and the copyable context are centralized under `web/src/integrations/ai/`. Three one-line providers share the same reliable copy-and-open behavior; separate adapters can be introduced when behavior differs.
-- Telegram uses its documented channel-level discussion widget with a clean canonical URL. Embeds load on reader request. A maintainer must configure the linked discussion group and manually publish clean canonical URLs once; local builds do not create Telegram posts. A forum/channel link is available if comments cannot load.
+- Telegram uses its documented channel-level discussion widget with a clean canonical URL. Embeds load when the discussion scrolls into view, with a manual fallback. A maintainer must configure the linked discussion group and manually publish clean canonical URLs once; local builds do not create Telegram posts. A forum/channel link is available if comments cannot load.
 - A checked-in GitHub Actions workflow validates pull requests and can deploy the static site after Pages is enabled. DNS and channel administration are operational setup, not part of a local build.
 
 See [web/README.md](./web/README.md) for the file map, commands, and publishing setup. No claim is made here that the site has been deployed or that Telegram channels have been configured.

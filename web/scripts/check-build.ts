@@ -10,9 +10,14 @@ const dist = resolve('dist');
 const items = loadItems();
 for (const item of representations(items)) {
   const html = readFileSync(join(dist, item.route, 'index.html'), 'utf8');
+  const canonicalUrl = `${SITE}${contentRoute(item)}/`;
   assert(
-    html.includes(`href="${SITE}${contentRoute(item)}"`),
+    html.includes(`href="${canonicalUrl}"`),
     `Missing canonical: ${item.route}`,
+  );
+  assert(
+    html.includes(`property="og:url" content="${canonicalUrl}"`),
+    `Missing Open Graph URL: ${item.route}`,
   );
   assert(
     html.includes(`href="${SITE}/${item.file}"`),
@@ -71,6 +76,11 @@ function walk(folder: string): string[] {
 const pages = walk(dist).filter((file) => file.endsWith('.html'));
 for (const file of pages) {
   const html = readFileSync(file, 'utf8');
+  const canonical = /<link rel="canonical" href="([^"]+)"/.exec(html)?.[1];
+  assert(
+    !canonical || canonical.endsWith('/'),
+    `${file}: Canonical URL needs a trailing slash: ${canonical}`,
+  );
   assert(
     !html.includes('__VITE_PRELOAD__'),
     `${file}: Unresolved dynamic import preload marker`,
