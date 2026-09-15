@@ -7,22 +7,23 @@ import {
   availableLanguages,
   loadItems,
   representations,
-  translateItem,
+  translationFor,
 } from '../src/lib/content';
 import { languageName } from '../src/lib/languages';
 
-test('translations are representations of four stable items, with English fallback', () => {
+test('translations are exact representations of four stable items', () => {
   const items = loadItems();
   assert.equal(items.length, 4);
   assert.equal(representations(items).length, 6);
   assert.deepEqual(availableLanguages(items), ['en', 'de', 'uk']);
   const learn = items.find((item) => item.id === 'transactions')!;
-  assert.equal(translateItem(learn, 'de').language, 'de');
-  assert.equal(translateItem(learn, 'uk').id, learn.id);
-  assert.deepEqual(translateItem(learn, 'de').tags, learn.tags);
-  assert.equal(translateItem(learn, 'fr').file, 'learn/transactions/en.md');
+  assert.equal(translationFor(learn, 'de')?.language, 'de');
+  assert.equal(translationFor(learn, 'uk')?.id, learn.id);
+  assert.deepEqual(translationFor(learn, 'de')?.tags, learn.tags);
+  assert.equal(translationFor(learn, 'fr'), undefined);
   const tool = items.find((item) => item.id === 'network-fee')!;
-  assert.equal(translateItem(tool, 'de').language, 'en');
+  assert.equal(translationFor(tool, 'de'), undefined);
+  assert.equal(translationFor(tool)?.language, 'en');
 });
 
 test('language display names use consistent title casing', () => {

@@ -14,7 +14,7 @@ test('system is the default; overrides persist and system changes stay live', as
   );
 
   await theme.selectOption('light');
-  await page.getByRole('link', { name: 'Start learning' }).click();
+  await page.getByRole('link', { name: /Start here/ }).click();
   await expect(theme).toHaveValue('light');
   await expect(page.locator('html')).toHaveCSS(
     'background-color',

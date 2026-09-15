@@ -10,7 +10,8 @@ export function getStaticPaths() {
 const section = Astro.params.section as Section;
 const items = loadItems();
 const info = sections[section];
-const { parts } = await sectionContent(section, items);
+const { contribution } = await sectionContent(section, items);
+const contributionQuestion = `How to ${contribution.title.replace(/^Add /, 'add ')}?`;
 ---
 
 <Site
@@ -30,8 +31,11 @@ const { parts } = await sectionContent(section, items);
       items={items.filter((item) => item.section === section)}
       showSection={false}
     />
-    <div class="prose section-guide">
-      <Markdown parts={parts} />
-    </div>
+    <details class="section-guide">
+      <summary>{contributionQuestion}</summary>
+      <div class="prose section-guide-content">
+        <Markdown parts={contribution.parts} />
+      </div>
+    </details>
   </div>
 </Site>

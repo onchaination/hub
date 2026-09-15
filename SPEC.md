@@ -26,7 +26,7 @@ Concrete phase 1 choices:
 
 - Astro renders static pages; React hydrates only pages containing a widget. Plain CSS and system fonts keep the design small and readable.
 - `web/src/lib/content.ts` reads root Markdown, validates metadata and local references, and renders with Markdown-it and Shiki. No content database or generated source registry is maintained.
-- Section `README.md` files are plain index content, exempt from knowledge-item metadata. The root README owns the homepage introduction and Constitution through named HTML comment blocks.
+- Section `README.md` files are plain index content, exempt from knowledge-item metadata. The root README owns the homepage introduction and principles through named HTML comment blocks.
 - Standard Markdown remains canonical. Safe portable HTML supports details/summary and simple inline primitives; arbitrary HTML is rejected. Standalone widget comments are parsed as Markdown tokens, so code examples are never executed as widgets.
 - Clean language `.md` representations preserve the source, including front matter and inert widget comments, at its relative path. Section indexes and nearby assets are published too.
 - Canonical tag pages connect all paths; alias URLs redirect to canonical tags. Pagefind indexes only knowledge articles and offers a type filter. `fees`, `#fees`, and the configured alias `gas` share search behavior.
@@ -224,16 +224,12 @@ They MUST NOT be hidden under `/web`, `/src`, `/content`, or another implementat
 
 `README.md` is the human-readable foundation of Onchaination.
 
-It SHOULD contain a lightweight **Onchaination Constitution**.
-
-This is a project charter, not a legal or governmental document.
-
-It SHOULD explain simply:
+It SHOULD explain the core Onchaination principles, including:
 
 - what Onchaination is;
 - open knowledge;
 - transparent contribution;
-- user-controlled identity;
+- participant-controlled identity;
 - verifiable claims;
 - chain neutrality;
 - humans and agents;
@@ -241,9 +237,7 @@ It SHOULD explain simply:
 - rewards for contribution;
 - simplicity.
 
-It MUST NOT use unnecessary legal-style language.
-
-The Constitution SHOULD change rarely.
+The principles SHOULD change rarely.
 
 The README SHOULD link to:
 
@@ -324,7 +318,7 @@ A knowledge page SHOULD solve one clear information need, be useful on its own, 
 
 `SPEC.md` is this technical specification.
 
-It defines the current implementation and MAY evolve independently from the high-level Constitution.
+It defines the current implementation and MAY evolve independently from the high-level principles.
 
 ---
 
@@ -583,9 +577,9 @@ Languages are discovered from lowercase language-tag filenames, such as `uk.md` 
 
 Canonical English HTML is `/learn/transactions`; German HTML is `/learn/transactions/de`. Canonical Markdown sources retain their repository paths: `/learn/transactions/en.md` and `/learn/transactions/de.md`. The same convention applies to Tools, Strategies, and Skills. The four section `README.md` files remain plain index content, not knowledge items.
 
-For every language discovered anywhere in the repository, each item has a static language route. If that item lacks the requested translation, render `en.md`, display an English fallback notice, use English `lang` and canonical metadata, and exclude the duplicate fallback from indexing. Unknown language tags fall back to English in the content resolver and search selector; arbitrary undiscovered URL paths remain 404 on static hosting.
+An item has a static language route only when its matching `<language>.md` file exists. Missing and unknown translations return 404; the content resolver, related content, and search never substitute English under a localized URL. English `en.md` remains required as the canonical source representation for every item.
 
-Only actual translations appear in `hreflang`, the sitemap, and the Pagefind language indexes. Search combines the selected language with English for untranslated items, returning one result per stable ID. Home, section lists, tag counts, and related content count items, never language files. `/llms.txt` groups language representations beneath each stable ID. AI context links to the actual selected source, including its language.
+Only actual translations appear in `hreflang`, the sitemap, and the Pagefind language indexes. Search returns only representations in the selected language. Home, section lists, and tag counts count items, never language files; localized related content includes only items with that exact translation. `/llms.txt` groups language representations beneath each stable ID. AI context links to the actual selected source, including its language.
 
 The navigation shell and widget labels remain English in this foundation; content localization does not require a site-wide interface translation framework. Every locale route exposes the discussion interface and points its canonical metadata to the clean English/default route, giving all representations one shared Telegram discussion identity.
 
@@ -737,8 +731,7 @@ English and translated images follow the content routes:
 /og/learn/transactions/de.png
 ```
 
-Untranslated locale fallbacks MUST reuse the English social image, matching the
-English content and canonical metadata they render.
+Missing translations MUST NOT generate localized social image routes.
 
 ---
 
@@ -2198,7 +2191,7 @@ The v0.1 specification defines the required architecture, but implementation SHO
 
 ```text
 repository structure
-README / Constitution
+README / principles
 CONTRIBUTING
 Markdown schema
 Learn / Tools / Strategies / Skills
@@ -2235,7 +2228,7 @@ Identity work SHOULD NOT block publishing useful knowledge unless a shipped feat
 ### Knowledge
 
 ```text
-✓ README.md / lightweight Constitution
+✓ README.md / principles
 ✓ CONTRIBUTING.md
 ✓ SPEC.md
 

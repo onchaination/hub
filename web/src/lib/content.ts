@@ -205,19 +205,23 @@ export function contentRoute(
   );
 }
 
-export function translateItem(item: Item, language = defaultLanguage): Item {
-  const representation = item.translations[language] ?? item.translations.en;
+export function translationFor(
+  item: Item,
+  language = defaultLanguage,
+): Item | undefined {
+  const representation = item.translations[language];
+  if (!representation) return;
   return {
     ...item,
     ...representation,
-    route: contentRoute(item, representation.language),
+    route: contentRoute(item, language),
   };
 }
 
 export function representations(items: Item[]): Item[] {
   return items.flatMap((item) =>
     Object.keys(item.translations).map((language) =>
-      translateItem(item, language),
+      translationFor(item, language)!,
     ),
   );
 }
@@ -447,14 +451,22 @@ export async function renderMarkdown(
 }
 
 export async function sectionContent(section: Section, items: Item[]) {
-  return renderMarkdown(
-    readFileSync(resolve(root, section, 'README.md'), 'utf8').replace(
-      /^# .+\r?\n/,
-      '',
-    ),
-    `${section}/README.md`,
-    items,
+  const file = `${section}/README.md`;
+  const body = readFileSync(resolve(root, file), 'utf8').replace(
+    /^# .+\r?\n/,
+    '',
   );
+  const contribution = /^## (Add .+)\r?\n([\s\S]*)$/m.exec(body);
+  if (!contribution) throw new Error(`${file}: Missing contribution guidance`);
+
+  const rendered = await renderMarkdown(body, file, items);
+  return {
+    ...rendered,
+    contribution: {
+      title: contribution[1],
+      parts: (await renderMarkdown(contribution[2], file, items)).parts,
+    },
+  };
 }
 
 export async function validateContent() {

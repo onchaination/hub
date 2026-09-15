@@ -35,13 +35,13 @@ Use Node 24 LTS. Search needs a production build; in development the search page
 
 There is deliberately one small content pipeline. Adding an item folder with en.md, or a translated language file in an existing folder, requires no code change. Each item folder owns one stable ID. Keep that folder name when moving between sections; section moves may need redirects for old inbound links. Related pages use explicit IDs first, then shared tags.
 
-The built language `.md` files preserve the source byte for byte. English HTML keeps the original item URL; translated HTML adds a language segment. Missing translations fall back to English for languages discovered elsewhere in the repository. Item counts remain independent of translation count. Search uses Pagefind language indexes plus English fallback, deduplicated by stable ID. Images retain their relative paths. Core articles, navigation, tags, and formulas work without JavaScript. Calculator interaction, search, clipboard copying, and optional embeds enhance those pages.
+The built language `.md` files preserve the source byte for byte. English HTML keeps the original item URL; translated HTML adds a language segment. A localized HTML route exists only when its matching Markdown file exists. Item counts remain independent of translation count. Search uses the exact Pagefind language index without substituting English results. Images retain their relative paths. Core articles, navigation, tags, and formulas work without JavaScript. Calculator interaction, search, clipboard copying, and optional embeds enhance those pages.
 
-Pagefind currently supports Ukrainian word search without stemming, so different grammatical forms may need separate queries. Each language has an isolated search instance; only real translations are indexed, while untranslated items use English results.
+Pagefind currently supports Ukrainian word search without stemming, so different grammatical forms may need separate queries. Each language has an isolated search instance, and only real translations appear in that language's results.
 
 The color theme defaults to the system preference. Readers can choose System, Light, or Dark in the header (inside Menu on mobile). `Site.astro` applies the preference before paint and stores it locally as `onchaination-theme`; CSS also follows the system without JavaScript. Theme colors live in `global.css`, and Shiki renders both code palettes.
 
-Each real content translation gets a localized 1200×630 social preview at `/og/<section>/<id>[/<language>].png`. Astro prerenders the route with Satori and Sharp from Markdown metadata; no image service or runtime server is involved. Untranslated locale fallbacks reuse the English card, matching their canonical content.
+Each real content translation gets a localized 1200×630 social preview at `/og/<section>/<id>[/<language>].png`. Astro prerenders the route with Satori and Sharp from Markdown metadata; no image service or runtime server is involved. Missing translations do not generate social preview routes.
 
 ## Browser checks
 

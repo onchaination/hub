@@ -2,17 +2,29 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import Site from '../layouts/Site.astro';
-import ContentRows from '../components/ContentRows.astro';
-import { loadItems, root } from '../lib/content';
+import { levels, loadItems, root } from '../lib/content';
 import { sections, sectionKeys, REPO } from '../lib/site';
 const items = loadItems();
-// The project's charter owns the homepage introduction.
+// The project's principles own the homepage introduction.
 const readme = readFileSync(resolve(root, 'README.md'), 'utf8');
 const introduction = readme.match(
   /<!-- home:intro -->\s*([\s\S]*?)\s*<!-- \/home:intro -->/,
 )?.[1];
 if (!introduction) throw new Error('README.md needs a home:intro block');
 const tags = [...new Set(items.flatMap((item) => item.tags))].sort();
+const levelDescriptions = {
+  beginner:
+    'New here or building the foundations. Start with clear explanations of core onchain concepts.',
+  intermediate:
+    'Comfortable with the basics and ready to go further. Connect concepts with tools and practical workflows.',
+  advanced:
+    'Explore deeper systems, trade-offs and strategies across protocols and networks.',
+};
+const levelEmojis = {
+  beginner: '🦐',
+  intermediate: '🐟',
+  advanced: '🐋',
+};
 ---
 
 <Site title="Learn, build and share value onchain" socialImage="/og.png">
@@ -31,10 +43,10 @@ const tags = [...new Set(items.flatMap((item) => item.tags))].sort();
         <p class="hero-lede">{introduction}</p>
         <div class="actions">
           <a class="button primary" href="/learn">
-            Start learning <span aria-hidden="true">→</span>
+            😎 Start here <span aria-hidden="true">→</span>
           </a>
           <a class="button" href="https://t.me/onchaination_group">
-            Join the conversation ↗
+            👋 Join the group ↗
           </a>
         </div>
         <p class="hero-note">For curious humans and capable agents.</p>
@@ -52,14 +64,18 @@ const tags = [...new Set(items.flatMap((item) => item.tags))].sort();
       </div>
     </section>
     <section class="path-grid" aria-label="Choose your path">
-      {sectionKeys.map((key, index) => (
+      {sectionKeys.map((key) => (
         <a class="path" href={`/${key}`}>
-          <span class="path-top">
-            <span>{sections[key].emoji}</span>
-            <span class="eyebrow">0{index + 1} /</span>
-          </span>
           <h2>
-            {sections[key].label} <span aria-hidden="true">↗</span>
+            <span class="path-heading">
+              <span class="path-emoji" aria-hidden="true">
+                {sections[key].emoji}
+              </span>
+              {sections[key].label}
+            </span>
+            <span class="path-arrow" aria-hidden="true">
+              ↗
+            </span>
           </h2>
           <p class="path-purpose">{sections[key].purpose}</p>
           <p class="muted small">{sections[key].description}</p>
@@ -69,8 +85,8 @@ const tags = [...new Set(items.flatMap((item) => item.tags))].sort();
     <section class="browse-section">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">A small place to start</p>
-          <h2>One topic. Four ways in.</h2>
+          <p class="eyebrow">Start where you are</p>
+          <h2>Find your starting point 🤔</h2>
         </div>
         <a class="text-link symbol-link" href="/search">
           <span class="link-label">Search all knowledge</span>
@@ -80,14 +96,31 @@ const tags = [...new Set(items.flatMap((item) => item.tags))].sort();
         </a>
       </div>
       <p class="muted">
-        Follow a transaction from your first question to a result you can
-        verify.
+        Explore knowledge at different depths, or start with the basics.
       </p>
-      <ContentRows items={items} />
+      <div class="level-grid">
+        {levels.map((level) => {
+          const label = level[0].toUpperCase() + level.slice(1);
+          return (
+            <a class="level-card" href={`/levels/${level}`}>
+              <h3>
+                <span class="level-emoji" aria-hidden="true">
+                  {levelEmojis[level]}
+                </span>
+                {label}
+              </h3>
+              <p class="level-description">{levelDescriptions[level]}</p>
+              <span class="level-arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          );
+        })}
+      </div>
     </section>
     <section class="topic-section">
       <p class="eyebrow">Connect the dots</p>
-      <h2>Explore a topic</h2>
+      <h2>Explore a topic 📍</h2>
       <div class="topic-links">
         {tags.map((tag) => (
           <a href={`/tags/${tag}`}>
@@ -101,21 +134,21 @@ const tags = [...new Set(items.flatMap((item) => item.tags))].sort();
     </section>
     <section class="contribute-banner">
       <div>
-        <p class="eyebrow">Made better, together</p>
+        <p class="eyebrow">Grow by building</p>
         <h2>
           Your next discovery
           <br />
-          could help someone else.
+          could improve something 🌱
         </h2>
       </div>
       <div>
         <p>
-          Fix a sentence. Explain a concept. Share a procedure.
+          <b>Share ideas. Explain a concept. Create value.</b>
           <br />
           Small, useful contributions are how this grows.
         </p>
         <a class="button primary" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
-          Make your first contribution ↗
+          Make your contribution 🚀
         </a>
       </div>
     </section>

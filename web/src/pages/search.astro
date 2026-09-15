@@ -23,17 +23,6 @@ const items = loadItems();
       role="search"
       data-aliases={JSON.stringify(tagAliases())}
       data-languages={JSON.stringify(availableLanguages(items))}
-      data-items={JSON.stringify(
-        Object.fromEntries(
-          items.map((item) => [
-            item.id,
-            {
-              directory: item.directory,
-              languages: Object.keys(item.translations),
-            },
-          ]),
-        ),
-      )}
     >
       <label for="query" class="sr-only">
         Search knowledge
@@ -108,8 +97,6 @@ const items = loadItems();
   const fallback = document.querySelector<HTMLDivElement>('#browse-fallback')!;
   const more = document.querySelector<HTMLButtonElement>('#more-results')!;
   const aliases: Record<string, string> = JSON.parse(form.dataset.aliases!);
-  const catalogue: Record<string, { directory: string; languages: string[] }> =
-    JSON.parse(form.dataset.items!);
   const engines = new Map<string, Engine>();
   let generation = 0;
   let results: Data[] = [];
@@ -162,53 +149,27 @@ const items = loadItems();
         .split(/\s+/)
         .map((word) => (Object.hasOwn(aliases, word) ? aliases[word] : word))
         .join(' ');
-      // Search one representation per item: requested language, plus English only
-      // for items without that translation. No duplicate translation entries.
-      const batches = await Promise.all(
-        [...new Set([requested, 'en'])].map(async (lang) => {
-          if (!engines.has(lang)) {
-            // Separate module instances give each language its own Pagefind worker
-            // and stemming WASM. Sharing one worker mixes language index state.
-            const bundle = '/pagefind/pagefind.js?language=' + lang;
-            const pagefind = (await import(
-              /* @vite-ignore */ bundle
-            )) as Pagefind;
-            // Pagefind captures the document language synchronously when creating
-            // an instance. Restore the English interface language immediately.
-            const documentLanguage = document.documentElement.lang;
-            try {
-              document.documentElement.lang = lang;
-              engines.set(lang, pagefind.createInstance());
-            } finally {
-              document.documentElement.lang = documentLanguage;
-            }
-          }
-          const response = await engines.get(lang)!.search(term || null, {
-            filters: type.value ? { Type: type.value } : {},
-          });
-          const data = await Promise.all(
-            response.results.map((result) => result.data()),
-          );
-          return data.filter(
-            (result) =>
-              lang === requested ||
-              !catalogue[result.meta.id]?.languages.includes(requested),
-          );
-        }),
+      if (!engines.has(requested)) {
+        const bundle = '/pagefind/pagefind.js?language=' + requested;
+        const pagefind = (await import(/* @vite-ignore */ bundle)) as Pagefind;
+        // Pagefind captures the document language synchronously when creating
+        // an instance. Restore the English interface language immediately.
+        const documentLanguage = document.documentElement.lang;
+        try {
+          document.documentElement.lang = requested;
+          engines.set(requested, pagefind.createInstance());
+        } finally {
+          document.documentElement.lang = documentLanguage;
+        }
+      }
+      const response = await engines.get(requested)!.search(term || null, {
+        filters: type.value ? { Type: type.value } : {},
+      });
+      const exactResults = await Promise.all(
+        response.results.map((result) => result.data()),
       );
       if (version !== generation) return;
-      results = [
-        ...new Map(
-          batches.flat().map((result) => [result.meta.id, result]),
-        ).values(),
-      ].map((result) => ({
-        ...result,
-        url: catalogue[result.meta.id]
-          ? '/' +
-            catalogue[result.meta.id].directory +
-            (requested === 'en' ? '' : '/' + requested)
-          : result.url,
-      }));
+      results = exactResults;
       shown = 0;
       output.replaceChildren();
       output.hidden = false;

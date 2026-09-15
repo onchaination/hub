@@ -5,10 +5,9 @@ import { languageName } from '../lib/languages';
 interface Props {
   item: Item;
   languages: string[];
-  requestedLanguage: string;
 }
 
-const { item, languages, requestedLanguage } = Astro.props;
+const { item, languages } = Astro.props;
 ---
 
 <section class="language-switcher" aria-labelledby="language-title">
@@ -18,27 +17,33 @@ const { item, languages, requestedLanguage } = Astro.props;
   <details class="language-menu">
     <summary>
       <span class="sr-only">Choose page language. Current: </span>
-      <span lang={requestedLanguage}>{languageName(requestedLanguage)}</span>
+      <span lang={item.language}>{languageName(item.language)}</span>
       <span class="language-menu-indicator" aria-hidden="true">
         ▼
       </span>
     </summary>
     <nav aria-label="Content language">
-      {languages.map((language) => (
-        <a
-          href={contentRoute(item, language)}
-          class:list={{ 'is-unavailable': !item.translations[language] }}
-          lang={item.translations[language] ? language : 'en'}
-          aria-current={requestedLanguage === language ? 'page' : undefined}
-          aria-label={
-            item.translations[language]
-              ? undefined
-              : `${languageName(language)} — translation unavailable; opens the English fallback`
-          }
-        >
-          {languageName(language)}
-        </a>
-      ))}
+      {languages.map((language) =>
+        item.translations[language] ? (
+          <a
+            href={contentRoute(item, language)}
+            lang={language}
+            aria-current={item.language === language ? 'page' : undefined}
+          >
+            {languageName(language)}
+          </a>
+        ) : (
+          <span
+            class="is-unavailable"
+            lang={language}
+            aria-disabled="true"
+            title="Translation unavailable"
+          >
+            {languageName(language)}
+            <span class="sr-only"> — translation unavailable</span>
+          </span>
+        ),
+      )}
     </nav>
   </details>
 </section>

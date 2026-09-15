@@ -11,41 +11,39 @@ import {
   relatedItems,
   availableLanguages,
   contentRoute,
-  translateItem,
+  translationFor,
   type Item,
 } from '../../lib/content';
 import { REPO, sections } from '../../lib/site';
-import { languageName } from '../../lib/languages';
 import { ogImageRoute } from '../../lib/og';
 export function getStaticPaths() {
   const items = loadItems();
   return items.flatMap((item) =>
-    availableLanguages(items).map((language) => ({
+    Object.keys(item.translations).map((language) => ({
       params: {
         section: item.section,
         slug: item.id + (language === 'en' ? '' : '/' + language),
       },
       props: {
-        item: translateItem(item, language),
-        requestedLanguage: language,
+        item: translationFor(item, language)!,
       },
     })),
   );
 }
 interface Props {
   item: Item;
-  requestedLanguage: string;
 }
-const { item, requestedLanguage } = Astro.props;
+const { item } = Astro.props;
 const items = loadItems();
-const isFallback = item.language !== requestedLanguage;
 const languages = availableLanguages(items);
 const alternates = Object.keys(item.translations).map((language) => ({
   language,
   route: contentRoute(item, language),
 }));
 const { parts, headings } = await renderMarkdown(item.body, item.file, items);
-const related = relatedItems(item, items);
+const related = relatedItems(item, items).filter((relatedItem) =>
+  translationFor(relatedItem, item.language),
+);
 ---
 
 <Site
@@ -57,15 +55,10 @@ const related = relatedItems(item, items);
   socialImage={ogImageRoute(item)}
   socialImageAlt={`${item.title} · Onchaination`}
   alternates={alternates}
-  noindex={isFallback}
 >
   <div class="shell article-layout">
     <aside class="article-sidebar">
-      <LanguageSelect
-        item={item}
-        languages={languages}
-        requestedLanguage={requestedLanguage}
-      />
+      <LanguageSelect item={item} languages={languages} />
       <div class="on-this-page" aria-label="On this page">
         <p class="eyebrow">On this page</p>
         <nav>
@@ -86,27 +79,12 @@ const related = relatedItems(item, items);
     </aside>
     <article
       class="article"
-      data-pagefind-body={isFallback ? undefined : true}
+      data-pagefind-body
       data-content-id={item.id}
       data-pagefind-meta="id[data-content-id]"
       lang={item.language}
     >
       <header class="article-heading">
-        {isFallback && (
-          <p class="language-notice" lang="en" data-pagefind-ignore>
-            This item is not available in {languageName(requestedLanguage)} yet.
-            Showing the English version.{' '}
-            <a
-              class="symbol-link"
-              href={`${REPO}/blob/main/CONTRIBUTING.md#translate-an-item`}
-            >
-              <span class="link-label">Help translate it</span>
-              <span class="link-symbol" aria-hidden="true">
-                ↗
-              </span>
-            </a>
-          </p>
-        )}
         <a class="eyebrow breadcrumb symbol-link" href={`/${item.section}`}>
           <span class="link-symbol link-symbol-back" aria-hidden="true">
             ←
@@ -173,7 +151,7 @@ const related = relatedItems(item, items);
         <section class="related">
           <p class="eyebrow">Keep exploring</p>
           <h2>Related knowledge</h2>
-          <ContentRows items={related} language={requestedLanguage} />
+          <ContentRows items={related} language={item.language} />
         </section>
       )}
       <Discussion />
