@@ -9,7 +9,7 @@ test('navigation, static pages and clean canonical links', async ({ page }) => {
     'content',
     'https://onchaination.org/og.png',
   );
-  await page.getByRole('link', { name: 'Start learning' }).click();
+  await page.getByRole('link', { name: /Start here/ }).click();
   await expect(page).toHaveURL(/\/learn\/?$/);
   await page.locator('.content-row h3 a').click();
   await expect(page.locator('.prose')).toContainText(
@@ -32,6 +32,41 @@ test('navigation, static pages and clean canonical links', async ({ page }) => {
     'content',
     'summary_large_image',
   );
+});
+
+test('path pages prioritize discovery and collapse contribution guidance', async ({
+  page,
+}) => {
+  for (const path of ['learn', 'tools', 'strategies', 'skills']) {
+    await page.goto(`/${path}`);
+    const heading = page.locator('.page-heading');
+    const content = page.locator('.content-rows');
+    const contribution = page.locator('.section-guide');
+
+    await expect(heading).toBeVisible();
+    await expect(content).toBeVisible();
+    await expect(contribution.locator('summary')).toHaveText(/^How to add .+\?$/);
+    await expect(contribution).not.toHaveAttribute('open', '');
+    await expect(contribution.locator('.section-guide-content')).toBeHidden();
+    expect(
+      await heading.evaluate((element) =>
+        Boolean(
+          element.compareDocumentPosition(
+            document.querySelector('.content-rows')!,
+          ) & Node.DOCUMENT_POSITION_FOLLOWING,
+        ),
+      ),
+    ).toBe(true);
+    expect(
+      await content.evaluate((element) =>
+        Boolean(
+          element.compareDocumentPosition(
+            document.querySelector('.section-guide')!,
+          ) & Node.DOCUMENT_POSITION_FOLLOWING,
+        ),
+      ),
+    ).toBe(true);
+  }
 });
 
 test('widget responds to inputs, validates, and resets', async ({ page }) => {
@@ -62,7 +97,7 @@ test('Solana calculator uses its own units and formula', async ({ page }) => {
   await expect(page.locator('output')).toContainText('0.000005');
 });
 
-test('languages are discovered, linked, and fall back without duplicate items', async ({
+test('languages are discovered and missing translations are real 404s', async ({
   page,
 }) => {
   await page.goto('/learn/transactions/de');
@@ -94,26 +129,26 @@ test('languages are discovered, linked, and fall back without duplicate items', 
   await expect(
     page.getByRole('heading', { name: '💬 Discussion' }),
   ).toBeVisible();
-  await page.goto('/tools/network-fee/de');
-  await expect(page.locator('.language-notice')).toContainText(
-    'Showing the English version',
+  const missingTranslation = await page.goto('/tools/network-fee/de');
+  expect(missingTranslation?.status()).toBe(404);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    "This page isn't here.",
   );
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.locator('link[rel=canonical]')).toHaveAttribute(
-    'href',
-    'https://onchaination.org/tools/network-fee/',
-  );
-  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
-    'content',
-    'https://onchaination.org/og/tools/network-fee.png',
-  );
   await page.goto('/search?lang=de');
-  await expect(page.locator('#search-results .search-result')).toHaveCount(4);
+  await expect(page.locator('#search-results .search-result')).toHaveCount(1);
   await expect(page.locator('#search-results')).toContainText('Was passiert');
   await page.getByLabel('Search knowledge').fill('Netzwerk');
   await expect(page.locator('#search-results')).toContainText('Was passiert');
   await page.goto('/');
-  await expect(page.locator('.content-row')).toHaveCount(4);
+  await expect(page.locator('.level-card')).toHaveCount(3);
+  await expect(
+    page.getByRole('heading', { name: /Find your starting point/ }),
+  ).toBeVisible();
+  await expect(page.locator('.browse-section')).toContainText('Beginner');
+  await expect(page.locator('.browse-section')).toContainText('Intermediate');
+  await expect(page.locator('.browse-section')).toContainText('Advanced');
+  await expect(page.locator('.level-description')).toHaveCount(3);
 });
 
 test('Pagefind searches body text and aliases, filters types, and handles no results', async ({

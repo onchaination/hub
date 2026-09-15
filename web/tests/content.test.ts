@@ -5,6 +5,7 @@ import {
   metadataSchema,
   renderMarkdown,
   relatedItems,
+  sectionContent,
   splitFrontmatter,
   tagAliases,
   validateContent,
@@ -21,6 +22,13 @@ test('repository examples validate and cover all four purposes', async () => {
     'strategies',
     'tools',
   ]);
+});
+
+test('section indexes separate contribution guidance from discovery content', async () => {
+  const result = await sectionContent('learn', loadItems());
+  assert.equal(result.contribution.title, 'Add an explanation');
+  assert.match(JSON.stringify(result.contribution.parts), /mental model/);
+  assert.doesNotMatch(JSON.stringify(result.contribution.parts), /Start here/);
 });
 
 test('schema rejects missing fields, bad dates, duplicated type, and unsupported versions', () => {

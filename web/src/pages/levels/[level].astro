@@ -4,10 +4,7 @@ import ContentRows from '../../components/ContentRows.astro';
 import { levels, loadItems, type Level } from '../../lib/content';
 
 export function getStaticPaths() {
-  const items = loadItems();
-  return levels
-    .filter((level) => items.some((item) => item.level === level))
-    .map((level) => ({ params: { level } }));
+  return levels.map((level) => ({ params: { level } }));
 }
 
 const level = Astro.params.level as Level;

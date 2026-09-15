@@ -4,7 +4,7 @@
 
 <!-- home:intro -->
 
-Learn how onchain systems work, find useful tools and turn understanding into practice. Open knowledge, written and improved together.
+Learn how onchain systems work, find useful tools and turn understanding into practice. Open knowledge, shared and improved together.
 <!-- /home:intro -->
 
 Onchaination is an open, multichain, multilingual knowledge and contribution hub, built in public. It welcomes curious people and makes the same knowledge available to agents.
@@ -58,13 +58,13 @@ For example, one topic can lead you from learning how AMMs work, to choosing a D
 
 Knowledge lives in Markdown: simple text files that remain useful when read directly on GitHub. GitHub is the canonical record of contribution history; the website renders and connects that knowledge for discovery and use. Humans and agents share the same four paths and source material.
 
-Content is chain-neutral, with network differences named explicitly. Current examples cover Ethereum and Solana where relevant, and other chains are welcome. Translations are versions of the same item, with English available when a translation is missing.
+Content is chain-neutral, with network differences named explicitly. Current examples cover Ethereum and Solana where relevant, and other chains are welcome. Translations are versions of the same item, and English is the required canonical source representation.
 
-<!-- constitution -->
+<!-- principles -->
 
-## Our lightweight constitution
+## Our principles
 
-Onchaination is an open group learning, building and sharing value onchain. This is our project charter, not a legal document.
+Onchaination is an open group learning, building and sharing value onchain.
 
 ### Open
 
@@ -100,7 +100,7 @@ Identity belongs to the participant. A public key is its root; wallets and socia
 
 GitHub records contributions. Useful work by humans and agents deserves attribution; rewards may recognize that work but are never promised for every contribution. Identity and rewards must remain optional for learning and contributing.
 
-<!-- /constitution -->
+<!-- /principles -->
 
 Onchaination is not tied to one blockchain, a DAO by default, a token project, an investment club, or a content company with creators on one side and an audience on the other. It is an open group learning from each other, building useful things, and sharing value onchain.
 
@@ -173,7 +173,7 @@ strategies/first-transfer/en.md
 skills/check-transaction/en.md
 ```
 
-English (`en.md`) is required and supplies shared metadata. Translations keep the same ID and inherit tags, level, and related IDs. Languages are discovered from filenames; translations do not increase item counts. The Learn example includes German and Ukrainian; other examples currently demonstrate English fallback. UI labels remain English for now. See [how to translate an item](./CONTRIBUTING.md#translate-an-item).
+English (`en.md`) is required and supplies shared metadata. Translations keep the same ID and inherit tags, level, and related IDs. Languages are discovered from filenames; translations do not increase item counts. A localized page exists only when its language file exists, so missing translations return 404 instead of English content. UI labels remain English for now. See [how to translate an item](./CONTRIBUTING.md#translate-an-item).
 
 English URLs stay `/learn/transactions`; a translation uses `/learn/transactions/de`. The source is also directly readable at `/learn/transactions/de.md`.
 

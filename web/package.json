@@ -7,6 +7,8 @@
     "check": "tsx scripts/validate.ts && astro check",
     "test": "tsx --test tests/*.test.ts",
     "test:e2e": "playwright test",
+    "audit": "npm audit --audit-level=high",
+    "prebuild": "npm run audit",
     "build": "tsx scripts/validate.ts && astro build && pagefind --site dist && tsx scripts/check-build.ts",
     "preview": "astro preview",
     "format": "prettier --write src scripts tests e2e astro.config.mjs playwright.config.ts"

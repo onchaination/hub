@@ -1,5 +1,5 @@
 ---
-import { contentRoute, translateItem, type Item } from '../lib/content';
+import { availableLanguages, translationFor, type Item } from '../lib/content';
 import { languageName } from '../lib/languages';
 import { sections } from '../lib/site';
 interface Props {
@@ -8,11 +8,14 @@ interface Props {
   language?: string;
 }
 const { items, showSection = true, language = 'en' } = Astro.props;
+const translatedItems = items.flatMap((item) => {
+  const translation = translationFor(item, language);
+  return translation ? [translation] : [];
+});
 ---
 
 <div class="content-rows">
-  {items.map((original, index) => {
-    const item = translateItem(original, language);
+  {translatedItems.map((item, index) => {
     return (
       <article class="content-row">
         <span class="row-number" aria-hidden="true">
@@ -25,11 +28,7 @@ const { items, showSection = true, language = 'en' } = Astro.props;
             </span>
           )}
           <h3>
-            <a
-              class="symbol-link"
-              href={contentRoute(item, language)}
-              lang={item.language}
-            >
+            <a class="symbol-link" href={item.route} lang={item.language}>
               <span class="link-label">{item.title}</span>
               <span class="link-symbol row-arrow" aria-hidden="true">
                 ↗
@@ -47,8 +46,8 @@ const { items, showSection = true, language = 'en' } = Astro.props;
               class="language-links small"
               aria-label={`Languages for ${item.title}`}
             >
-              {Object.keys(item.translations).map((language) => (
-                <a href={contentRoute(item, language)} lang={language}>
+              {availableLanguages([item]).map((language) => (
+                <a href={translationFor(item, language)!.route} lang={language}>
                   {languageName(language)}
                 </a>
               ))}

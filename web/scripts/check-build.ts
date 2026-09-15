@@ -2,7 +2,13 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import sharp from 'sharp';
-import { contentRoute, loadItems, representations } from '../src/lib/content';
+import {
+  availableLanguages,
+  contentRoute,
+  loadItems,
+  representations,
+  translationFor,
+} from '../src/lib/content';
 import { OG_HEIGHT, OG_WIDTH, ogImageRoute } from '../src/lib/og';
 import { SITE } from '../src/lib/site';
 
@@ -58,9 +64,38 @@ for (const item of representations(items)) {
   );
   assert(!html.includes('<!-- widget:'), `Unrendered widget: ${item.file}`);
 }
+const sitemap = readFileSync(join(dist, 'sitemap.xml'), 'utf8');
 const llms = readFileSync(join(dist, 'llms.txt'), 'utf8');
 for (const item of representations(items))
   assert(llms.includes(SITE + '/' + item.file));
+for (const item of items) {
+  for (const language of availableLanguages(items)) {
+    if (translationFor(item, language)) continue;
+    const route = contentRoute(item, language);
+    const source = `${item.directory}/${language}.md`;
+    const socialImage = ogImageRoute({ ...item, language });
+    assert(
+      !existsSync(join(dist, route, 'index.html')),
+      `Generated missing translation: ${route}`,
+    );
+    assert(
+      !existsSync(join(dist, source)),
+      `Generated missing translation source: ${source}`,
+    );
+    assert(
+      !existsSync(join(dist, socialImage)),
+      `Generated missing translation social image: ${socialImage}`,
+    );
+    assert(
+      !sitemap.includes(`<loc>${SITE}${route}</loc>`),
+      `Sitemap includes missing translation: ${route}`,
+    );
+    assert(
+      !llms.includes(`${SITE}/${source}`),
+      `llms.txt includes missing translation: ${source}`,
+    );
+  }
+}
 assert(
   existsSync(join(dist, 'pagefind/pagefind.js')),
   'Missing Pagefind index',

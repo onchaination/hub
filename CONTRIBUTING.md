@@ -53,7 +53,7 @@ updated: 2026-09-13
 
 Translate the body too, including relevant examples and limits. Keep the same `id`, matching the folder name. Do not copy `tags`, `related`, or `level`: translations inherit them from English so classification stays consistent. Optional `updated` and `authors` describe that representation. There is no `language` metadata field; the filename supplies it.
 
-Use lowercase language tags such as `en`, `uk`, `de`, or `pt-br`. The app discovers them automatically. Adding a translation requires no code or language registry. Each discovered language can be selected on every item; missing translations visibly fall back to English. Only actual translations are indexed and advertised as available. Lists and counts still contain one entry per item.
+Use lowercase language tags such as `en`, `uk`, `de`, or `pt-br`. The app discovers them automatically. Adding a translation requires no code or language registry. A language is selectable for an item only when that language file exists; a missing translation returns 404 and never shows English under a localized URL. Only actual translations are indexed and advertised as available. Lists and counts still contain one entry per item.
 
 Link to real source files, such as `../../tools/network-fee/en.md`, when a translation is unavailable. Shared images live inside the item folder. Do not add empty translation placeholders. English UI labels and widget controls remain shared in this foundation.
 
@@ -206,4 +206,4 @@ The root `learn/`, `tools/`, `strategies/`, and `skills/` folders are canonical.
 
 Add infrastructure only when a concrete requirement calls for it. Prefer existing transparent sources of truth to new CMS layers, databases, identity providers, tracking systems, tokens, or reputation systems.
 
-For the project charter, read [README.md](./README.md). For the technical architecture and phase 2 identity model, read [SPEC.md](./SPEC.md).
+For the project principles, read [README.md](./README.md). For the technical architecture and phase 2 identity model, read [SPEC.md](./SPEC.md).
