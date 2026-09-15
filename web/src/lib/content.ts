@@ -22,6 +22,8 @@ const date = z
       new Date(s).toISOString().slice(0, 10) === s,
     'Use a real YYYY-MM-DD date',
   );
+export const levels = ['beginner', 'intermediate', 'advanced'] as const;
+export type Level = (typeof levels)[number];
 export const metadataSchema = z
   .object({
     schema: z.literal(1),
@@ -29,7 +31,7 @@ export const metadataSchema = z
     title: z.string().trim().min(1),
     description: z.string().trim().min(1),
     tags: z.array(slug).min(1),
-    level: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
+    level: z.enum(levels).optional(),
     authors: z.array(z.string().regex(/^oc1[a-z2-7]{52}$/)).optional(),
     updated: date.optional(),
     related: z.array(slug).optional(),

@@ -739,7 +739,7 @@ main:focus {
   color: var(--muted);
   flex-wrap: wrap;
 }
-.article-meta > span:first-child {
+.article-meta > :first-child {
   text-transform: capitalize;
 }
 .source-links {

@@ -136,6 +136,16 @@ test('Pagefind searches body text and aliases, filters types, and handles no res
   await expect(page).toHaveURL(/\/tags\/fees\/?$/);
 });
 
+test('levels link pages across all knowledge paths', async ({ page }) => {
+  await page.goto('/learn/transactions');
+  await page.getByRole('link', { name: 'beginner', exact: true }).click();
+  await expect(page).toHaveURL(/\/levels\/beginner\/?$/);
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Beginner' }),
+  ).toBeVisible();
+  await expect(page.locator('.content-row')).toHaveCount(4);
+});
+
 test('AI clipboard denial has a fallback; Telegram loads when discussion is viewed', async ({
   page,
 }) => {

@@ -13,12 +13,12 @@ Onchaination is an open, multichain, multilingual knowledge and contribution hub
 
 Choose the path that matches what you want to do. Each has an example to explore or improve:
 
-| Path | Purpose | Example |
-| --- | --- | --- |
-| 📚 [Learn](./learn/) | Understand something | [What happens when you send a transaction?](./learn/transactions/en.md) |
-| 🛠️ [Tools](./tools/) | Use an interface | [Network fee calculator](./tools/network-fee/en.md) |
-| 🎯 [Strategies](./strategies/) | Pursue an outcome | [Make your first transfer easier to verify](./strategies/first-transfer/en.md) |
-| ⚡ [Skills](./skills/) | Perform a procedure | [Check a transaction on a block explorer](./skills/check-transaction/en.md) |
+| Path                           | Purpose              | Example                                                                        |
+| ------------------------------ | -------------------- | ------------------------------------------------------------------------------ |
+| 📚 [Learn](./learn/)           | Understand something | [What happens when you send a transaction?](./learn/transactions/en.md)        |
+| 🛠️ [Tools](./tools/)           | Use an interface     | [Network fee calculator](./tools/network-fee/en.md)                            |
+| 🎯 [Strategies](./strategies/) | Pursue an outcome    | [Make your first transfer easier to verify](./strategies/first-transfer/en.md) |
+| ⚡ [Skills](./skills/)         | Perform a procedure  | [Check a transaction on a block explorer](./skills/check-transaction/en.md)    |
 
 **[Start learning](./learn/) · [Search](https://onchaination.org/search) · [Contribute](./CONTRIBUTING.md) · [Join Telegram](https://t.me/onchaination_group)**
 
@@ -180,7 +180,7 @@ English URLs stay `/learn/transactions`; a translation uses `/learn/transactions
 ### Website, search, and publishing
 
 - **Markdown and agent access:** static HTML, clean `.md` routes, `/llms.txt`, widgets, and Learn with AI context offer interfaces over the same canonical knowledge. The fee widget has separate ETH and SOL calculations.
-- **Search:** Pagefind generates the static index at build time, so use `npm run preview` after building to test search.
+- **Browse and search:** Tags connect related topics, while levels group knowledge for beginner, intermediate, and advanced users. Pagefind generates the static search index at build time, so use `npm run preview` after building to test search.
 - **Publishing:** the GitHub Actions workflow validates pull requests and can deploy the static site after GitHub Pages and DNS are configured. See [publishing setup](./web/README.md#publish-to-github-pages).
 
 ### Discussion
