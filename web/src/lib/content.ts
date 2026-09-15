@@ -27,7 +27,6 @@ export type Level = (typeof levels)[number];
 export const metadataSchema = z
   .object({
     schema: z.literal(1),
-    id: slug,
     title: z.string().trim().min(1),
     description: z.string().trim().min(1),
     tags: z.array(slug).min(1),
@@ -38,6 +37,7 @@ export const metadataSchema = z
   })
   .strict();
 export type Representation = z.infer<typeof metadataSchema> & {
+  id: string;
   file: string;
   language: string;
   body: string;
@@ -52,7 +52,6 @@ export type Item = Representation & {
 // Translations inherit classification from English, avoiding divergent topic graphs.
 const translationSchema = metadataSchema.pick({
   schema: true,
-  id: true,
   title: true,
   description: true,
   updated: true,
@@ -131,8 +130,6 @@ export function loadItems(repository = root): Item[] {
       const english = splitFrontmatter(raw);
       const metadata = metadataSchema.parse(english.data);
       const id = directory.split('/')[1];
-      if (metadata.id !== id)
-        throw new Error(`${englishFile}: ID must match item folder ${id}`);
       const tags = metadata.tags.map((tag) => aliases[tag] ?? tag);
       if (new Set(tags).size !== tags.length)
         throw new Error(`${englishFile}: Repeated tags (including aliases)`);
@@ -146,12 +143,11 @@ export function loadItems(repository = root): Item[] {
             language === defaultLanguage
               ? metadata
               : translationSchema.parse(data);
-          if (localized.id !== id)
-            throw new Error(`Translation ID must match item folder ${id}`);
           if (!body.trim()) throw new Error('Page body is empty');
           translations[language] = {
             ...metadata,
             ...localized,
+            id,
             updated: localized.updated,
             authors: localized.authors,
             tags,

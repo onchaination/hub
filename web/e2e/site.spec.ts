@@ -15,18 +15,18 @@ test('navigation, static pages and clean canonical links', async ({ page }) => {
   await expect(page.locator('.prose')).toContainText(
     'From intention to confirmation',
   );
-  await page.goto('/learn/transactions?utm_source=test');
+  await page.goto('/learn/transaction?utm_source=test');
   await expect(page.locator('link[rel=canonical]')).toHaveAttribute(
     'href',
-    'https://onchaination.org/learn/transactions/',
+    'https://onchaination.org/learn/transaction/',
   );
   await expect(page.locator('link[type="text/markdown"]')).toHaveAttribute(
     'href',
-    'https://onchaination.org/learn/transactions/en.md',
+    'https://onchaination.org/learn/transaction/en.md',
   );
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     'content',
-    'https://onchaination.org/og/learn/transactions.png',
+    'https://onchaination.org/og/learn/transaction.png',
   );
   await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
     'content',
@@ -70,7 +70,7 @@ test('path pages prioritize discovery and collapse contribution guidance', async
 });
 
 test('widget responds to inputs, validates, and resets', async ({ page }) => {
-  await page.goto('/tools/network-fee');
+  await page.goto('/tools/network-fee-calculator');
   await page.locator('.widget').scrollIntoViewIfNeeded();
   await expect(page.locator('astro-island')).not.toHaveAttribute('ssr');
   await expect(page.locator('output')).toContainText('0.00021');
@@ -85,7 +85,7 @@ test('widget responds to inputs, validates, and resets', async ({ page }) => {
 });
 
 test('Solana calculator uses its own units and formula', async ({ page }) => {
-  await page.goto('/tools/network-fee');
+  await page.goto('/tools/network-fee-calculator');
   await page.locator('.widget').scrollIntoViewIfNeeded();
   await expect(page.locator('astro-island')).not.toHaveAttribute('ssr');
   await page.getByLabel('Network fee model').selectOption('solana');
@@ -100,14 +100,14 @@ test('Solana calculator uses its own units and formula', async ({ page }) => {
 test('languages are discovered and missing translations are real 404s', async ({
   page,
 }) => {
-  await page.goto('/learn/transactions/de');
+  await page.goto('/learn/transaction/de');
   await expect(page.locator('html')).toHaveAttribute('lang', 'de');
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     'Was passiert',
   );
   await expect(page.locator('link[type="text/markdown"]')).toHaveAttribute(
     'href',
-    'https://onchaination.org/learn/transactions/de.md',
+    'https://onchaination.org/learn/transaction/de.md',
   );
   await expect(
     page.getByRole('navigation', { name: 'Content language' }),
@@ -120,16 +120,16 @@ test('languages are discovered and missing translations are real 404s', async ({
   await expect(page.locator('html')).toHaveAttribute('lang', 'uk');
   await expect(page.locator('link[rel=canonical]')).toHaveAttribute(
     'href',
-    'https://onchaination.org/learn/transactions/',
+    'https://onchaination.org/learn/transaction/',
   );
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     'content',
-    'https://onchaination.org/og/learn/transactions/uk.png',
+    'https://onchaination.org/og/learn/transaction/uk.png',
   );
   await expect(
     page.getByRole('heading', { name: '💬 Discussion' }),
   ).toBeVisible();
-  const missingTranslation = await page.goto('/tools/network-fee/de');
+  const missingTranslation = await page.goto('/tools/network-fee-calculator/de');
   expect(missingTranslation?.status()).toBe(404);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     "This page isn't here.",
@@ -172,7 +172,7 @@ test('Pagefind searches body text and aliases, filters types, and handles no res
 });
 
 test('levels link pages across all knowledge paths', async ({ page }) => {
-  await page.goto('/learn/transactions');
+  await page.goto('/learn/transaction');
   await page.getByRole('link', { name: 'beginner', exact: true }).click();
   await expect(page).toHaveURL(/\/levels\/beginner\/?$/);
   await expect(
@@ -219,7 +219,12 @@ test('mobile has usable navigation and no horizontal overflow', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  for (const path of ['/', '/learn', '/tools/network-fee', '/search']) {
+  for (const path of [
+    '/',
+    '/learn',
+    '/tools/network-fee-calculator',
+    '/search',
+  ]) {
     await page.goto(path);
     expect(
       await page.evaluate(
@@ -238,7 +243,9 @@ test('knowledge and the calculator formula remain readable without JavaScript', 
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:4321/tools/network-fee');
+  await page.goto(
+    'http://127.0.0.1:4321/tools/network-fee-calculator',
+  );
   await expect(page.locator('.prose')).toContainText('21,000 × 10');
   await expect(page.getByRole('link', { name: 'Markdown' })).toBeVisible();
   await context.close();

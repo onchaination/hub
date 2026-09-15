@@ -8,4 +8,4 @@ Pursue an outcome by combining knowledge, tools, and procedures. Make the assump
 
 ## Add an approach
 
-Copy `first-transfer/en.md` with a new stable ID. Define the outcome, prerequisites, approach, trade-offs, and how to know when to stop. Link to Skills for detailed procedures. See [Contributing](../CONTRIBUTING.md).
+Copy `first-transfer/en.md` into a uniquely named item folder; the folder name is the stable content ID. Define the outcome, prerequisites, approach, trade-offs, and how to know when to stop. Link to Skills for detailed procedures. See [Contributing](../CONTRIBUTING.md).
