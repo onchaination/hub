@@ -15,8 +15,8 @@ Choose the path that matches what you want to do. Each has an example to explore
 
 | Path                           | Purpose              | Example                                                                        |
 | ------------------------------ | -------------------- | ------------------------------------------------------------------------------ |
-| 📚 [Learn](./learn/)           | Understand something | [What happens when you send a transaction?](./learn/transactions/en.md)        |
-| 🛠️ [Tools](./tools/)           | Use an interface     | [Network fee calculator](./tools/network-fee/en.md)                            |
+| 📚 [Learn](./learn/)           | Understand something | [What happens when you send a transaction?](./learn/transaction/en.md)         |
+| 🛠️ [Tools](./tools/)           | Use an interface     | [Network fee calculator](./tools/network-fee-calculator/en.md)                 |
 | 🎯 [Strategies](./strategies/) | Pursue an outcome    | [Make your first transfer easier to verify](./strategies/first-transfer/en.md) |
 | ⚡ [Skills](./skills/)         | Perform a procedure  | [Check a transaction on a block explorer](./skills/check-transaction/en.md)    |
 
@@ -48,10 +48,10 @@ The usual flow is **edit Markdown → open a pull request (PR) → review → me
 
 ## How the knowledge model works
 
-The four paths organize knowledge by purpose. Tags connect related topics across them, while each item keeps a stable ID:
+The four paths organize knowledge by purpose. Tags connect related topics across them, while each item's folder name supplies its stable ID:
 
-- **path = organization** — where an item belongs: Learn, Tools, Strategies, or Skills.
-- **id = identity** — which item it is, even when it moves or is translated.
+- **folder name = stable content ID** — which item it is, shared by every translation.
+- **section + folder = path / URL** — where an item belongs: Learn, Tools, Strategies, or Skills.
 - **tags = topic graph** — shared topics that connect items across paths.
 
 For example, one topic can lead you from learning how AMMs work, to choosing a DEX, to understanding a liquidity strategy, to following a skill to create a position.
@@ -165,17 +165,17 @@ npm run preview
 Each folder is one stable item, with one Markdown file per language:
 
 ```text
-learn/transactions/en.md
-learn/transactions/de.md
-learn/transactions/uk.md
-tools/network-fee/en.md
+learn/transaction/en.md
+learn/transaction/de.md
+learn/transaction/uk.md
+tools/network-fee-calculator/en.md
 strategies/first-transfer/en.md
 skills/check-transaction/en.md
 ```
 
 English (`en.md`) is required and supplies shared metadata. Translations keep the same ID and inherit tags, level, and related IDs. Languages are discovered from filenames; translations do not increase item counts. A localized page exists only when its language file exists, so missing translations return 404 instead of English content. UI labels remain English for now. See [how to translate an item](./CONTRIBUTING.md#translate-an-item).
 
-English URLs stay `/learn/transactions`; a translation uses `/learn/transactions/de`. The source is also directly readable at `/learn/transactions/de.md`.
+English URLs stay `/learn/transaction`; a translation uses `/learn/transaction/de`. The source is also directly readable at `/learn/transaction/de.md`.
 
 ### Website, search, and publishing
 

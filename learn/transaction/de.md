@@ -1,6 +1,5 @@
 ---
 schema: 1
-id: transactions
 title: Was passiert, wenn du eine Transaktion sendest?
 description: Verfolge eine Transaktion von deiner Wallet bis in einen Block und verstehe, was eine Bestätigung aussagt.
 updated: 2026-09-13
@@ -44,7 +43,7 @@ ETH auf Ethereum und SOL auf Solana zu senden sind getrennte Vorgänge in getren
 | Erfolgreich | Die Ausführung war erfolgreich. Das beweist weder die Vertrauenswürdigkeit des Empfängers noch die Sicherheit eines Vertrags. |
 
 > [!TIP]
-> Netzwerkgebühren kommen zum gesendeten Betrag hinzu. Halte genug vom Gebührenvermögenswert bereit. Der [Gebührenrechner](../../tools/network-fee/en.md) erklärt die Berechnung.
+> Netzwerkgebühren kommen zum gesendeten Betrag hinzu. Halte genug vom Gebührenvermögenswert bereit. Der [Gebührenrechner](../../tools/network-fee-calculator/en.md) erklärt die Berechnung.
 
 <details>
 <summary>❓ Sendet jede Signatur eine Transaktion?</summary>

@@ -7,7 +7,7 @@ A typo fix, clearer explanation, useful question, updated source, or tested proc
 ## Your first contribution
 
 1. Pick an example below. Improve it, or create an item folder such as `learn/my-topic/` and copy the English source into `en.md`.
-2. For a new item, use the folder name as its new stable `id`, title, description, and tags. Remove or update copied `related` IDs.
+2. For a new item, choose a unique folder name as its stable content ID, then update the title, description, and tags. Remove or update copied `related` IDs.
 3. Solve one clear information need. Give readers a concrete example and a way to check their understanding or result.
 4. Open a pull request explaining what changed and why it helps. You can use GitHub's file editor.
 5. Respond to review. After merge, the configured Pages workflow publishes the site.
@@ -18,8 +18,8 @@ The site discovers pages automatically. There is no menu or content registry to 
 
 | Path | Purpose | Working example to copy |
 | --- | --- | --- |
-| 📚 [Learn](./learn/) | Understand something | [What happens when you send a transaction?](./learn/transactions/en.md) |
-| 🛠️ [Tools](./tools/) | Use an interface | [Network fee calculator](./tools/network-fee/en.md) |
+| 📚 [Learn](./learn/) | Understand something | [What happens when you send a transaction?](./learn/transaction/en.md) |
+| 🛠️ [Tools](./tools/) | Use an interface | [Network fee calculator](./tools/network-fee-calculator/en.md) |
 | 🎯 [Strategies](./strategies/) | Pursue an outcome | [Make your first transfer easier to verify](./strategies/first-transfer/en.md) |
 | ⚡ [Skills](./skills/) | Perform a procedure | [Check a transaction on a block explorer](./skills/check-transaction/en.md) |
 
@@ -32,7 +32,7 @@ Humans and agents share these four folders. Describe separate execution paths in
 One folder is one item, not a separate item for each translation:
 
 ```text
-learn/transactions/
+learn/transaction/
   en.md
   de.md
   uk.md
@@ -44,18 +44,17 @@ learn/transactions/
 ```yaml
 ---
 schema: 1
-id: transactions
 title: Was passiert, wenn du eine Transaktion sendest?
 description: Verfolge eine Transaktion von deiner Wallet bis in einen Block.
 updated: 2026-09-13
 ---
 ```
 
-Translate the body too, including relevant examples and limits. Keep the same `id`, matching the folder name. Do not copy `tags`, `related`, or `level`: translations inherit them from English so classification stays consistent. Optional `updated` and `authors` describe that representation. There is no `language` metadata field; the filename supplies it.
+Translate the body too, including relevant examples and limits. Do not add `id`, `tags`, `related`, or `level`: every representation gets its ID from the shared folder, and translations inherit classification from English. Optional `updated` and `authors` describe that representation. There is no `language` metadata field; the filename supplies it.
 
 Use lowercase language tags such as `en`, `uk`, `de`, or `pt-br`. The app discovers them automatically. Adding a translation requires no code or language registry. A language is selectable for an item only when that language file exists; a missing translation returns 404 and never shows English under a localized URL. Only actual translations are indexed and advertised as available. Lists and counts still contain one entry per item.
 
-Link to real source files, such as `../../tools/network-fee/en.md`, when a translation is unavailable. Shared images live inside the item folder. Do not add empty translation placeholders. English UI labels and widget controls remain shared in this foundation.
+Link to real source files, such as `../../tools/network-fee-calculator/en.md`, when a translation is unavailable. Shared images live inside the item folder. Do not add empty translation placeholders. English UI labels and widget controls remain shared in this foundation.
 
 ## Front matter
 
@@ -64,17 +63,16 @@ Every English `en.md` starts with YAML:
 ```yaml
 ---
 schema: 1
-id: my-topic
 title: A clear title
 description: One sentence describing what the reader will get from this page.
 tags: [transactions, security]
 level: beginner
 updated: 2026-09-13
-related: [transactions]
+related: [transaction]
 ---
 ```
 
-Required fields are `schema`, `id`, `title`, `description`, and `tags`. The example's remaining fields are optional:
+Required fields are `schema`, `title`, `description`, and `tags`. The example's remaining fields are optional:
 
 - `level`: `beginner`, `intermediate`, or `advanced`.
 - `updated`: a real `YYYY-MM-DD` date; update it when making a material change.
@@ -85,9 +83,9 @@ Section `README.md` files are plain Markdown indexes and do **not** need front m
 
 ### IDs, paths, and tags
 
-**Path organizes. ID identifies. Tags connect.**
+**Folder name identifies. Section and folder form the path. Tags connect.**
 
-Keep the folder name and ID when moving an item between sections. Item folder names and IDs use lowercase kebab-case; language filenames use lowercase language tags. IDs must be unique across all four folders. Website URLs follow paths; when moving a published page, consider a redirect for old inbound links.
+The item folder name is its stable content ID and uses lowercase kebab-case. Do not add `id` to front matter. Folder names must be unique across all four sections. Language filenames use lowercase language tags. Website URLs follow the section and folder; when moving a published page, consider a redirect for old inbound links.
 
 Use a few relevant tags, without the `#` prefix. Prefer existing canonical tags. Aliases live in [`.onchaination/tags.yml`](./.onchaination/tags.yml); for example, `gas` resolves to `fees`. A new topic does not need a registry entry unless it has aliases. Repeated tags and ambiguous aliases fail validation.
 
@@ -112,8 +110,8 @@ Markdown must remain useful directly on GitHub. Website enhancements should add 
 Use relative Markdown links for internal knowledge:
 
 ```md
-[How transactions work](../../learn/transactions/en.md)
-[Try a fee estimate](../../tools/network-fee/en.md#try-an-estimate)
+[How transactions work](../../learn/transaction/en.md)
+[Try a fee estimate](../../tools/network-fee-calculator/en.md#try-an-estimate)
 ![Describe the diagram](./images/flow.png)
 ```
 

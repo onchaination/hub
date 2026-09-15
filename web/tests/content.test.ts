@@ -31,11 +31,12 @@ test('section indexes separate contribution guidance from discovery content', as
   assert.doesNotMatch(JSON.stringify(result.contribution.parts), /Start here/);
 });
 
-test('schema rejects missing fields, bad dates, duplicated type, and unsupported versions', () => {
+test('schema rejects missing fields, IDs, bad dates, duplicated type, and unsupported versions', () => {
   const { data } = splitFrontmatter(loadItems()[0].raw);
+  assert.equal(loadItems()[0].id, 'transaction');
   for (const change of [
     { schema: 2 },
-    { id: 'Bad ID' },
+    { id: 'transaction' },
     { title: '' },
     { tags: [] },
     { type: 'learn' },
@@ -73,7 +74,7 @@ test('widgets are strict and their syntax stays inert inside code fences', async
   const items = loadItems();
   const rendered = await renderMarkdown(
     '```md\n<!-- widget:unknown -->\n```\n\n<!-- widget:network-fee -->',
-    'learn/transactions/en.md',
+    'learn/transaction/en.md',
     items,
   );
   assert.equal(rendered.parts.filter((part) => 'name' in part).length, 1);
@@ -81,7 +82,7 @@ test('widgets are strict and their syntax stays inert inside code fences', async
   await assert.rejects(
     renderMarkdown(
       'Inline <!-- widget:network-fee --> text',
-      'learn/transactions/en.md',
+      'learn/transaction/en.md',
       items,
     ),
     /own line/,
@@ -91,23 +92,23 @@ test('widgets are strict and their syntax stays inert inside code fences', async
 test('relative Markdown links and anchors rewrite; broken references fail', async () => {
   const items = loadItems();
   const result = await renderMarkdown(
-    '[Fees](../../tools/network-fee/en.md#the-same-calculation-by-hand)',
-    'learn/transactions/en.md',
+    '[Fees](../../tools/network-fee-calculator/en.md#the-same-calculation-by-hand)',
+    'learn/transaction/en.md',
     items,
   );
   assert.match(
     JSON.stringify(result.parts),
-    /\/tools\/network-fee#the-same-calculation-by-hand/,
+    /\/tools\/network-fee-calculator#the-same-calculation-by-hand/,
   );
   for (const body of [
     '[Missing](./missing.md)',
-    '[Heading](../../tools/network-fee/en.md#no-such-heading)',
+    '[Heading](../../tools/network-fee-calculator/en.md#no-such-heading)',
     '![Missing](./images/missing.png)',
     '![ ](https://example.com/image.png)',
     '[Outside](../../secret.txt)',
   ]) {
     await assert.rejects(
-      renderMarkdown(body, 'learn/transactions/en.md', items),
+      renderMarkdown(body, 'learn/transaction/en.md', items),
     );
   }
 });
@@ -116,7 +117,7 @@ test('portable content preserves questions and rejects executable HTML', async (
   const items = loadItems();
   const result = await renderMarkdown(
     '<details>\n<summary>Question?</summary>\n\nAn **answer**.\n\n</details>\n\n> [!TIP]\n> Read carefully.',
-    'learn/transactions/en.md',
+    'learn/transaction/en.md',
     items,
   );
   assert.match(JSON.stringify(result.parts), /<strong>answer<\/strong>/);
@@ -128,7 +129,7 @@ test('portable content preserves questions and rejects executable HTML', async (
     '<details onclick="alert(1)">',
   ]) {
     await assert.rejects(
-      renderMarkdown(body, 'learn/transactions/en.md', items),
+      renderMarkdown(body, 'learn/transaction/en.md', items),
     );
   }
 });
@@ -150,7 +151,7 @@ test('YouTube supports timestamps and excludes lookalike hosts', () => {
 
 test('related content prefers explicit IDs and excludes itself', () => {
   const items = loadItems();
-  const item = items.find((item) => item.id === 'transactions')!;
+  const item = items.find((item) => item.id === 'transaction')!;
   const related = relatedItems(item, items);
   assert(!related.some((other) => other.id === item.id));
   assert(item.related!.includes(related[0].id));

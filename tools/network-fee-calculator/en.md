@@ -1,12 +1,11 @@
 ---
 schema: 1
-id: network-fee
 title: Network fee calculator
 description: Explore Ethereum and Solana fee models with local calculations, without connecting a wallet.
 tags: [fees, ethereum, solana, transactions]
 level: beginner
 updated: 2026-09-13
-related: [transactions, first-transfer]
+related: [transaction, first-transfer]
 ---
 
 Choose **Ethereum or Solana** to explore their different fee models. It runs locally, uses the numbers you enter, and never connects to a wallet.
@@ -54,7 +53,7 @@ Ethereum layer 2 networks may add data or other fees, and other EVM networks may
 
 Other chains can be documented alongside these examples, with their own units and formulas. Do not reuse one chain’s calculation just because another chain also charges fees.
 
-Review the wallet's full fee estimate before signing. To understand the process around that signature, read [What happens when you send a transaction?](../../learn/transactions/en.md).
+Review the wallet's full fee estimate before signing. To understand the process around that signature, read [What happens when you send a transaction?](../../learn/transaction/en.md).
 
 ## Sources
 

@@ -1,6 +1,5 @@
 ---
 schema: 1
-id: transactions
 title: What happens when you send a transaction?
 description: Follow a transaction from your wallet to a block, and understand what a confirmation actually tells you.
 tags: [transactions, wallets, security, ethereum, solana]
@@ -47,7 +46,7 @@ Sending ETH on Ethereum and sending SOL on Solana are separate operations on sep
 | Successful        | Execution succeeded. It does not prove the recipient is trustworthy or the contract is safe.         |
 
 > [!TIP]
-> Network fees are separate from the amount you send. Keep enough of the network's fee asset to cover both. Try the [network fee calculator](../../tools/network-fee/en.md) to understand the arithmetic.
+> Network fees are separate from the amount you send. Keep enough of the network's fee asset to cover both. Try the [network fee calculator](../../tools/network-fee-calculator/en.md) to understand the arithmetic.
 
 ## Check your understanding
 

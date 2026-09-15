@@ -38,7 +38,7 @@ test('system is the default; overrides persist and system changes stay live', as
 
 test('mobile menu exposes the theme without overflowing', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 812 });
-  await page.goto('/tools/network-fee');
+  await page.goto('/tools/network-fee-calculator');
   await page.getByText('Menu', { exact: true }).click();
   await page
     .getByRole('combobox', { name: 'Color theme' })
@@ -77,7 +77,7 @@ test('system dark styling works without JavaScript', async ({ browser }) => {
     colorScheme: 'dark',
   });
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:4321/tools/network-fee');
+  await page.goto('http://127.0.0.1:4321/tools/network-fee-calculator');
   await expect(page.locator('html')).toHaveCSS(
     'background-color',
     'rgb(17, 17, 17)',

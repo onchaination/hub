@@ -1,12 +1,11 @@
 ---
 schema: 1
-id: first-transfer
 title: Make your first transfer easier to verify
 description: Use a small test and explicit checks to reduce uncertainty before repeating an onchain transfer.
 tags: [transactions, wallets, fees, security, ethereum, solana]
 level: beginner
 updated: 2026-09-13
-related: [transactions, network-fee, check-transaction]
+related: [transaction, network-fee-calculator, check-transaction]
 ---
 
 **Outcome:** confirm that you can send the intended asset on the intended network and verify its arrival before considering a larger transfer.
@@ -28,8 +27,8 @@ Use Ethereum mainnet or the intended Ethereum test network; on Solana, choose th
 
 ## The approach
 
-1. **Understand the action.** Read [how transactions work](../../learn/transactions/en.md). Confirm whether you are making a transfer, approving a spender, or calling a contract.
-2. **Define the test.** Choose an amount you can afford to lose that still meets the recipient's requirements. Review the total fee; the [fee calculator](../../tools/network-fee/en.md) explains one part of that cost.
+1. **Understand the action.** Read [how transactions work](../../learn/transaction/en.md). Confirm whether you are making a transfer, approving a spender, or calling a contract.
+2. **Define the test.** Choose an amount you can afford to lose that still meets the recipient's requirements. Review the total fee; the [fee calculator](../../tools/network-fee-calculator/en.md) explains one part of that cost.
 3. **Check the destination independently.** Confirm the full address through a trusted channel. Check the network and asset explicitly; similar names or the same address format are not enough.
 4. **Send once and verify.** Review the wallet preview, sign only the intended action, and [check the transaction](../../skills/check-transaction/en.md). Confirm receipt in the destination wallet or service as well.
 5. **Stop or proceed deliberately.** If any detail differs, stop and investigate. A later transfer needs its own review; do not assume a saved address or a successful test guarantees safety.

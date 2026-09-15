@@ -8,4 +8,4 @@ Perform a procedure with clear inputs and a result you can verify. A Skill descr
 
 ## Add a procedure
 
-Copy `check-transaction/en.md` and choose a new stable ID. Include prerequisites, numbered steps, verification, and what to do when the result is unexpected. Describe an agent path only when it adds something useful. See [Contributing](../CONTRIBUTING.md).
+Copy `check-transaction/en.md` into a uniquely named item folder; the folder name is the stable content ID. Include prerequisites, numbered steps, verification, and what to do when the result is unexpected. Describe an agent path only when it adds something useful. See [Contributing](../CONTRIBUTING.md).
