@@ -11,6 +11,9 @@ export const GET: APIRoute = () => {
     ...[...new Set(items.flatMap((item) => item.tags))].map(
       (tag) => '/tags/' + tag,
     ),
+    ...[...new Set(items.flatMap((item) => item.level ?? []))].map(
+      (level) => '/levels/' + level,
+    ),
   ];
   return new Response(
     `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map((route) => `<url><loc>${SITE}${route}</loc></url>`).join('')}</urlset>`,

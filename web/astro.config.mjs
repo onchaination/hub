@@ -6,7 +6,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 export default defineConfig({
   site: 'https://onchaination.org',
   output: 'static',
-  trailingSlash: 'never',
+  trailingSlash: 'ignore',
   integrations: [react()],
   vite: {
     // Keep scripts external so Vite finalizes dynamic imports before Astro emits HTML.

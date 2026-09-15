@@ -127,7 +127,11 @@ const related = relatedItems(item, items);
           ))}
         </div>
         <div class="article-meta">
-          {item.level && <span>{item.level}</span>}
+          {item.level && (
+            <a href={`/levels/${item.level}`} data-pagefind-filter="Level">
+              {item.level}
+            </a>
+          )}
           {item.updated && (
             <span>
               Updated <time datetime={item.updated}>{item.updated}</time>

@@ -149,10 +149,15 @@ export async function renderOgImage(item: OgImageContent): Promise<Buffer> {
               alignItems: 'center',
               justifyContent: 'center',
               border: '3px solid #eeeeee',
-              fontSize: '17px',
             }}
           >
-            O
+            <div
+              style={{
+                width: '16px',
+                height: '16px',
+                background: '#eeeeee',
+              }}
+            ></div>
           </div>
           ONCHAINATION
         </div>

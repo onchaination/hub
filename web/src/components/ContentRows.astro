@@ -55,7 +55,11 @@ const { items, showSection = true, language = 'en' } = Astro.props;
             </div>
           )}
         </div>
-        {item.level && <span class="row-level">{item.level}</span>}
+        {item.level && (
+          <a class="row-level" href={`/levels/${item.level}`}>
+            {item.level}
+          </a>
+        )}
       </article>
     );
   })}
