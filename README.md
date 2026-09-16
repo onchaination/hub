@@ -4,7 +4,7 @@
 
 <!-- home:intro -->
 
-Learn how onchain systems work, find useful tools and turn understanding into practice. Open knowledge, shared and improved together.
+Learn how onchain systems work, find useful tools and turn understanding into skills. Open knowledge, shared and improved together.
 <!-- /home:intro -->
 
 Onchaination is an open, multichain, multilingual knowledge and contribution hub, built in public. It welcomes curious people and makes the same knowledge available to agents.
@@ -48,10 +48,10 @@ The usual flow is **edit Markdown → open a pull request (PR) → review → me
 
 ## How the knowledge model works
 
-The four paths organize knowledge by purpose. Tags connect related topics across them, while each item's folder name supplies its stable ID:
+The four paths organize knowledge by purpose. Tags connect related topics across them, while each section-and-folder path supplies its knowledge identity:
 
-- **folder name = stable content ID** — which item it is, shared by every translation.
-- **section + folder = path / URL** — where an item belongs: Learn, Tools, Strategies, or Skills.
+- **path without locale = knowledge identity** — for example, `learn/transaction`, shared by every translation.
+- **locale prefix = language context** — English is unprefixed; other supported languages prefix the same path.
 - **tags = topic graph** — shared topics that connect items across paths.
 
 For example, one topic can lead you from learning how AMMs work, to choosing a DEX, to understanding a liquidity strategy, to following a skill to create a position.
@@ -108,7 +108,7 @@ Onchaination is not tied to one blockchain, a DAO by default, a token project, a
 
 **v0.1 — knowledge first. The current implementation is Phase 1 / knowledge foundation.**
 
-It includes one useful item per path, language versions, and an Ethereum/Solana fee calculator. You do not need an Onchaination account, wallet, or token to read or contribute.
+It includes 58 knowledge items (20 Learn, 10 Tools, 9 Strategies and 19 Skills), initial translations, and an Ethereum/Solana fee calculator. See the [curriculum](./docs/CURRICULUM.md) for prerequisites and the [implementation report](./docs/IMPLEMENTATION.md) for coverage and review notes. You do not need an Onchaination account, wallet, or token to read or contribute.
 
 Identity, passkeys, verified claims, attribution infrastructure, rewards, and reward destinations are **later work, not shipped features**. [SPEC.md’s implementation order](./SPEC.md#57-recommended-implementation-order) separates the current foundation from the Phase 2 design.
 
@@ -166,16 +166,17 @@ Each folder is one stable item, with one Markdown file per language:
 
 ```text
 learn/transaction/en.md
-learn/transaction/de.md
-learn/transaction/uk.md
+learn/wallet/en.md
+learn/wallet/de.md
+learn/wallet/uk.md
 tools/network-fee-calculator/en.md
 strategies/first-transfer/en.md
 skills/check-transaction/en.md
 ```
 
-English (`en.md`) is required and supplies shared metadata. Translations keep the same ID and inherit tags, level, and related IDs. Languages are discovered from filenames; translations do not increase item counts. A localized page exists only when its language file exists, so missing translations return 404 instead of English content. UI labels remain English for now. See [how to translate an item](./CONTRIBUTING.md#translate-an-item).
+English (`en.md`) is required and supplies shared tags, level and related paths. Translations are Markdown files beside it. The supported interface languages are `en`, `uk`, `es`, `pt` and `de`; adding another language requires registering it and supplying UI strings. Missing article translations are allowed: the selected interface remains localized while the article falls back to English. Page lists and search retain the complete knowledge base.
 
-English URLs stay `/learn/transaction`; a translation uses `/learn/transaction/de`. The source is also directly readable at `/learn/transaction/de.md`.
+English uses `/learn/transaction/`; Ukrainian uses `/uk/learn/transaction/`. Stored translation sources remain directly readable, for example `/learn/wallet/uk.md`. The transaction translations were intentionally removed, so its non-English views currently use English fallback. Stored translations have self-canonical URLs and genuine language alternates; fallback views canonicalize to English. Optional browser Auto-translate starts off, changes presentation only, and never replaces repository translations. See [how to translate an item](./CONTRIBUTING.md#translate-an-item).
 
 ### Website, search, and publishing
 
@@ -187,7 +188,7 @@ English URLs stay `/learn/transaction`; a translation uses `/learn/transaction/d
 
 Knowledge belongs in GitHub. Discussion belongs in Telegram: [updates](https://t.me/onchaination_info) and the [forum](https://t.me/onchaination_group).
 
-For page discussions, a maintainer must link the updates channel to `@onchaination_chat` and post each page’s clean canonical URL once. The separate forum remains `@onchaination_group`. Readers can then load the corresponding embedded thread; Telegram holds the comments, with no comments stored in Markdown or a separate database. Local builds do not configure channels or publish posts. See [Telegram setup](./web/README.md#enable-telegram-discussion).
+For page discussions, a maintainer must link the updates channel to `@onchaination_chat` and post each page’s clean **English URL** once. The separate forum remains `@onchaination_group`. Every language view passes the same explicit discussion URL derived from its locale-independent path, independently of its SEO canonical. Readers can then load the shared embedded thread; Telegram holds the comments, with no comments stored in Markdown or a separate database. Local builds do not configure channels or publish posts. See [Telegram setup](./web/README.md#enable-telegram-discussion).
 
 ---
 

@@ -1,41 +1,9 @@
 ---
-import Site from '../../layouts/Site.astro';
-import Markdown from '../../components/Markdown.astro';
-import ContentRows from '../../components/ContentRows.astro';
-import { loadItems, sectionContent } from '../../lib/content';
-import { sectionKeys, sections, type Section } from '../../lib/site';
+import SectionPage from '../../views/Section.astro';
+import { sectionKeys, type Section } from '../../lib/site';
 export function getStaticPaths() {
   return sectionKeys.map((section) => ({ params: { section } }));
 }
-const section = Astro.params.section as Section;
-const items = loadItems();
-const info = sections[section];
-const { contribution } = await sectionContent(section, items);
-const contributionQuestion = `How to ${contribution.title.replace(/^Add /, 'add ')}?`;
 ---
 
-<Site
-  title={info.label}
-  description={info.description}
-  markdown={`/${section}/README.md`}
->
-  <div class="shell section-page">
-    <header class="page-heading">
-      <p class="eyebrow">{info.purpose}</p>
-      <h1>
-        {info.emoji} {info.label}
-      </h1>
-      <p class="lead">{info.description}</p>
-    </header>
-    <ContentRows
-      items={items.filter((item) => item.section === section)}
-      showSection={false}
-    />
-    <details class="section-guide">
-      <summary>{contributionQuestion}</summary>
-      <div class="prose section-guide-content">
-        <Markdown parts={contribution.parts} />
-      </div>
-    </details>
-  </div>
-</Site>
+<SectionPage section={Astro.params.section as Section} />

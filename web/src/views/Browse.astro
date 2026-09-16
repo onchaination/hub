@@ -1,0 +1,31 @@
+---
+import Site from '../layouts/Site.astro';
+import ContentRows from '../components/ContentRows.astro';
+import { loadItems, type Level } from '../lib/content';
+import { localeFromPath } from '../lib/locales';
+import { ui } from '../lib/ui';
+interface Props {
+  kind: 'tags' | 'levels';
+  value: string;
+}
+const { kind, value } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui[locale];
+const items = loadItems().filter((item) =>
+  kind === 'tags' ? item.tags.includes(value) : item.level === value,
+);
+const label = kind === 'tags' ? `#${value}` : t[value as Level];
+---
+
+<Site title={label}>
+  <div class="shell section-page">
+    <header class="page-heading">
+      <p class="eyebrow">{t.related}</p>
+      <h1>{label}</h1>
+      <p class="lead">
+        {items.length} {t.pages}
+      </p>
+    </header>
+    <ContentRows items={items} language={locale} />
+  </div>
+</Site>

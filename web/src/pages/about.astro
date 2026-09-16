@@ -1,27 +1,5 @@
 ---
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import Site from '../layouts/Site.astro';
-import Markdown from '../components/Markdown.astro';
-import { loadItems, renderMarkdown, root } from '../lib/content';
-const source = readFileSync(resolve(root, 'README.md'), 'utf8');
-const principles = source.match(
-  /<!-- principles -->\s*([\s\S]*?)\s*<!-- \/principles -->/,
-)?.[1];
-if (!principles) throw new Error('README.md needs a principles block');
-const { parts } = await renderMarkdown(principles, 'README.md', loadItems());
+import About from '../views/About.astro';
 ---
 
-<Site title="Our principles">
-  <div class="reading-page">
-    <p class="eyebrow">Our principles</p>
-    <h1>
-      Open knowledge.
-      <br />
-      Shared progress.
-    </h1>
-    <div class="prose">
-      <Markdown parts={parts} />
-    </div>
-  </div>
-</Site>
+<About />

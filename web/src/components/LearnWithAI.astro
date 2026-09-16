@@ -1,4 +1,5 @@
 ---
+import { ui } from '../lib/ui';
 import type { Item } from '../lib/content';
 import { aiContext } from '../integrations/ai/context';
 import { providers } from '../integrations/ai/providers';
@@ -6,24 +7,20 @@ interface Props {
   item: Item;
 }
 const { item } = Astro.props;
+const t = ui[item.interfaceLocale];
 ---
 
 <details class="ai-panel" data-pagefind-ignore>
-  <summary>
-    ✨ Learn with AI <span class="muted">Bring your own curiosity</span>
-  </summary>
+  <summary>✨ {t.aiTitle}</summary>
   <div class="ai-content">
-    <p>
-      Copy this context, open your preferred assistant, and paste it to start a
-      conversation.
-    </p>
+    <p>{t.aiNote}</p>
     <label class="sr-only" for="ai-context">
-      Context for your AI assistant
+      {t.aiTitle}
     </label>
     <textarea id="ai-context" readonly rows="7">{aiContext(item)}</textarea>
     <div class="actions">
       <button type="button" class="button primary" id="copy-context">
-        Copy context
+        {t.copyContext}
       </button>
       {providers.map((provider) => (
         <a
@@ -36,8 +33,14 @@ const { item } = Astro.props;
         </a>
       ))}
     </div>
-    <p id="copy-status" class="small muted" role="status">
-      You can also select and copy the text manually.
+    <p
+      id="copy-status"
+      data-copied={t.copied}
+      data-manual={t.copyManual}
+      class="small muted"
+      role="status"
+    >
+      {t.copyManual}
     </p>
   </div>
 </details>
@@ -47,15 +50,14 @@ const { item } = Astro.props;
     ?.addEventListener('click', async () => {
       const textarea =
         document.querySelector<HTMLTextAreaElement>('#ai-context')!;
-      const status = document.querySelector('#copy-status')!;
+      const status = document.querySelector<HTMLElement>('#copy-status')!;
       try {
         await navigator.clipboard.writeText(textarea.value);
-        status.textContent = 'Copied. Open an assistant and paste the context.';
+        status.textContent = status.dataset.copied!;
       } catch {
         textarea.focus();
         textarea.select();
-        status.textContent =
-          'Copy the selected text manually, then paste it into your assistant.';
+        status.textContent = status.dataset.manual!;
       }
     });
 </script>

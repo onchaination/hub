@@ -1,4 +1,7 @@
 ---
+import { ui } from '../lib/ui';
+import { localeFromPath } from '../lib/locales';
+const locale = localeFromPath(Astro.url.pathname);
 import type { Part } from '../lib/content';
 import Widget from '../widgets/Widget';
 interface Props {
@@ -11,12 +14,14 @@ const { parts } = Astro.props;
   if ('html' in part) return <Fragment set:html={part.html} />;
   return (
     <>
-      <Widget name={part.name} props={part.props} client:visible />
+      <Widget
+        name={part.name}
+        props={part.props}
+        locale={locale}
+        client:visible
+      />
       <noscript>
-        <p>
-          The calculator needs JavaScript. The formula and worked example below
-          work without it.
-        </p>
+        <p>{ui[locale].calculatorNoJS}</p>
       </noscript>
     </>
   );

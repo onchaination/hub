@@ -1,0 +1,27 @@
+---
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { localeFromPath } from '../lib/locales';
+import { ui } from '../lib/ui';
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui[locale];
+import Site from '../layouts/Site.astro';
+import Markdown from '../components/Markdown.astro';
+import { loadItems, renderMarkdown, root } from '../lib/content';
+const source = readFileSync(resolve(root, 'README.md'), 'utf8');
+const principles = source.match(
+  /<!-- principles -->\s*([\s\S]*?)\s*<!-- \/principles -->/,
+)?.[1];
+if (!principles) throw new Error('README.md needs a principles block');
+const { parts } = await renderMarkdown(principles, 'README.md', loadItems());
+---
+
+<Site title={t.principles}>
+  <div class="reading-page">
+    <p class="eyebrow">{t.principles}</p>
+    <h1>{t.sharedProgress}</h1>
+    <div class="prose">
+      {locale === 'en' ? <Markdown parts={parts} /> : <p>{t.principlesText}</p>}
+    </div>
+  </div>
+</Site>

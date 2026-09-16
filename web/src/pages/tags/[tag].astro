@@ -1,47 +1,21 @@
 ---
-import Site from '../../layouts/Site.astro';
-import ContentRows from '../../components/ContentRows.astro';
+import Browse from '../../views/Browse.astro';
 import { loadItems, tagAliases } from '../../lib/content';
 export function getStaticPaths() {
   const tags = [...new Set(loadItems().flatMap((item) => item.tags))];
   const aliases = Object.entries(tagAliases()).filter(
-    ([alias, canonical]) => alias !== canonical && tags.includes(canonical),
+    ([alias, key]) => alias !== key && tags.includes(key),
   );
   return [
     ...tags.map((tag) => ({ params: { tag }, props: { canonical: tag } })),
-    ...aliases.map(([alias, canonical]) => ({
-      params: { tag: alias },
+    ...aliases.map(([tag, canonical]) => ({
+      params: { tag },
       props: { canonical },
     })),
   ];
 }
-const tag = Astro.params.tag!;
-if (Astro.props.canonical !== tag)
+if (Astro.props.canonical !== Astro.params.tag)
   return Astro.redirect(`/tags/${Astro.props.canonical}/`, 301);
-const items = loadItems().filter((item) => item.tags.includes(tag));
-const aliases = Object.entries(tagAliases())
-  .filter(([key, value]) => key !== value && value === tag)
-  .map(([key]) => key);
 ---
 
-<Site
-  title={`#${tag}`}
-  description={`Explore ${tag} across Learn, Tools, Strategies, and Skills.`}
->
-  <div class="shell section-page">
-    <header class="page-heading">
-      <p class="eyebrow">One topic, across all four paths</p>
-      <h1>#{tag}</h1>
-      <p class="lead">
-        {items.length} {items.length === 1 ? 'page' : 'pages'} to connect what
-        you know with what you can do.
-      </p>
-      {aliases.length > 0 && (
-        <p class="small muted">
-          Also known as {aliases.map((alias) => `#${alias}`).join(', ')}.
-        </p>
-      )}
-    </header>
-    <ContentRows items={items} />
-  </div>
-</Site>
+<Browse kind="tags" value={Astro.params.tag!} />

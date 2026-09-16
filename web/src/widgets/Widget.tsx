@@ -1,3 +1,4 @@
+import type { Locale } from '../lib/locales';
 import { widgets } from './registry';
 import type { parseWidget } from './schema';
 
@@ -5,7 +6,8 @@ import type { parseWidget } from './schema';
 export default function Widget({
   name,
   props,
-}: ReturnType<typeof parseWidget>) {
+  locale,
+}: ReturnType<typeof parseWidget> & { locale: Locale }) {
   const Component = widgets[name];
-  return <Component {...props} />;
+  return <Component {...props} locale={locale} />;
 }

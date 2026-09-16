@@ -2,15 +2,15 @@
 
 > **Make the smallest useful contribution you can.**
 
-A typo fix, clearer explanation, useful question, updated source, or tested procedure is welcome. You do not need an account, wallet, Onchaination ID, or local development setup to contribute.
+A typo fix, clearer explanation, useful question, updated source, or tested procedure is welcome. You do not need a wallet, Onchaination ID, or local development setup. A GitHub account is needed to open a pull request; questions are also welcome in Telegram.
 
 ## Your first contribution
 
-1. Pick an example below. Improve it, or create an item folder such as `learn/my-topic/` and copy the English source into `en.md`.
-2. For a new item, choose a unique folder name as its stable content ID, then update the title, description, and tags. Remove or update copied `related` IDs.
-3. Solve one clear information need. Give readers a concrete example and a way to check their understanding or result.
-4. Open a pull request explaining what changed and why it helps. You can use GitHub's file editor.
-5. Respond to review. After merge, the configured Pages workflow publishes the site.
+1. Click **Edit this page** on the website.
+2. Change the Markdown.
+3. Open a pull request describing the improvement.
+
+For a new page, choose a path such as `learn/my-topic/en.md`, use an existing page as an example, and update its metadata and links. Check the [curriculum](./docs/CURRICULUM.md) first to avoid duplicate topics. Questions, corrections and suggestions are welcome in any language in the same [Telegram group](https://t.me/onchaination_group).
 
 The site discovers pages automatically. There is no menu or content registry to edit.
 
@@ -50,11 +50,15 @@ updated: 2026-09-13
 ---
 ```
 
-Translate the body too, including relevant examples and limits. Do not add `id`, `tags`, `related`, or `level`: every representation gets its ID from the shared folder, and translations inherit classification from English. Optional `updated` and `authors` describe that representation. There is no `language` metadata field; the filename supplies it.
+Translate the body too, including relevant examples and limits. Do not add `id`, `tags`, `related`, or `level`: every representation gets its knowledge identity from the shared section-and-folder path, and translations inherit classification from English. Optional `updated` and `authors` describe that representation. There is no `language` metadata field; the filename supplies it.
 
-Use lowercase language tags such as `en`, `uk`, `de`, or `pt-br`. The app discovers them automatically. Adding a translation requires no code or language registry. A language is selectable for an item only when that language file exists; a missing translation returns 404 and never shows English under a localized URL. Only actual translations are indexed and advertised as available. Lists and counts still contain one entry per item.
+Use `en.md`, `uk.md`, `es.md`, `pt.md` or `de.md`. English is required; other translations are optional. Click **Help translate this page** on a fallback article to open a new Markdown file prefilled with its English source. Translate the title, description and body, then open a pull request. Preserve existing human translations; do not replace them automatically. The initial AI-assisted additions are identified in the [review report](./docs/IMPLEMENTATION.md) and still need native-speaker review.
 
-Link to real source files, such as `../../tools/network-fee-calculator/en.md`, when a translation is unavailable. Shared images live inside the item folder. Do not add empty translation placeholders. English UI labels and widget controls remain shared in this foundation.
+The URL selects the interface language: `/uk/learn/transaction/` uses Ukrainian. If Ukrainian Markdown is missing, English remains available with an optional browser translation control. Translations do not create separate items or conversations. Every language shares one Telegram discussion, and everyone may participate in any language.
+
+Link to existing source files, such as `../../tools/network-fee-calculator/en.md`. The website retains the reader’s selected language and resolves the target translation or English fallback. When a translated heading differs, an English fragment links to the top of that translated page. Shared images stay inside the item folder. Do not add empty translation placeholders.
+
+To add a new interface language, register it in `web/src/lib/locales.ts`, add every key in `web/src/lib/ui.ts`, then contribute Markdown wherever useful. No translation database or complete-coverage requirement is involved.
 
 ## Front matter
 
@@ -68,7 +72,7 @@ description: One sentence describing what the reader will get from this page.
 tags: [transactions, security]
 level: beginner
 updated: 2026-09-13
-related: [transaction]
+related: [learn/transaction]
 ---
 ```
 
@@ -76,16 +80,16 @@ Required fields are `schema`, `title`, `description`, and `tags`. The example's 
 
 - `level`: `beginner`, `intermediate`, or `advanced`.
 - `updated`: a real `YYYY-MM-DD` date; update it when making a material change.
-- `related`: stable IDs of existing pages, not filenames or URLs.
+- `related`: locale-independent paths of existing pages, such as `learn/transaction`; no filename or locale prefix.
 - `authors`: optional Onchaination IDs once the identity system exists. GitHub history remains the contribution record.
 
-Section `README.md` files are plain Markdown indexes and do **not** need front matter. Other knowledge files do. The four examples are our templates, so the templates stay in sync with the renderer.
+Section `README.md` files are plain Markdown indexes and do **not** need front matter. Other knowledge files do. Existing pages are the templates; keep procedures verifiable and strategies explicit about assumptions, risks and exit conditions.
 
 ### IDs, paths, and tags
 
-**Folder name identifies. Section and folder form the path. Tags connect.**
+**The path without locale identifies. The locale selects language. Tags connect.**
 
-The item folder name is its stable content ID and uses lowercase kebab-case. Do not add `id` to front matter. Folder names must be unique across all four sections. Language filenames use lowercase language tags. Website URLs follow the section and folder; when moving a published page, consider a redirect for old inbound links.
+The section-and-folder path is the knowledge identity, such as `learn/transaction`. Folder names use lowercase kebab-case and may repeat in different sections. Do not add `id` to front matter. Moving a page changes its identity, so update related paths and consider the existing discussion before moving published content.
 
 Use a few relevant tags, without the `#` prefix. Prefer existing canonical tags. Aliases live in [`.onchaination/tags.yml`](./.onchaination/tags.yml); for example, `gas` resolves to `fees`. A new topic does not need a registry entry unless it has aliases. Repeated tags and ambiguous aliases fail validation.
 
@@ -139,6 +143,8 @@ GitHub callouts are supported:
 > Check the network before sending funds.
 ```
 
+Use inline code for technical identifiers that must not be translated. For other protected text, `<span translate="no">exact text</span>` is also supported. Never include real private keys or seed phrases in examples.
+
 Use normal fenced code blocks with a language label. The website adds syntax highlighting for common languages and a copy button. Other languages remain readable plain code. Explain prerequisites, inputs, and expected output when they matter.
 
 A standalone YouTube URL becomes a lazy, privacy-enhanced embed. Timestamp links work. It remains a link on GitHub.
@@ -186,13 +192,13 @@ npm run preview
 
 Search is generated at build time, so use the preview to test it. CI also runs browser checks. See [web/README.md](./web/README.md) for those commands and the code map.
 
-Before opening a PR, read your Markdown directly, verify the sources and procedure, preserve existing IDs, and check relevant links, images, and widget parameters. Keep the PR focused and explain what a reviewer should verify. Small corrections do not need custom tests.
+Before opening a PR, read your Markdown directly, verify the sources and procedure, preserve existing knowledge paths, and check relevant links, images, and widget parameters. Keep the PR focused and explain what a reviewer should verify. Small corrections do not need custom tests.
 
 ## AI, discussion, and attribution
 
 The site generates **✦ Learn with AI** context and provider links. Contributors only write the source Markdown; no provider-specific prompts are needed.
 
-Discussion lives in Telegram. Maintainers publish each page's clean canonical URL once in `@onchaination_info`, linked to `@onchaination_chat`. Do not add comment metadata to pages or repost every edit. The main forum, [@onchaination_group](https://t.me/onchaination_group), stays separate.
+Discussion lives in Telegram. Maintainers publish each page's clean English URL once in `@onchaination_info`, linked to `@onchaination_chat`. The website sends the same explicit discussion URL for all language views. Do not add comment metadata to pages or repost translations or every edit. Ask and discuss in any language; no language-specific groups are needed. The main forum, [@onchaination_group](https://t.me/onchaination_group), stays separate.
 
 GitHub commits, PRs, reviews, issues, and file history are the contribution record. We do not duplicate that history into a database or require a hand-maintained author list.
 

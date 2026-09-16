@@ -3,7 +3,8 @@ import { fileURLToPath } from 'node:url';
 import satori from 'satori';
 import sharp from 'sharp';
 import type { Item } from './content';
-import { sections } from './site';
+import { ui } from './ui';
+import { isLocale } from './locales';
 
 export const OG_WIDTH = 1200;
 export const OG_HEIGHT = 630;
@@ -69,6 +70,7 @@ function titleSize(title: string) {
 
 export async function renderOgImage(item: OgImageContent): Promise<Buffer> {
   const fontFamily = contentFont(item.language);
+  const t = ui[isLocale(item.language) ? item.language : 'en'];
   const tags = item.tags.slice(0, 4);
   const svg = await satori(
     <div
@@ -172,7 +174,7 @@ export async function renderOgImage(item: OgImageContent): Promise<Buffer> {
             letterSpacing: '0.12em',
           }}
         >
-          {sections[item.section].label}
+          {t[item.section]}
           <span style={{ color: '#666666' }}>·</span>
           <span style={{ fontFamily }}>{item.language}</span>
         </div>
@@ -252,7 +254,7 @@ export async function renderOgImage(item: OgImageContent): Promise<Buffer> {
             letterSpacing: '-0.01em',
           }}
         >
-          {item.level ? `${item.level} · ` : ''}onchaination.org
+          {item.level ? `${t[item.level]} · ` : ''}onchaination.org
         </div>
       </div>
     </div>,

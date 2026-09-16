@@ -5,8 +5,10 @@ description: Follow a transaction from your wallet to a block, and understand wh
 tags: [transactions, wallets, security, ethereum, solana]
 level: beginner
 updated: 2026-09-13
-related: [check-transaction, first-transfer]
+related: [skills/check-transaction, strategies/first-transfer]
 ---
+
+Start with: [wallet](../wallet/en.md) and [address](../address/en.md).
 
 A transaction is an instruction to change a blockchain's state. It might transfer an asset or call a smart contract. Your wallet prepares that instruction; the network checks and processes it.
 

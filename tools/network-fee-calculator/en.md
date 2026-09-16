@@ -5,7 +5,7 @@ description: Explore Ethereum and Solana fee models with local calculations, wit
 tags: [fees, ethereum, solana, transactions]
 level: beginner
 updated: 2026-09-13
-related: [transaction, first-transfer]
+related: [learn/transaction, strategies/first-transfer]
 ---
 
 Choose **Ethereum or Solana** to explore their different fee models. It runs locally, uses the numbers you enter, and never connects to a wallet.

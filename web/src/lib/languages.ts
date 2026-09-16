@@ -1,15 +1,7 @@
 export const defaultLanguage = 'en';
 
-// Filenames use lowercase language tags: en.md, uk.md, de.md, pt-br.md.
-// Display labels come from the platform; there is no language registry to maintain.
-export function isLanguage(value: string): boolean {
-  if (!/^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$/.test(value)) return false;
-  try {
-    return new Intl.Locale(value).language.length >= 2;
-  } catch {
-    return false;
-  }
-}
+import { isLocale } from './locales';
+export const isLanguage = isLocale;
 
 export function languageName(language: string): string {
   const name =

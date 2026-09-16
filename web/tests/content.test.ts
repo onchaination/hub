@@ -33,7 +33,7 @@ test('section indexes separate contribution guidance from discovery content', as
 
 test('schema rejects missing fields, IDs, bad dates, duplicated type, and unsupported versions', () => {
   const { data } = splitFrontmatter(loadItems()[0].raw);
-  assert.equal(loadItems()[0].id, 'transaction');
+  assert(loadItems().some((item) => item.contentKey === 'learn/transaction'));
   for (const change of [
     { schema: 2 },
     { id: 'transaction' },
@@ -98,7 +98,7 @@ test('relative Markdown links and anchors rewrite; broken references fail', asyn
   );
   assert.match(
     JSON.stringify(result.parts),
-    /\/tools\/network-fee-calculator#the-same-calculation-by-hand/,
+    /\/tools\/network-fee-calculator\/#the-same-calculation-by-hand/,
   );
   for (const body of [
     '[Missing](./missing.md)',
@@ -154,7 +154,7 @@ test('related content prefers explicit IDs and excludes itself', () => {
   const item = items.find((item) => item.id === 'transaction')!;
   const related = relatedItems(item, items);
   assert(!related.some((other) => other.id === item.id));
-  assert(item.related!.includes(related[0].id));
+  assert(item.related!.includes(related[0].contentKey));
 });
 
 test('AI context includes clean source URLs and purpose-specific instruction', () => {
@@ -178,4 +178,12 @@ test('AI context includes clean source URLs and purpose-specific instruction', (
     }),
     /risks, trade-offs/,
   );
+});
+
+
+test('authors can protect identifiers from browser translation without allowing arbitrary HTML', async () => {
+  const items = loadItems();
+  const rendered = await renderMarkdown('Keep <span translate="no">custom-identifier</span> unchanged.', 'learn/transaction/en.md', items);
+  assert.match(JSON.stringify(rendered.parts), /custom-identifier/);
+  await assert.rejects(renderMarkdown('<span translate="no" onclick="alert(1)">bad</span>', 'learn/transaction/en.md',items));
 });

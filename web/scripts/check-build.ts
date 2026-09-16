@@ -3,20 +3,20 @@ import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import sharp from 'sharp';
 import {
-  availableLanguages,
   contentRoute,
   loadItems,
   representations,
-  translationFor,
+  resolveContent,
 } from '../src/lib/content';
 import { OG_HEIGHT, OG_WIDTH, ogImageRoute } from '../src/lib/og';
+import { locales, localePath } from '../src/lib/locales';
 import { SITE } from '../src/lib/site';
 
 const dist = resolve('dist');
 const items = loadItems();
 for (const item of representations(items)) {
   const html = readFileSync(join(dist, item.route, 'index.html'), 'utf8');
-  const canonicalUrl = `${SITE}${contentRoute(item)}/`;
+  const canonicalUrl = `${SITE}${contentRoute(item, item.language)}`;
   assert(
     html.includes(`href="${canonicalUrl}"`),
     `Missing canonical: ${item.route}`,
@@ -69,33 +69,90 @@ const llms = readFileSync(join(dist, 'llms.txt'), 'utf8');
 for (const item of representations(items))
   assert(llms.includes(SITE + '/' + item.file));
 for (const item of items) {
-  for (const language of availableLanguages(items)) {
-    if (translationFor(item, language)) continue;
-    const route = contentRoute(item, language);
-    const source = `${item.directory}/${language}.md`;
-    const socialImage = ogImageRoute({ ...item, language });
+  for (const locale of locales) {
+    const view = resolveContent(item, locale);
+    const html = readFileSync(join(dist, view.route, 'index.html'), 'utf8');
+    const canonical = SITE + contentRoute(item, view.language);
     assert(
-      !existsSync(join(dist, route, 'index.html')),
-      `Generated missing translation: ${route}`,
+      html.includes(`<html lang="${locale}"`),
+      `Wrong interface language: ${view.route}`,
     );
     assert(
-      !existsSync(join(dist, source)),
-      `Generated missing translation source: ${source}`,
+      html.includes(`rel="canonical" href="${canonical}"`),
+      `Wrong canonical: ${view.route}`,
     );
     assert(
-      !existsSync(join(dist, socialImage)),
-      `Generated missing translation social image: ${socialImage}`,
+      html.includes(`data-content-key="${item.contentKey}"`),
+      `Wrong knowledge identity: ${view.route}`,
     );
     assert(
-      !sitemap.includes(`<loc>${SITE}${route}</loc>`),
-      `Sitemap includes missing translation: ${route}`,
+      html.includes(`data-discussion-url="${SITE}${contentRoute(item)}"`),
+      `Fragmented discussion: ${view.route}`,
+    );
+    assert.equal(
+      html.includes('data-auto-translate'),
+      view.isFallback,
+      `Wrong translation control: ${view.route}`,
+    );
+    const advertised = [
+      ...html.matchAll(/rel="alternate" hreflang="([^" ]+)" href="([^" ]+)"/g),
+    ];
+    assert.equal(
+      advertised.length,
+      Object.keys(item.translations).length + 1,
+      `Wrong alternates: ${view.route}`,
+    );
+    for (const [_, language, url] of advertised) {
+      assert(
+        language === 'x-default' || item.translations[language],
+        `Advertised fallback: ${view.route}`,
+      );
+      assert.equal(
+        url,
+        SITE + contentRoute(item, language === 'x-default' ? 'en' : language),
+      );
+    }
+    if (view.isFallback) {
+      assert(
+        !sitemap.includes(`<loc>${SITE}${view.route}</loc>`),
+        `Sitemap advertises fallback: ${view.route}`,
+      );
+      assert(
+        !existsSync(join(dist, `${item.directory}/${locale}.md`)),
+        'Fabricated translation source',
+      );
+    } else
+      assert(
+        sitemap.includes(`<loc>${SITE}${view.route}</loc>`),
+        `Missing sitemap entry: ${view.route}`,
+      );
+    for (const target of locales)
+      assert(
+        html.includes(`href="${contentRoute(item, target)}"`),
+        `Missing language switch: ${view.route}`,
+      );
+  }
+}
+for (const locale of locales) {
+  for (const route of [
+    '',
+    'learn',
+    'tools',
+    'strategies',
+    'skills',
+    'search',
+  ]) {
+    const html = readFileSync(
+      join(dist, localePath(route, locale), 'index.html'),
+      'utf8',
     );
     assert(
-      !llms.includes(`${SITE}/${source}`),
-      `llms.txt includes missing translation: ${source}`,
+      html.includes(`<html lang="${locale}"`),
+      `Wrong locale: ${locale}/${route}`,
     );
   }
 }
+
 assert(
   existsSync(join(dist, 'pagefind/pagefind.js')),
   'Missing Pagefind index',

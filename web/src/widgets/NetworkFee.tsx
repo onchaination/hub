@@ -1,15 +1,20 @@
+import { ui } from '../lib/ui';
+import type { Locale } from '../lib/locales';
 import { useId, useState } from 'react';
 import { networkFee, solanaFee } from './fee';
 
 export default function NetworkFee({
+  locale = 'en',
   gas = 21000,
   gwei = 10,
   chain: initialChain = 'ethereum',
 }: {
+  locale?: Locale;
   gas?: number;
   gwei?: number;
   chain?: 'ethereum' | 'solana';
 }) {
+  const t = ui[locale];
   const id = useId();
   const [units, setUnits] = useState(String(gas));
   const [price, setPrice] = useState(String(gwei));
@@ -40,21 +45,21 @@ export default function NetworkFee({
             Number(solana.price),
           );
   } catch (e) {
-    error = (e as Error).message;
+    error = t.feeError;
   }
   return (
     <section
       className="widget"
       aria-labelledby={`${id}-title`}
       data-pagefind-ignore
-      lang="en"
+      lang={locale}
     >
       <div className="section-heading">
-        <h2 id={`${id}-title`}>Try the numbers</h2>
-        <span className="eyebrow">Local calculation</span>
+        <h2 id={`${id}-title`}>{t.tryNumbers}</h2>
+        <span className="eyebrow">{t.localCalculation}</span>
       </div>
       <label htmlFor={`${id}-chain`}>
-        Network fee model{' '}
+        {t.feeModel}{' '}
         <select
           id={`${id}-chain`}
           value={chain}
@@ -67,7 +72,7 @@ export default function NetworkFee({
       {chain === 'ethereum' ? (
         <div className="widget-fields">
           <label htmlFor={`${id}-gas`}>
-            Gas units
+            {t.gasUnits}
             <input
               id={`${id}-gas`}
               type="number"
@@ -81,7 +86,7 @@ export default function NetworkFee({
             />
           </label>
           <label htmlFor={`${id}-price`}>
-            Gas price (gwei)
+            {t.gasPrice}
             <input
               id={`${id}-price`}
               type="number"
@@ -99,20 +104,10 @@ export default function NetworkFee({
         <div className="widget-fields">
           {(
             [
-              ['signatures', 'Signatures (1–12)', 1, 12],
-              [
-                'base',
-                'Base fee per signature (lamports, 0–1,000,000,000)',
-                0,
-                1_000_000_000,
-              ],
-              ['limit', 'Compute unit limit (1–1,400,000)', 1, 1_400_000],
-              [
-                'price',
-                'CU price (micro-lamports, 0–1,000,000,000)',
-                0,
-                1_000_000_000,
-              ],
+              ['signatures', t.signatures, 1, 12],
+              ['base', t.baseFee, 0, 1_000_000_000],
+              ['limit', t.computeLimit, 1, 1_400_000],
+              ['price', t.computePrice, 0, 1_000_000_000],
             ] as const
           ).map(([key, label, min, max]) => (
             <label key={key} htmlFor={`${id}-${key}`}>
@@ -144,21 +139,16 @@ export default function NetworkFee({
           <p>{error}</p>
         ) : (
           <>
-            <span>
-              Estimated {chain === 'ethereum' ? 'execution' : 'transaction'} fee
-            </span>
+            <span>{t.feeEstimate}</span>
             <output>
-              {result!.toLocaleString('en-US', { maximumFractionDigits: 12 })}{' '}
+              {result!.toLocaleString(locale, { maximumFractionDigits: 12 })}{' '}
               <small>{chain === 'ethereum' ? 'ETH' : 'SOL'}</small>
             </output>
           </>
         )}
       </div>
       <p className="muted small">
-        {chain === 'ethereum'
-          ? 'Gas units × gas price ÷ 1,000,000,000. Additional network fees may apply.'
-          : 'Base fee + rounded-up priority fee, converted from lamports to SOL. Account funding and program-specific charges are excluded.'}{' '}
-        Illustrative inputs, not a live quote.
+        {chain === 'ethereum' ? t.ethFormula : t.solFormula} {t.illustration}
       </p>
       <button
         type="button"
@@ -174,7 +164,7 @@ export default function NetworkFee({
           });
         }}
       >
-        Reset example ↺
+        {t.reset} ↺
       </button>
     </section>
   );

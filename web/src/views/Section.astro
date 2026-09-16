@@ -1,0 +1,51 @@
+---
+import Site from '../layouts/Site.astro';
+import ContentRows from '../components/ContentRows.astro';
+import { loadItems } from '../lib/content';
+import { sections, REPO, type Section } from '../lib/site';
+import { localeFromPath } from '../lib/locales';
+import { ui } from '../lib/ui';
+interface Props {
+  section: Section;
+}
+const { section } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui[locale];
+---
+
+<Site
+  title={t[section]}
+  description={t[`${section}Description`]}
+  markdown={`/${section}/README.md`}
+>
+  <div class="shell section-page">
+    <header class="page-heading">
+      <p class="eyebrow">{t[`${section}Purpose`]}</p>
+      <h1>
+        {sections[section].emoji} {t[section]}
+      </h1>
+      <p class="lead">{t[`${section}Description`]}</p>
+    </header>
+    <ContentRows
+      items={loadItems().filter((item) => item.section === section)}
+      language={locale}
+      showSection={false}
+    />
+    <details class="section-guide">
+      <summary>{t.howContribute}</summary>
+      <div class="prose section-guide-content">
+        <p>{t.improve}</p>
+        <p>{t.contributionSteps}</p>
+        <a
+          class="text-link symbol-link"
+          href={`${REPO}/blob/main/CONTRIBUTING.md`}
+        >
+          <span class="link-label">{t.contribute}</span>
+          <span class="link-symbol" aria-hidden="true">
+            ↗
+          </span>
+        </a>
+      </div>
+    </details>
+  </div>
+</Site>

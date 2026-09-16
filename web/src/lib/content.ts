@@ -9,6 +9,8 @@ import { createHighlighter } from 'shiki';
 import { parseWidget } from '../widgets/schema';
 import { REPO, sectionKeys, type Section } from './site';
 import { defaultLanguage, isLanguage } from './languages';
+import { locales, localePath, getContentKey, type Locale } from './locales';
+import { ui, validateUI } from './ui';
 
 // npm workspace scripts always run in web/, including compiled Astro builds.
 export const root = resolve('..');
@@ -33,7 +35,13 @@ export const metadataSchema = z
     level: z.enum(levels).optional(),
     authors: z.array(z.string().regex(/^oc1[a-z2-7]{52}$/)).optional(),
     updated: date.optional(),
-    related: z.array(slug).optional(),
+    related: z
+      .array(
+        z
+          .string()
+          .regex(/^(learn|tools|strategies|skills)\/[a-z0-9]+(?:-[a-z0-9]+)*$/),
+      )
+      .optional(),
   })
   .strict();
 export type Representation = z.infer<typeof metadataSchema> & {
@@ -47,6 +55,9 @@ export type Item = Representation & {
   section: Section;
   directory: string;
   route: string;
+  contentKey: string;
+  interfaceLocale: Locale;
+  isFallback: boolean;
   translations: Record<string, Representation>;
 };
 // Translations inherit classification from English, avoiding divergent topic graphs.
@@ -164,43 +175,38 @@ export function loadItems(repository = root): Item[] {
         ...translations.en,
         section,
         directory,
-        route: '/' + directory,
+        route: localePath(directory),
+        contentKey: directory,
+        interfaceLocale: 'en',
+        isFallback: false,
         translations,
       });
     }
   }
-  const ids = new Set<string>();
+  const keys = new Set(items.map((item) => item.contentKey));
   for (const item of items) {
-    if (ids.has(item.id))
-      throw new Error(`${item.file}: Duplicate content ID ${item.id}`);
-    ids.add(item.id);
+    const related = item.related ?? [];
+    if (new Set(related).size !== related.length)
+      throw new Error(`${item.file}: Repeated related pages`);
+    for (const key of related)
+      if (!keys.has(key) || key === item.contentKey)
+        throw new Error(`${item.file}: Invalid related page ${key}`);
   }
-  for (const item of items)
-    for (const id of item.related ?? []) {
-      if (!ids.has(id) || id === item.id)
-        throw new Error(`${item.file}: Invalid related ID ${id}`);
-    }
   return items;
 }
 
-export function availableLanguages(items: Item[]): string[] {
-  return [
-    defaultLanguage,
-    ...[...new Set(items.flatMap((item) => Object.keys(item.translations)))]
-      .filter((language) => language !== defaultLanguage)
-      .sort(),
-  ];
+export function availableLanguages(_items?: Item[]): Locale[] {
+  return [...locales];
 }
 
 export function contentRoute(
   item: Pick<Item, 'directory'>,
   language = defaultLanguage,
 ): string {
-  return (
-    '/' + item.directory + (language === defaultLanguage ? '' : '/' + language)
-  );
+  return localePath(item.directory, language);
 }
 
+// Only stored translations are representations; views also include English fallbacks.
 export function translationFor(
   item: Item,
   language = defaultLanguage,
@@ -211,7 +217,21 @@ export function translationFor(
     ...item,
     ...representation,
     route: contentRoute(item, language),
+    interfaceLocale: language as Locale,
+    isFallback: false,
   };
+}
+
+export function resolveContent(item: Item, locale: Locale): Item {
+  return (
+    translationFor(item, locale) ?? {
+      ...item,
+      ...item.translations.en,
+      route: contentRoute(item, locale),
+      interfaceLocale: locale,
+      isFallback: true,
+    }
+  );
 }
 
 export function representations(items: Item[]): Item[] {
@@ -224,11 +244,11 @@ export function representations(items: Item[]): Item[] {
 
 export function relatedItems(item: Item, items: Item[]) {
   return items
-    .filter((other) => other.id !== item.id)
+    .filter((other) => other.contentKey !== item.contentKey)
     .map((other) => ({
       item: other,
       score:
-        (item.related?.includes(other.id) ? 100 : 0) +
+        (item.related?.includes(other.contentKey) ? 100 : 0) +
         other.tags.filter((tag) => item.tags.includes(tag)).length,
     }))
     .filter(({ score }) => score > 0)
@@ -286,6 +306,7 @@ function localLink(
   file: string,
   items: Item[],
   image: boolean,
+  locale: Locale,
 ): string {
   if (/^(?:https?:|mailto:|tel:)/i.test(value)) return value;
   if (value.startsWith('//') || /^[a-z][a-z0-9+.-]*:/i.test(value))
@@ -301,9 +322,9 @@ function localLink(
     : file;
   if (target.startsWith('../') || target.startsWith('.'))
     throw new Error(`${file}: Link escapes content: ${value}`);
-  const item = representations(items).find(
-    (item) => item.file === target || item.route === '/' + target,
-  );
+  const item =
+    representations(items).find((item) => item.file === target) ??
+    items.find((item) => item.contentKey === getContentKey('/' + target));
   const section = sectionKeys.find(
     (section) =>
       target === section ||
@@ -338,6 +359,19 @@ function localLink(
         ? '/' + target
         : `${REPO}/blob/main/${target}`);
   if (image) route = '/' + target;
+  if (!image && (item || section)) {
+    route = localePath(item?.directory ?? section!, locale);
+    // Localized headings can differ. Preserve a fragment only if it exists in the selected body.
+    if (fragment && item) {
+      const selected = resolveContent(item, locale);
+      const ids = markdown
+        .parse(selected.body, {})
+        .filter((t) => t.type === 'heading_open')
+        .map((t) => t.attrGet('id'));
+      if (!ids.includes(decodeURIComponent(fragment)))
+        return route + (query ? '?' + query : '');
+    }
+  }
   return route + (query ? '?' + query : '') + (fragment ? '#' + fragment : '');
 }
 
@@ -347,6 +381,7 @@ export async function renderMarkdown(
   body: string,
   file: string,
   items: Item[],
+  locale: Locale = 'en',
 ): Promise<{ parts: Part[]; headings: { id: string; text: string }[] }> {
   const tokens = markdown.parse(body, {});
   const syntax = await highlighter;
@@ -358,7 +393,7 @@ export async function renderMarkdown(
       if (!/^<!--\s*widget:/.test(token.content.trim())) {
         // Multiple allowed tags in one HTML block (e.g. details + summary).
         const remainder = token.content.replace(
-          /<!--(?!\s*widget:)[\s\S]*?-->|<\/?(?:details|summary|kbd|sub|sup|br)\s*\/?>/g,
+          /<!--(?!\s*widget:)[\s\S]*?-->|<\/?(?:details|summary|kbd|sub|sup|br)\s*\/?>|<span translate="no">|<\/span>/g,
           '',
         );
         if (/<|>/.test(remainder))
@@ -370,13 +405,16 @@ export async function renderMarkdown(
     if (token.type === 'image') {
       if (!token.content.trim())
         throw new Error(`${file}: Images need meaningful alt text`);
-      token.attrSet('src', localLink(token.attrGet('src')!, file, items, true));
+      token.attrSet(
+        'src',
+        localLink(token.attrGet('src')!, file, items, true, locale),
+      );
       token.attrSet('loading', 'lazy');
     }
     if (token.type === 'link_open')
       token.attrSet(
         'href',
-        localLink(token.attrGet('href')!, file, items, false),
+        localLink(token.attrGet('href')!, file, items, false, locale),
       );
     token.children?.forEach(visit);
   }
@@ -411,7 +449,7 @@ export async function renderMarkdown(
       const lang = syntax.getLoadedLanguages().includes(language)
         ? language
         : 'text';
-      html += `<div class="code-block">${syntax.codeToHtml(token.content, { lang, themes: { light: 'github-light', dark: 'github-dark' } })}<button class="copy-code" type="button" aria-label="Copy code">Copy</button></div>`;
+      html += `<div class="code-block">${syntax.codeToHtml(token.content, { lang, themes: { light: 'github-light', dark: 'github-dark' } })}<button class="copy-code" type="button" aria-label="${ui[locale].copy}">${ui[locale].copy}</button></div>`;
       continue;
     }
     if (
@@ -466,6 +504,7 @@ export async function sectionContent(section: Section, items: Item[]) {
 }
 
 export async function validateContent() {
+  validateUI();
   const items = loadItems();
   for (const item of representations(items))
     await renderMarkdown(item.body, item.file, items);

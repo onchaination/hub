@@ -33,11 +33,17 @@ Use Node 24 LTS. Search needs a production build; in development the search page
 | `tests`                                              | Content contracts and arithmetic regression tests       |
 | `e2e`                                                | Browser checks against the built site                   |
 
-There is deliberately one small content pipeline. Adding an item folder with en.md, or a translated language file in an existing folder, requires no code change. Each item folder owns one stable ID. Keep that folder name when moving between sections; section moves may need redirects for old inbound links. Related pages use explicit IDs first, then shared tags.
+There is one small content loader, in `src/lib/content.ts`, which validates root Markdown directly. Astro collections are not required. Each item’s `contentKey` is its section-and-folder path. Related references use that path, then shared tags provide additional suggestions. No Markdown ID is needed.
 
-The built language `.md` files preserve the source byte for byte. English HTML keeps the original item URL; translated HTML adds a language segment. A localized HTML route exists only when its matching Markdown file exists. Item counts remain independent of translation count. Search uses the exact Pagefind language index without substituting English results. Images retain their relative paths. Core articles, navigation, tags, and formulas work without JavaScript. Calculator interaction, search, clipboard copying, and optional embeds enhance those pages.
+`src/lib/locales.ts` registers languages and provides locale/path helpers. `src/lib/ui.ts` contains complete dictionaries checked at build time. Astro native i18n is configured with unprefixed English; existing English routes and `[locale]/[...path].astro` render the same shared views. Add a locale and its UI dictionary without duplicating components.
 
-Pagefind currently supports Ukrainian word search without stemming, so different grammatical forms may need separate queries. Each language has an isolated search instance, and only real translations appear in that language's results.
+`resolveContent(item, locale)` prefers the stored translation, otherwise selects `en.md` while retaining `interfaceLocale`. Every knowledge item gets a view in every supported locale. Markdown links, navigation, related items and language switches retain that locale. Source `.md` files are published byte for byte; missing translations never produce fabricated source files.
+
+Pagefind indexes the rendered article for each interface locale, including English fallback bodies. Thus each locale index contains one result per knowledge item with the preferred available title and body. Search stays on the locale route and does not need `?lang=`. Ukrainian word search currently has no stemming, so different grammatical forms may need separate queries. Search is unavailable in dev until a production index exists; the full static list remains usable.
+
+Stored translations use self-canonicals and reciprocal hreflang. Fallbacks use the English canonical and are excluded from localized sitemap entries and hreflang. Browser translation never changes SEO metadata. Raw sources and generated social cards remain tied to stored representations.
+
+Auto-translate is an off-by-default browser-only control on fallback articles. It feature-detects `Translator`, calls it only after activation, translates meaningful blocks and protects code, links, technical tokens and `translate="no"` elements. It applies changes atomically, treats output as text, and restores the original DOM on disable or error. It uses no service, cache, database or source-file writes. Actual API availability and language-pack downloads depend on the browser; browser tests mock supported, failed and absent implementations.
 
 The color theme defaults to the system preference. Readers can choose System, Light, or Dark in the header (inside Menu on mobile). `Site.astro` applies the preference before paint and stores it locally as `onchaination-theme`; CSS also follows the system without JavaScript. Theme colors live in `global.css`, and Shiki renders both code palettes.
 
@@ -62,9 +68,9 @@ The artifact is `web/dist/`. All its files, including `pagefind`, must be publis
 
 ## Enable Telegram discussion
 
-Link `@onchaination_chat` as the discussion group for `@onchaination_info`. Keep `@onchaination_group` as the separate forum. Post each newly published page's **clean canonical URL** once in the updates channel, without UTM parameters. Editing a page does not require reposting it.
+Link `@onchaination_chat` as the discussion group for `@onchaination_info`. Keep `@onchaination_group` as the separate forum. Post each newly published page's **clean English URL** once in the updates channel, without UTM parameters. Editing a page does not require reposting it.
 
-The [official discussion widget](https://core.telegram.org/widgets/discussion) discovers a thread from the channel and the page's canonical link. The site opens and embeds it when the discussion scrolls into view; the “Load Telegram comments” control remains as a fallback when automatic loading is unavailable. No per-page IDs, comment store, or posting bot are used. External Telegram availability and channel configuration require a live deployment to verify fully.
+The [official discussion widget](https://core.telegram.org/widgets/discussion) receives an explicit `data-page-url` equal to `SITE + localePath(contentKey, 'en')`. The public widget script checks this attribute before its canonical fallback. This is the conversation lookup key, independent of HTML canonical URLs. Posting the English URL once gives all locale views the same lookup; do not post a separate thread for each translation. The site opens and embeds it when the discussion scrolls into view; the “Load Telegram comments” control remains as a fallback when automatic loading is unavailable. No per-page IDs, comment store, or posting bot are used. External Telegram availability and channel configuration require a live deployment to verify fully.
 
 ## Phase 2
 

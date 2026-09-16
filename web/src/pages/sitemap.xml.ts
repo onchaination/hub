@@ -1,19 +1,28 @@
 import type { APIRoute } from 'astro';
 import { loadItems, representations } from '../lib/content';
-import { SITE, sectionKeys } from '../lib/site';
+import { SITE } from '../lib/site';
+import { locales, localePath } from '../lib/locales';
+import { sitePaths } from '../lib/routes';
+import { tagAliases } from '../lib/content';
 export const GET: APIRoute = () => {
   const items = loadItems();
+  const keys = new Set(items.map((item) => item.contentKey));
+  const aliases = tagAliases();
+  const indexes = sitePaths().filter(
+    (path) =>
+      path !== 'search' &&
+      !keys.has(path) &&
+      !(
+        path.startsWith('tags/') &&
+        aliases[path.slice(5)] &&
+        aliases[path.slice(5)] !== path.slice(5)
+      ),
+  );
   const routes = [
-    '/',
-    '/about',
-    ...sectionKeys.map((s) => '/' + s),
+    ...locales.flatMap((locale) =>
+      indexes.map((path) => localePath(path, locale)),
+    ),
     ...representations(items).map((item) => item.route),
-    ...[...new Set(items.flatMap((item) => item.tags))].map(
-      (tag) => '/tags/' + tag,
-    ),
-    ...[...new Set(items.flatMap((item) => item.level ?? []))].map(
-      (level) => '/levels/' + level,
-    ),
   ];
   return new Response(
     `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map((route) => `<url><loc>${SITE}${route}</loc></url>`).join('')}</urlset>`,
