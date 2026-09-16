@@ -14,6 +14,14 @@ Start with: [wallet](../../learn/wallet/en.md), [approvals](../../learn/approval
 
 No legitimate public-address check requires a seed phrase or private key. Keep this distinction clear before responding to an urgent message or unexpected token.
 
+| Request | Authority or exposure to check |
+| --- | --- |
+| Seed phrase or private key | Full key-controlled account access |
+| Transaction | The exact onchain state change |
+| Signature | Login, permit, order or another authorization |
+| Token allowance | Token, spender, amount and duration |
+| Remote access | Control of the device that prepares requests |
+
 ## Steps
 
 1. Identify the request. Is someone asking for a secret, a signature, an allowance, a payment or remote access? Each can transfer control in a different way.
@@ -29,6 +37,9 @@ You can explain the source, purpose and authority of a request before accepting 
 ## If something differs
 
 If you already acted, save public identifiers and inspect what permission or transfer occurred. Do not pay an unsolicited recovery agent or share secrets. Key compromise, a token allowance and a mistaken transfer need different responses; avoid a rushed second transaction that compounds the loss.
+
+> [!NOTE]
+> The right response depends on what was exposed. Disconnecting a site, revoking an allowance and moving assets solve different problems.
 
 ## Sources
 

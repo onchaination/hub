@@ -22,6 +22,9 @@ In a sandwich, an actor places a trade before yours and another after it, seekin
 
 Your quote is 100 output units and your minimum is 95. You have authorized a range of acceptable outcomes down to 95, not guaranteed yourself 100. That difference can include market movement, price impact and ordering effects. Raising tolerance simply to make a trade succeed changes the risk you accept.
 
+> [!NOTE]
+> Minimum output is a protection boundary, not a prediction. Before swapping, review it with the other checks in [Swap tokens with a defined minimum output](../../skills/swap-tokens/en.md).
+
 Private submission or protected routing may reduce public exposure but introduces dependence on the provider's behavior, availability and coverage. It is not a guarantee against every unfavorable trade.
 
 Compare execution routes, liquidity depth, fees and minimum output. If the expected cost is hard to explain, pause. Splitting a trade can change impact but also creates more fees and opportunities for prices to change; it is not automatically better.

@@ -14,6 +14,13 @@ Start with: [approvals](../../learn/approvals/en.md), [security tools](../../too
 
 Use a verified tool or token interface for the correct network. Keep enough of its fee asset. You need a public address and signing access, never a private key pasted into the tool.
 
+| Action | Does it remove an onchain allowance? |
+| --- | --- |
+| Disconnect a site | No |
+| Revoke the token permission | Yes, after successful confirmation |
+| Hide a token in the wallet | No |
+| Move assets to another account | Changes control, but does not alter the old account's allowance |
+
 ## Steps
 
 1. Inspect allowances for your address. Identify the exact token and spender, and distinguish token allowances from NFT operator permissions or smart-account modules.
@@ -29,6 +36,9 @@ The supported permission is zero or disabled in the confirmed onchain state. Kee
 ## If something differs
 
 An attacker may spend before your revoke is included. A compromised key can grant fresh permissions. Some signed permits or delegated mechanisms need different invalidation steps; consult their documentation rather than assuming an allowance dashboard covers everything.
+
+> [!WARNING]
+> If the signing key is compromised, revoking one allowance does not secure the account.
 
 ## Sources
 

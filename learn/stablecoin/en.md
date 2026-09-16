@@ -28,6 +28,13 @@ Ask who holds the backing, what reports are available, who can freeze or upgrade
 
 Two different tickers may depend on the same custodian or use each other as backing. Splitting a balance between them does not necessarily diversify that dependency. Map the underlying claims before counting assets.
 
+| Question | What it reveals |
+| --- | --- |
+| Who issues or governs it? | Control and freeze risk |
+| What supports the target? | Reserve, collateral or incentive dependencies |
+| Who can redeem directly? | Whether redemption is a practical exit for you |
+| Which network version is this? | Added bridge or custody dependencies |
+
 Stablecoin interest introduces additional lending or strategy risk. Merely owning a stablecoin does not explain where a yield offer comes from.
 
 ## Sources

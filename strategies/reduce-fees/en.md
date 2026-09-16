@@ -24,11 +24,20 @@ Cost depends on the network’s fee model, the resources used and current demand
 
 ## Approaches and tradeoffs
 
-Compare waiting, simplifying the action or using a supported lower-cost route. Batching can save repeated overhead when the wallet and application support it, but creates a larger request to review. Lowering a fee bid too far may delay or prevent inclusion.
+| Approach | Possible saving | Trade-off |
+| --- | --- | --- |
+| Wait for lower demand | Lower network price | Delay may be unacceptable |
+| Simplify the action | Less execution work | May not achieve the same outcome |
+| Batch supported actions | Less repeated overhead | A larger request to review |
+| Use a supported lower-cost route | Lower per-action fees | Entry, exit and bridge costs |
+| Lower the fee bid | Lower price if included | Delay or non-inclusion |
 
 ## Risks
 
 A cheap network does not make an unsupported deposit recoverable. An excessively low execution limit can cause failure. Sponsored fees may depend on conditions and can hide costs elsewhere. Never disable wallet security or increase swap slippage merely to avoid a failed attempt.
+
+> [!WARNING]
+> Do not trade away destination checks, repayment urgency or minimum-output protection for a lower headline fee.
 
 ## Example
 

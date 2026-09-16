@@ -24,7 +24,11 @@ Traders exchange against the pool and alter its inventory. Your claim changes ac
 
 ## Approaches and tradeoffs
 
-Broad ranges usually need less intervention but spread capital across more prices. Narrow ranges can concentrate exposure and fee opportunities while increasing the chance of becoming inactive. Rebalancing changes inventory again and costs fees; it is not a free reset of losses.
+| Choice | Potential benefit | Trade-off |
+| --- | --- | --- |
+| Broad range | Usually needs less intervention | Spreads capital across more prices |
+| Narrow range | Concentrates exposure and fee opportunities | More likely to become inactive |
+| Rebalance | Restores a chosen range or inventory | Adds a trade, fees and new price exposure |
 
 ## Risks
 
@@ -33,6 +37,9 @@ Price movement, adverse selection, contract bugs, depegs and MEV can reduce retu
 ## Example
 
 For a simple constant-product, full-range pool with no fees, a doubling of one asset’s relative price produces roughly 5.7% less value than holding the starting assets. This comparison assumes the basic model and says nothing about profit in dollars. Concentrated positions behave differently and can diverge more.
+
+> [!NOTE]
+> Fee income is only one line in the result. Compare the final assets and value with holding the same starting inventory.
 
 ## When it may not make sense
 

@@ -14,6 +14,13 @@ Start with: [smart contract](../../learn/smart-contract/en.md), [block explorers
 
 Have the intended application, network and action in mind. This is an identity and evidence check, not a professional security audit. Public inspection should not require a wallet signature.
 
+| Evidence | What it supports | What it does not prove |
+| --- | --- | --- |
+| Official address list | Intended deployment identity | That the code is safe |
+| Verified source | Source corresponds under the verifier's process | Audit or economic safety |
+| Audit report | Reviewed scope and findings at a point in time | Coverage of every version or risk |
+| Upgrade information | Who may change implementation | That upgrades will be safe |
+
 ## Steps
 
 1. Find contract addresses in official project documentation for the exact network and version. Cross-check through another official project resource where possible.

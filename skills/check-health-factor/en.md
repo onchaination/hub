@@ -26,6 +26,13 @@ Use a market that documents a health-factor model. Find current liquidation thre
 
 Illustration: $10,000 collateral × 0.80 ÷ $2,000 debt = 4. With collateral at $6,000, the result is 2.4. These inputs are hypothetical and not a safe target. In the documented Aave model, below 1 indicates liquidation eligibility.
 
+<details>
+<summary>❓ Does a health factor above 1 remove liquidation risk?</summary>
+
+**No.** Prices, interest, thresholds and oracle values can change. The ratio is a current measurement under one market's rules, not a guarantee.
+
+</details>
+
 ## If something differs
 
 Do not infer safety from a green color alone. Thresholds can change, multiple assets can fall together and oracle updates can be abrupt. If you cannot reconcile the measure, stop increasing exposure and investigate before relying on it.

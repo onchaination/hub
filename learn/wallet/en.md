@@ -30,7 +30,10 @@ With a custodial service, the provider controls signing and account access under
 
 Example: a watch-only wallet displays an address and balance but cannot spend from it. Visibility and control are different capabilities.
 
-Before depositing anything, ask: who can authorize a transfer, who can change those rules, and how would I recover if this device failed? Never give a support agent a private key or recovery phrase.
+> [!WARNING]
+> No support agent needs your private key or recovery phrase. Anyone with that secret may be able to take control without your device or PIN.
+
+Before depositing anything, ask: who can authorize a transfer, who can change those rules, and how would I recover if this device failed?
 
 ## Sources
 

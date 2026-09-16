@@ -10,6 +10,9 @@ related: [learn/transaction, strategies/first-transfer]
 
 Choose **Ethereum or Solana** to explore their different fee models. It runs locally, uses the numbers you enter, and never connects to a wallet.
 
+> [!NOTE]
+> The calculator explains fee arithmetic. It does not fetch live prices or quote a transaction.
+
 ## Try an estimate
 
 Choose the network before entering values. These are educational estimates, not a comparison of identical transactions or a live quote.
@@ -54,6 +57,13 @@ Ethereum layer 2 networks may add data or other fees, and other EVM networks may
 Other chains can be documented alongside these examples, with their own units and formulas. Do not reuse one chain’s calculation just because another chain also charges fees.
 
 Review the wallet's full fee estimate before signing. To understand the process around that signature, read [What happens when you send a transaction?](../../learn/transaction/en.md).
+
+<details>
+<summary>❓ If the gas price doubles while gas use stays constant, what happens to the Ethereum estimate?</summary>
+
+It doubles. The same is true when gas use doubles while price stays constant. A real receipt can still differ from an estimate.
+
+</details>
 
 ## Sources
 

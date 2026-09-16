@@ -24,7 +24,13 @@ In a lending market, borrower payments can support supplier interest. Incentives
 
 ## Approaches and tradeoffs
 
-Compare direct supply, managed strategies and simply holding the token. Holding has no protocol yield but avoids that market’s extra exposure. Compare net income after entry, exit, conversion and monitoring costs. Higher advertised annual yield is not proof of a better risk-adjusted choice.
+| Approach | Return source | Added exposure |
+| --- | --- | --- |
+| Hold the token | None from a protocol | Issuer, backing and market price |
+| Supply to a lending market | Borrower payments and possible incentives | Market, oracle and withdrawal liquidity |
+| Use a managed strategy | One or more combined activities | Manager, strategy and underlying protocols |
+
+Compare net income after entry, exit, conversion and monitoring costs. Higher advertised annual yield is not proof of a better risk-adjusted choice.
 
 ## Risks
 
@@ -33,6 +39,13 @@ Stablecoin depegs, contract exploits, bad debt, limited withdrawal liquidity and
 ## Example
 
 At an unchanged illustrative 4% simple annual rate, 1,000 units would earn about 40 units over a year before costs. A 2% depeg costs about 20 units of market value; a 10-unit round-trip cost consumes another quarter of the nominal interest. Actual rates, duration and compounding will change the result.
+
+<details>
+<summary>❓ Is the displayed 4% enough to estimate the final return?</summary>
+
+**No.** You still need the time held, rate changes, entry and exit costs, reward-token value and any change in the stablecoin's market price.
+
+</details>
 
 ## When it may not make sense
 

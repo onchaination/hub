@@ -24,7 +24,14 @@ A lower debt amount or more eligible collateral can improve a position’s healt
 
 ## Approaches and tradeoffs
 
-Stress-test several collateral and debt prices. Decide in advance whether a worsening position triggers partial repayment or full exit. Alerts help observation but should not be your only safeguard. Avoid depending exclusively on a single interface or device.
+| Response | What improves | What it adds or requires |
+| --- | --- | --- |
+| Repay debt | Directly reduces debt exposure | Repayment asset, fees and access |
+| Add eligible collateral | Improves the health measure | More assets exposed to the same market |
+| Partially exit | Reduces the position | Liquidity and several executable steps |
+| Use alerts | Improves observation | Does not execute a response |
+
+Stress-test several collateral and debt prices. Decide in advance whether a worsening position triggers partial repayment or full exit. Avoid depending exclusively on a single interface or device.
 
 ## Risks
 
@@ -33,6 +40,9 @@ Correlated collateral can fall together. Depegs can affect either side of the lo
 ## Example
 
 With $10,000 collateral, an illustrative 80% threshold and $4,000 debt, health factor is 2. A 40% collateral fall leaves it at 1.2 before interest. Repaying $1,000 at that point would raise it to 1.6. Verify that you could actually acquire and submit that repayment in time.
+
+> [!WARNING]
+> A planned response is not a buffer if it depends on selling the same falling collateral during congestion.
 
 ## When it may not make sense
 

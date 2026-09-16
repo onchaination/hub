@@ -14,10 +14,12 @@ A token approval grants a spender permission to move a token under defined rules
 
 ## Four actions that look similar
 
-- Connecting a wallet exposes selected account information to an app; it normally does not grant token spending permission.
-- A transfer sends assets now.
-- An approval allows a spender to transfer up to an allowance later.
-- A signed permit can authorize an allowance through a signature, potentially submitted later by someone else.
+| Action | Immediate effect | Continuing authority? |
+| --- | --- | --- |
+| Connect a wallet | Exposes selected account information to an app | Normally no token spending permission |
+| Transfer | Sends assets now | No authority beyond the transfer |
+| Approval | Lets a spender transfer up to an allowance | Yes, until exhausted, changed or revoked |
+| Signed permit | Authorizes an allowance through a signature | It may be submitted later by someone else |
 
 Some token systems also support operator approvals for whole NFT collections. Solana token delegates have different mechanics. Do not assume an ERC-20 revoke interface covers all networks or permissions.
 
@@ -28,6 +30,9 @@ If a swap needs 25 units, compare an allowance for 25 with an unlimited allowanc
 Disconnecting a site does not remove onchain allowances. Revoking a permission changes it onchain and may require a fee. It cannot recover funds already moved or fix a compromised signing key.
 
 Before signing a permit, inspect the token, spender, amount, network and expiry where present. A signature without a gas fee can still authorize spending. Never treat “sign message” as automatically harmless.
+
+> [!TIP]
+> To remove an allowance, follow [Revoke an unnecessary token approval](../../skills/revoke-approvals/en.md). Disconnecting the site is not a substitute.
 
 ## Sources
 

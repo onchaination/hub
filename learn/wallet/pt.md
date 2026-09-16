@@ -27,7 +27,10 @@ Em um serviço custodial, o provedor controla as assinaturas e o acesso conforme
 
 Exemplo: uma carteira somente de leitura mostra endereço e saldo, mas não pode gastar. Visualizar e controlar são capacidades diferentes.
 
-Antes de depositar, pergunte quem pode autorizar uma transferência, quem pode mudar essas regras e como você recuperaria o acesso se o dispositivo falhasse. Nunca entregue uma chave privada ou frase de recuperação a alguém do suporte.
+> [!WARNING]
+> Nenhum atendente de suporte precisa da sua chave privada ou frase de recuperação. Quem tiver esse segredo poderá assumir o controle sem o seu dispositivo ou PIN.
+
+Antes de depositar, pergunte quem pode autorizar uma transferência, quem pode mudar essas regras e como você recuperaria o acesso se o dispositivo falhasse.
 
 ## Fontes
 

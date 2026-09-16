@@ -14,6 +14,9 @@ Start with: [address](../../learn/address/en.md), [transaction](../../learn/tran
 
 Use a supported wallet, a recipient you can independently verify and an amount you can afford to test with. Confirm the receiver’s supported network, asset, minimum deposit and memo requirements. Keep enough for the fee.
 
+> [!WARNING]
+> A valid address on the wrong network is still the wrong destination.
+
 ## Steps
 
 1. Obtain the full receiving address through a trusted channel. Avoid copying it from an unrelated transaction-history entry.
@@ -29,6 +32,8 @@ The confirmed record matches your intention and the recipient acknowledges recei
 ## If something differs
 
 Do not repeat a pending transaction blindly. An unfamiliar contract request, mismatched address or unexplained fee is a reason to stop before signing. If already broadcast, investigate the original identifier first.
+
+Use [Check a transaction on a block explorer](../../skills/check-transaction/en.md) before deciding whether any retry is appropriate.
 
 ## Sources
 

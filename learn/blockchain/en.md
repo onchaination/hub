@@ -23,7 +23,12 @@ Public usually means observable, not anonymous. An address may lack your name, b
 
 ## Try the distinction
 
-An explorer shows a transfer to a shop. What can you verify? Its recorded destination, value and status. What remains outside the chain? Whether the shop delivered the item. Keep those questions separate when someone claims that being onchain makes a service trustworthy.
+<details>
+<summary>❓ An explorer shows a transfer to a shop. What can you verify?</summary>
+
+You can verify its recorded destination, value and status. Whether the shop delivered the item remains outside the chain. Keep those questions separate when someone claims that being onchain makes a service trustworthy.
+
+</details>
 
 ## Sources
 

@@ -28,7 +28,12 @@ Notifications can arrive late. A congested network, unavailable interface or mis
 
 Repaying debt or adding eligible collateral may improve health, but a buffer never removes contract or asset risk. Keep a practical exit plan and consider whether you can repay without selling the same falling asset.
 
-Exercise: if debt rises while collateral stays constant, what happens to health factor? It falls. Monitoring only the collateral price misses part of the risk.
+<details>
+<summary>❓ If debt rises while collateral stays constant, what happens to health factor?</summary>
+
+It falls. Monitoring only the collateral price misses part of the risk. Use [Check a lending position's health factor](../../skills/check-health-factor/en.md) to model both sides.
+
+</details>
 
 ## Sources
 

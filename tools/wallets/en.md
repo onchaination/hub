@@ -28,7 +28,10 @@ Browser extensions, mobile apps and hardware-connected interfaces make different
 
 Use a new, low-value account. Find its network and receiving address, inspect a transaction preview and locate the official backup instructions. Stop if the software asks you to upload a recovery phrase, turn off protection or sign an unexplained request.
 
-Do not test recovery by importing a hardware wallet's seed into a browser extension. That changes the key's exposure. Follow the device's official verification procedure instead.
+> [!WARNING]
+> Do not test recovery by importing a hardware wallet's seed into a browser extension. That changes the key's exposure.
+
+Follow the device's official verification procedure instead.
 
 A wallet warning is useful evidence, not a complete contract audit. Maintain your own destination, asset and permission checks. Record why you chose the wallet so that a later feature change does not silently change your assumptions.
 

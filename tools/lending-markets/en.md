@@ -14,7 +14,14 @@ A lending market should make its risk parameters understandable before you depos
 
 ## Record the important parameters
 
-For the asset you supply, identify the receipt or accounting model, current withdrawal liquidity, collateral eligibility and supply cap. For debt, record the borrow rate model, borrowing limit, liquidation threshold, penalties and borrow cap. Distinguish maximum borrowing LTV from liquidation eligibility.
+| Side | Record |
+| --- | --- |
+| Supply | Receipt or accounting model, withdrawal liquidity, collateral eligibility and supply cap |
+| Debt | Rate model, borrowing limit and borrow cap |
+| Liquidation | Threshold, penalty and eligible collateral |
+| Control | Oracle sources, upgrade powers and emergency pauses |
+
+Distinguish maximum borrowing LTV from liquidation eligibility.
 
 Check oracle sources, upgrade controls, emergency pauses and market restrictions. Ask where the documentation states these rules and whether the interface agrees with the current onchain parameters.
 
@@ -29,6 +36,9 @@ A high supply rate may reflect high utilization and limited withdrawal liquidity
 Find repayment, withdrawal and position-monitoring documentation before supplying. Know whether a receipt token is itself transferable and whether transferring it changes collateral health. Keep funds for fees outside the deposit.
 
 Audits, open code and a long history are relevant evidence, but none guarantees solvency or removes oracle and administrator risk. Avoid a market whose debt or liquidation rules you cannot independently explain.
+
+> [!TIP]
+> Before depositing, read [Supply assets and inspect collateral settings](../../skills/supply-collateral/en.md). Before borrowing, model [loan-to-value](../../skills/calculate-ltv/en.md) and [health factor](../../skills/check-health-factor/en.md).
 
 ## Sources
 

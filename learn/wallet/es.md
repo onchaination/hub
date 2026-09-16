@@ -27,7 +27,10 @@ En un servicio con custodia, el proveedor controla las firmas y el acceso según
 
 Ejemplo: una cartera de solo lectura muestra una dirección y su saldo, pero no puede gastar. Ver y controlar son capacidades distintas.
 
-Antes de depositar, pregunta quién puede autorizar una transferencia, quién puede cambiar esas reglas y cómo recuperarías el acceso si fallara el dispositivo. Nunca entregues una clave privada o frase de recuperación a un supuesto agente de soporte.
+> [!WARNING]
+> Ningún agente de soporte necesita tu clave privada o frase de recuperación. Quien tenga ese secreto podría tomar el control sin tu dispositivo ni tu PIN.
+
+Antes de depositar, pregunta quién puede autorizar una transferencia, quién puede cambiar esas reglas y cómo recuperarías el acceso si fallara el dispositivo.
 
 ## Fuentes
 

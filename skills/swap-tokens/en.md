@@ -14,6 +14,13 @@ Start with: [liquidity](../../learn/liquidity/en.md), [approvals](../../learn/ap
 
 Identify the exact input and output assets on the same intended network. Use official interface links, keep fees available and understand price impact and slippage. Start with a manageable amount.
 
+| Review | Confirm |
+| --- | --- |
+| Assets | Network and both contract or mint identifiers |
+| Quote | Expected output, minimum received and deadline |
+| Cost | Price impact, route fee, network fee and approval cost |
+| Permission | Spender, amount and what remains after the swap |
+
 ## Steps
 
 1. Enter the amount and inspect the route. Verify token contracts or mints, not just names. Review quoted output and every visible fee.
@@ -29,6 +36,9 @@ Your wallet received the intended output asset and the actual quantity meets the
 ## If something differs
 
 If output or asset identity differs, stop further trades and investigate. A failed included transaction may still cost fees. Unsolicited tokens or tokens with transfer restrictions may not behave like standard assets; do not keep increasing slippage to force execution.
+
+> [!WARNING]
+> Increasing slippage changes the worst result you authorize. It is not a generic fix for a failing trade.
 
 ## Sources
 

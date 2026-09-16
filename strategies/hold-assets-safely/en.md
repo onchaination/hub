@@ -24,11 +24,21 @@ Separate long-term holdings from frequent application use when that makes permis
 
 ## Approaches and tradeoffs
 
-A hardware wallet reduces routine key exposure but adds backup and device responsibilities. A multisig can remove a single signer dependency but adds coordination. A single well-understood setup may be safer than an elaborate one you cannot recover.
+| Setup | Benefit | Responsibility added |
+| --- | --- | --- |
+| Hardware wallet | Reduces routine key exposure | Device and backup recovery |
+| Multisig | Can remove one-signer dependency | Signer coordination and replacement |
+| Separate activity accounts | Limits some routine permissions | More accounts and fee balances to track |
+| One simple setup | Easier to understand and recover | Concentrates control in one process |
+
+A single well-understood setup may be safer than an elaborate one you cannot recover. Compare [wallets](../../tools/wallets/en.md), [hardware wallets](../../tools/hardware-wallets/en.md) and [multisig wallets](../../tools/multisig-wallets/en.md) before adding complexity.
 
 ## Risks
 
 Exposed backups, phishing, mistaken transfers and harmful approvals remain possible. Splitting accounts that share one compromised seed does not isolate the underlying signing keys. A device PIN does not protect a copied backup.
+
+> [!WARNING]
+> Do not store recovery secrets in the operational notes used to track public accounts and procedures.
 
 ## Example
 

@@ -16,13 +16,24 @@ A hardware wallet aims to keep signing keys isolated from the general-purpose co
 
 Check which networks, account types and signing formats the device supports. A device may support basic transfers on a network but not clearly display every contract interaction. Decide which actions you need before comparing extra features.
 
-Evaluate the trusted display: can you verify the full recipient and amount, or only opaque bytes? Check the backup method, PIN protection, recovery process, update verification and availability of independent documentation. Understand any optional passphrase: forgetting it can make the associated accounts inaccessible.
+| Area | Question to answer |
+| --- | --- |
+| Trusted display | Can you verify the full recipient and amount, or only opaque bytes? |
+| Recovery | How is the backup created, checked and restored? |
+| Device access | What do the PIN and any optional passphrase protect? |
+| Updates | How are firmware and companion software verified? |
+| Documentation | Can you confirm the process without relying on one interface? |
+
+For an optional passphrase, understand that forgetting it can make the associated accounts inaccessible.
 
 ## Set up deliberately
 
-Buy through a route you can verify against the manufacturer's instructions. Follow device authenticity and setup checks. Generate the backup during setup; do not use a phrase provided on a card or by another person. Keep it off websites, chat, photos and cloud notes.
+Buy through a route you can verify against the manufacturer's instructions. Follow device authenticity and setup checks. Generate the backup during setup and protect every copy from theft and damage.
 
 Example: a computer shows a familiar recipient but the device shows another. Reject the transaction. The device display is only helpful when you actually compare its contents.
+
+> [!WARNING]
+> Never use recovery words supplied with a device or enter your backup into a website, chat, photo or cloud note.
 
 ## Limits and an exit test
 

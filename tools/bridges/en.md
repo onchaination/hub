@@ -14,7 +14,12 @@ Evaluate a route between two specific networks and two specific asset representa
 
 ## Route checklist
 
-Record the source asset, destination asset, expected delivered amount, fees, estimated duration and required claims. Find the documented trust model: what validates messages, who holds backing, and who can pause or upgrade the system?
+| Record | Check |
+| --- | --- |
+| Assets | Source and destination contract or mint |
+| Delivery | Expected amount, duration and required claim steps |
+| Total cost | Source, bridge, destination and likely return fees |
+| Trust model | Who validates messages, holds backing, pauses or upgrades |
 
 Issuer burn-and-mint routes, canonical rollup bridges and liquidity-based routes solve different problems. Compare their dependencies instead of assigning safety from one category name. Faster delivery can add a liquidity provider or other intermediary.
 
@@ -29,6 +34,9 @@ Example: you plan to move a small balance for one low-fee swap. Two bridge fees 
 Reach the route through official project or network documentation. Inspect source and destination explorer links. Locate transfer tracking and recovery instructions that use public identifiers only.
 
 If a transfer is delayed, do not repeatedly resend funds or use a “recovery” link from a private message. Follow the documented status process. A source-side success does not establish destination delivery, and a successful test transfer does not prove the bridge cannot later fail.
+
+> [!TIP]
+> Once you choose a route, use [Bridge and track both sides of a transfer](../../skills/bridge-assets/en.md) for the execution checks.
 
 ## Sources
 

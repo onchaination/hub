@@ -26,6 +26,9 @@ Obtain the correct debt asset on the correct network and keep funds for fees. Ch
 
 The debt has fallen by the expected amount, or is zero for a full repayment. Collateral has not necessarily returned to your wallet: repayment and withdrawal are separate operations.
 
+> [!NOTE]
+> “Repaid” and “withdrawn” are separate states. Confirm zero debt before treating collateral as freely removable.
+
 ## If something differs
 
 A small residual balance can result from interest or an incomplete repayment option. Follow official instructions to close it. If fees, allowance or liquidity prevent the transaction, resolve the cause without signing unrelated requests. Recheck the health measure while debt remains.

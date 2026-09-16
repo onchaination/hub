@@ -14,6 +14,9 @@ Start with: [supply collateral](../../skills/supply-collateral/en.md), [liquidat
 
 Have an explicit repayment source, a chosen debt limit and a response to adverse prices. Check current market parameters rather than borrowing the interface maximum. Know which asset must be repaid.
 
+> [!WARNING]
+> The interface maximum is a protocol boundary, not a safety target.
+
 ## Steps
 
 1. Inspect eligible collateral, current debt and oracle-valued balances. Confirm the market and network.
@@ -29,6 +32,8 @@ The received amount, debt denomination, collateral status and health measure rec
 ## If something differs
 
 If the transaction fails, first establish whether any position change occurred before retrying. If health differs materially from the preview, investigate price, interest and parameter changes. Never borrow more simply to repair an unexplained display discrepancy.
+
+Next: [Repay debt and confirm what remains](../../skills/repay-loan/en.md).
 
 ## Sources
 

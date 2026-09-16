@@ -28,7 +28,14 @@ Additional collateral can improve the ratio but commits more assets to the same 
 
 For several collateral assets, do not assume one universal threshold. Some assets may not count as collateral at all, or may be restricted in particular combinations.
 
-Exercise: with $8,000 collateral and $2,400 debt, LTV is 30%. If you repay $400, it becomes 25%, before interest and fees. Write down the debt denomination too: debt in a volatile token can rise in dollar value independently of your collateral.
+<details>
+<summary>❓ With $8,000 collateral and $2,400 debt, what happens to LTV after a $400 repayment?</summary>
+
+LTV starts at 30%. After repaying $400, it becomes 25%, before interest and fees. Write down the debt denomination too: debt in a volatile token can rise in dollar value independently of your collateral.
+
+</details>
+
+Use [Calculate loan-to-value](../../skills/calculate-ltv/en.md) to apply the same steps to a position.
 
 ## Sources
 

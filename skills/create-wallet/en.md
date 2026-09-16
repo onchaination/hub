@@ -14,6 +14,9 @@ Start with: [wallet](../../learn/wallet/en.md), [wallets](../../tools/wallets/en
 
 Choose a wallet using its official documentation and a network it supports. Use a trusted, updated device. This procedure creates a new self-custody account; custodial accounts and smart-account recovery have different rules.
 
+> [!WARNING]
+> A wallet or support agent should never supply your new recovery phrase or ask you to send it back for “verification.”
+
 ## Steps
 
 1. Follow the official download link and verify the publisher. Avoid sponsored lookalike results, private-message links and preconfigured accounts supplied by strangers.
@@ -28,7 +31,7 @@ You can identify your network and public address, explain who controls signing, 
 
 ## If something differs
 
-If someone else supplied the recovery phrase or asks you to reveal it, stop. Do not fund that account. A wallet showing an address is not evidence that only you control its keys.
+If the setup violates the warning above, stop and do not fund the account. A wallet showing an address is not evidence that only you control its keys.
 
 ## Sources
 

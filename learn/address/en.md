@@ -22,7 +22,15 @@ Bitcoin addresses describe spending conditions for outputs; a wallet commonly ge
 
 ## A practical check
 
-A friend sends you an address. Ask which network and asset they expect through a trusted channel, then compare the full destination in the wallet's signing screen. Do not copy a similar-looking address from transaction history: attackers can place lookalikes there.
+A friend sends you an address:
+
+1. Ask which network and asset they expect through a trusted channel.
+2. Compare the full destination in the wallet's signing screen.
+3. Check whether the recipient requires a memo or tag.
+4. After sending, verify the result with the [transaction-check procedure](../../skills/check-transaction/en.md).
+
+> [!WARNING]
+> Do not copy a similar-looking address from transaction history. Attackers can place lookalikes there.
 
 A small test transfer can uncover a network or deposit problem. It cannot prove that a recipient or contract is honest. Keep the address public only where necessary, because sharing it can reveal connected activity.
 

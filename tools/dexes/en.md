@@ -16,6 +16,13 @@ A DEX interface prepares a trade against onchain liquidity. An aggregator may ro
 
 Use the same network, input asset, amount and destination asset. Compare output after route fees, network fees, price impact and any approval cost. A nominally better token price may lead to a worse total result.
 
+| Compare | Include |
+| --- | --- |
+| Output | Quote and minimum received |
+| Cost | Route, network and approval fees |
+| Execution | Price impact, deadline and route dependencies |
+| Permission | Exact spender, amount and remaining allowance |
+
 Check the exact token contracts or mints, minimum received, deadline where available and allowed spender. Find documentation explaining whether a quote is firm, indicative or dependent on a later auction. Some routes involve signed orders rather than immediate swaps.
 
 ## A decision example
@@ -29,6 +36,8 @@ An allowance for an aggregator can have different scope from an allowance for on
 Simulation cannot guarantee inclusion at the previewed state. High slippage may expose you to poor execution or ordering attacks; extremely low tolerance can cause failures. Unsupported or restricted tokens can behave differently from ordinary tokens.
 
 Evaluate failed-trade information and the route's privacy assumptions. A “protected” route is a specific service claim to verify, not a general assurance that execution cannot be manipulated.
+
+Use [Swap tokens with a defined minimum output](../../skills/swap-tokens/en.md) when you are ready to execute a reviewed route.
 
 ## Sources
 

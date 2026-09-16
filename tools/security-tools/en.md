@@ -14,7 +14,12 @@ Security tools can help explain transactions, inspect allowances or flag suspici
 
 ## Match the tool to the question
 
-An allowance viewer shows permissions supported by its network and token coverage. A revoke tool prepares a transaction to reduce those permissions. A simulator predicts execution against a particular state. A contract scanner may identify known patterns or reported risks.
+| Tool | What it can help answer | Important limit |
+| --- | --- | --- |
+| Allowance viewer | Which supported spenders have permission? | Coverage varies by network and token type |
+| Revoke tool | Can I reduce a supported permission? | It prepares an onchain transaction |
+| Simulator | What might this request do against current state? | State can change before inclusion |
+| Contract scanner | Are known patterns or reports present? | No alert does not prove safety |
 
 Ask how the tool obtains data, which networks it supports and what it cannot inspect. A clean result may simply mean no known issue was found. A false warning can also occur; investigate rather than automatically bypassing it.
 
@@ -26,7 +31,13 @@ Do not sign a new broad permission in order to “verify” or “protect” a w
 
 ## Distinguish three responses
 
-Disconnecting removes an application's connection to the wallet interface. Revoking changes a supported onchain spending permission. Moving assets to a newly secured account changes where the assets are controlled. They solve different problems and involve different costs.
+| Response | What changes |
+| --- | --- |
+| Disconnect | The application's connection to the wallet interface |
+| Revoke | A supported onchain spending permission |
+| Move assets | Which account controls the assets |
+
+They solve different problems and involve different costs. Follow [Revoke an unnecessary token approval](../../skills/revoke-approvals/en.md) when an allowance is the issue.
 
 Choose tools with clear documentation and verifiable distribution links. Avoid making an emergency decision from a sponsored search result or unsolicited support message.
 

@@ -14,6 +14,14 @@ Start with: [approvals](../../learn/approvals/en.md), [verify contract](../../sk
 
 Know the intended application contract, token and network. This procedure describes common ERC-20 allowances; NFT operators and Solana delegates use different interfaces and rules.
 
+| Field | What to identify |
+| --- | --- |
+| Owner | Your account granting the permission |
+| Token | Exact contract on the selected network |
+| Spender | Contract allowed to move the token |
+| Amount | Maximum allowance or unlimited authority |
+| Expiry | When the authorization ends, if supported |
+
 ## Steps
 
 1. Identify why the application needs an allowance. A basic wallet connection or public balance lookup should not require spending permission.
@@ -29,6 +37,9 @@ You can state which owner, token and spender are involved, the allowed amount an
 ## If something differs
 
 Disconnecting a website does not revoke this permission. Some tokens require setting an allowance to zero before changing it; follow verified token documentation. Never assume one revoke action invalidates every outstanding signature mechanism.
+
+> [!TIP]
+> After the intended action, use [Revoke an unnecessary token approval](../../skills/revoke-approvals/en.md) if the permission no longer serves a purpose.
 
 ## Sources
 

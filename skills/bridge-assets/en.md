@@ -14,6 +14,14 @@ Start with: [bridge](../../learn/bridge/en.md), [bridges](../../tools/bridges/en
 
 Confirm that the recipient and intended application accept the destination network and exact asset. Research the return route, waiting period and required gas on both sides. Use a small test when proportionate to costs.
 
+Before signing, record:
+
+- source and destination networks;
+- source and destination asset identifiers;
+- recipient and expected delivered amount;
+- fees, stages and any claim step;
+- how to track it and use a return route.
+
 ## Steps
 
 1. Open the official route interface. Select source and destination networks and verify both asset identifiers. Check minimums and any destination-gas option.
@@ -29,6 +37,9 @@ The correct recipient holds the intended token on the destination network and ca
 ## If something differs
 
 If delayed, check official status information before repeating. Avoid fake recovery sites and private-message support. A wrong destination asset or network may not be recoverable through an ordinary reverse transfer; do not improvise with a larger amount.
+
+> [!WARNING]
+> Source-side success is not proof of destination delivery. Track both transaction identifiers where the route produces two.
 
 ## Sources
 

@@ -14,7 +14,15 @@ A multisig requires a defined number of signers to authorize an action. A two-of
 
 ## Compare the actual authority
 
-Record owners, threshold, supported networks and recovery arrangements. Check how owner and threshold changes are approved. Inspect modules, guards, delegates and spending limits: additional components may have powers beyond the ordinary signer workflow.
+Record:
+
+- owners and signing threshold;
+- supported networks and account type;
+- how owners and thresholds can change;
+- recovery and signer-replacement arrangements;
+- modules, guards, delegates and spending limits.
+
+Additional components may have powers beyond the ordinary signer workflow.
 
 Bitcoin multisig uses spending conditions over outputs. EVM smart-account multisigs use contract logic. Backups, transaction coordination and recovery differ; a guide for one does not automatically apply to the other.
 
@@ -23,6 +31,9 @@ Bitcoin multisig uses spending conditions over outputs. EVM smart-account multis
 With a small test account, prepare a transfer, verify its full effects independently, obtain the required approvals and execute. Then test losing one signer according to your recovery plan. Do not delete the only working backup to conduct a test.
 
 If all three signers are stored in the same password manager on the same laptop, a common compromise can defeat the intended separation. Independence includes people, devices, storage and the process used to verify requests.
+
+> [!NOTE]
+> A two-of-three threshold describes authorization. It does not prove that the three signers are operationally independent.
 
 ## Operational tradeoffs
 

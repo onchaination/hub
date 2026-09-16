@@ -26,7 +26,12 @@ Compare total cost: execution, data or settlement charges, bridging and eventual
 
 Also examine sequencer outages, upgrade controls, emergency exits and the maturity of the system's proof mechanisms. “Secured by Ethereum” is too broad to answer all these questions.
 
-Exercise: if a transaction has a quick sequencer confirmation, has an Ethereum withdrawal necessarily completed? No. Check the status of each stage using the network's own documentation.
+<details>
+<summary>❓ A transaction has a quick sequencer confirmation. Has an Ethereum withdrawal necessarily completed?</summary>
+
+**No.** Check the status of each stage using the network's own documentation. Sequencer inclusion and base-chain settlement are different milestones.
+
+</details>
 
 ## Sources
 

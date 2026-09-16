@@ -27,7 +27,10 @@ Bei einem Verwahrungsdienst kontrolliert der Anbieter Signaturen und Zugang nach
 
 Beispiel: Eine Wallet mit reinem Lesezugriff zeigt Adresse und Guthaben, kann aber nichts ausgeben. Sichtbarkeit und Kontrolle sind unterschiedliche Fähigkeiten.
 
-Kläre vor einer Einzahlung: Wer kann eine Übertragung autorisieren, wer kann diese Regeln ändern und wie würdest du bei einem Geräteausfall wieder Zugang erhalten? Gib privaten Schlüssel oder Wiederherstellungsphrase niemals an einen Supportmitarbeiter weiter.
+> [!WARNING]
+> Kein Supportmitarbeiter benötigt deinen privaten Schlüssel oder deine Wiederherstellungsphrase. Wer dieses Geheimnis kennt, kann möglicherweise ohne dein Gerät oder deine PIN die Kontrolle übernehmen.
+
+Kläre vor einer Einzahlung: Wer kann eine Übertragung autorisieren, wer kann diese Regeln ändern und wie würdest du bei einem Geräteausfall wieder Zugang erhalten?
 
 ## Quellen
 

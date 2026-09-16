@@ -26,7 +26,13 @@ A recovery guardian might help after a lost device but also become a dependency.
 
 ## Questions to take to wallet documentation
 
-Can you export or recover control if the interface disappears? Are account upgrades possible? Which modules can execute transactions? Do restrictions apply onchain or only in a website's interface? Is the account available on every network you need?
+Before relying on the account, check:
+
+- Can you export or recover control if the interface disappears?
+- Are account upgrades possible, and who authorizes them?
+- Which modules can execute transactions?
+- Do restrictions apply onchain or only in a website's interface?
+- Is the account available on every network you need?
 
 Test recovery and limits with a small, separate account. Keep the core distinction: a friendly interface can hide complexity, but someone still has to understand the authorization rules.
 

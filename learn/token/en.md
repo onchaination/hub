@@ -28,7 +28,12 @@ For example, an interface may show 1,000 units while the contract stores an inte
 
 Before using a token, record the network, contract or mint, issuer or governing program, and any redemption process. Compare these details with independent official documentation. If a token appears unexpectedly in your wallet, you do not have to claim or interact with it.
 
-Question: is a bridged token necessarily the same claim as the issuer's native token on that chain? No. A bridge may introduce a separate custody or backing dependency, even if the displayed name is similar.
+<details>
+<summary>❓ Is a bridged token necessarily the same claim as the issuer's native token on that chain?</summary>
+
+**No.** A bridge may introduce a separate custody or backing dependency, even if the displayed name is similar. Read [Bridges connect separate asset systems](../../learn/bridge/en.md) before treating the assets as interchangeable.
+
+</details>
 
 ## Sources
 

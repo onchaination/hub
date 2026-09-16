@@ -14,6 +14,13 @@ Start with: [approvals](../../learn/approvals/en.md), [verify contract](../../sk
 
 Know the site and the exact purpose of the request. A signature can authorize an action without immediately spending a network fee. Do not sign data you cannot explain.
 
+| Message type | Check |
+| --- | --- |
+| Login statement | Domain, account, purpose, nonce and expiry |
+| Permit | Token, spender, amount, network and expiry |
+| Order | Assets, quantities, price limits and cancellation rules |
+| Opaque payload | Stop unless a trusted display or documentation explains it |
+
 ## Steps
 
 1. Confirm the domain and account. For login, check that the statement names the expected site and purpose rather than a token allowance or order.
@@ -29,6 +36,9 @@ The application completes only the intended login or authorization workflow. For
 ## If something differs
 
 If you signed an unexpected permission, inspect its specific cancellation rules through official documentation. Revoking one current allowance may not invalidate every unsubmitted signature mechanism. Treat suspected key exposure separately from an unwanted signature.
+
+> [!NOTE]
+> No immediate transaction does not mean no authority was granted.
 
 ## Sources
 

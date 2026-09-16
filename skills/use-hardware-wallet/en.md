@@ -14,6 +14,9 @@ Start with: [hardware wallets](../../tools/hardware-wallets/en.md), [secure wall
 
 Use a device initialized under its official setup and authenticity instructions. Verify your backup with the documented device procedure. Never import its recovery phrase into a website or ordinary wallet extension to connect it.
 
+> [!WARNING]
+> The computer prepares the request; the device authorizes it. Reject the request if their displayed details disagree.
+
 ## Steps
 
 1. Install the verified companion interface and connect through its hardware-wallet option. Check the selected network and account.

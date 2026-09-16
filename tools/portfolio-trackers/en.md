@@ -14,7 +14,13 @@ A portfolio tracker aggregates balances and positions across addresses or networ
 
 ## Questions to compare
 
-Which networks and protocols are covered? How are token prices chosen? Does the tracker show debts, receipt tokens, unclaimed rewards and positions outside an active liquidity range? When was each value updated?
+| Question | Why it matters |
+| --- | --- |
+| Which networks and protocols are covered? | Missing coverage makes totals incomplete |
+| How are token prices chosen? | Thin markets can create misleading values |
+| Are debts and receipt tokens reconciled? | Poor accounting can double-count value |
+| Are inactive positions and rewards shown? | A headline total may omit position state |
+| When was each value updated? | Stale data can hide current risk |
 
 A dashboard can double-count a deposited asset and its receipt, omit debt, or assign a price from a thin market. A total is only as useful as the accounting behind it.
 
@@ -23,6 +29,9 @@ A dashboard can double-count a deposited asset and its receipt, omit debt, or as
 Choose a lending position you understand. Compare the tracker's collateral and debt with the protocol and explorer. Check the units and price timestamps. Then ask whether the displayed net value could actually be withdrawn after repayment and fees.
 
 Unknown spam tokens may appear with large invented values. Do not follow their embedded links to “unlock” the balance. Hide them from your view without interacting onchain when the interface permits it.
+
+> [!WARNING]
+> Viewing a public balance should not require a transaction, token approval or recovery phrase.
 
 ## Privacy and permissions
 

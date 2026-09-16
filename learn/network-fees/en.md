@@ -27,6 +27,9 @@ A simple Ethereum illustration is 21,000 gas × 10 gwei = 0.00021 ETH. This is a
 
 A network may spend resources executing a transaction that ultimately fails. Inclusion and successful execution are separate checks. A wallet's estimate also need not equal the final fee.
 
+> [!NOTE]
+> A fee pays for processing, not for a guaranteed successful outcome.
+
 Keep some of the required fee asset available for the next action, including exiting a position. Owning a token does not necessarily let you pay the network fee in that token. Sponsored transactions have their own eligibility rules.
 
 Try the [fee calculator](../../tools/network-fee-calculator/en.md). Double the price while keeping the work constant, then double the work. What happens to the estimate? For a real transaction, compare the wallet estimate with the receipt afterwards.

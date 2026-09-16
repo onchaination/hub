@@ -24,7 +24,12 @@ Supply eligible collateral, borrow within a deliberately chosen limit and accrue
 
 ## Approaches and tradeoffs
 
-Borrowing preserves exposure but adds interest, contract risk and monitoring. Selling removes some exposure and avoids debt. Borrowing a stablecoin reduces one source of debt-price volatility but retains depeg and issuer risk. Borrowing a volatile asset can make debt value rise independently.
+| Approach | Main benefit | Main trade-off |
+| --- | --- | --- |
+| Borrow against the asset | Preserves asset exposure | Adds interest, contract risk and monitoring |
+| Sell part of the asset | Avoids debt and liquidation | Reduces asset exposure |
+| Borrow a stablecoin | Reduces one source of debt-price volatility | Retains depeg and issuer risk |
+| Borrow a volatile asset | May match a future repayment source | Debt value can rise independently |
 
 ## Risks
 
@@ -33,6 +38,13 @@ Collateral declines, interest increases, parameter changes or oracle behavior ca
 ## Example
 
 You deposit $10,000 of ETH and borrow $2,000 USDC. Starting LTV is 20%. If collateral falls to $5,000, LTV is 40% before interest. With an illustrative 80% liquidation threshold, health factor falls from 4 to 2. These are scenario inputs, not recommended borrowing limits.
+
+<details>
+<summary>❓ Did the debt become safer because its USDC amount did not change?</summary>
+
+**No.** The collateral supporting it fell, so both LTV and health factor worsened. Use [Check a lending position's health factor](../../skills/check-health-factor/en.md) to model the live position.
+
+</details>
 
 ## When it may not make sense
 

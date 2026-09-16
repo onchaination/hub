@@ -24,7 +24,14 @@ A cross-chain route coordinates source and destination actions. Record both tran
 
 ## Approaches and tradeoffs
 
-Compare bridging, a supported custodial withdrawal route and staying where the assets are. Custodial routes introduce provider and withdrawal-policy risks. Direct issuer routes and third-party bridges have different trust models; evaluate each concrete route.
+| Approach | Useful when | Added dependency |
+| --- | --- | --- |
+| Stay on the source network | The destination benefit is smaller than moving costs | None from moving |
+| Bridge | You need a specific destination application or recipient | Bridge verification, liquidity or custody model |
+| Custodial withdrawal route | The provider supports both networks and exact asset | Provider access and withdrawal policy |
+| Direct issuer route | The issuer supports the conversion you need | Issuer eligibility and operating process |
+
+Evaluate each concrete route; category names do not establish safety.
 
 ## Risks
 
@@ -33,6 +40,13 @@ Wrong networks, unsupported token representations, unavailable gas, message dela
 ## Example
 
 You expect to save $6 on future actions. Entry costs $2, destination setup costs $1 and the planned exit costs $4. That is $7 of cost before considering bridge risk, so the fee-saving rationale does not hold under these assumptions.
+
+<details>
+<summary>❓ Which cost is easiest to miss in this example?</summary>
+
+The planned exit. Compare the complete round trip with staying on the source network, then evaluate the route with [Evaluate a bridge route](../../tools/bridges/en.md).
+
+</details>
 
 ## When it may not make sense
 

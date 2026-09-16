@@ -24,7 +24,12 @@ Map each token’s issuer, reserves or collateral, custodians, network and bridg
 
 ## Approaches and tradeoffs
 
-Compare keeping one well-understood token with a modest split among independently understood claims. Holding native issuer versions can avoid some bridge exposure, where supported. Several tokens in one lending market still share that market’s contract risk.
+| Approach | Potential benefit | Shared or added risk |
+| --- | --- | --- |
+| One well-understood token | Simple to monitor and exit | Concentrated issuer and backing exposure |
+| Several independent claims | Can reduce one failure dependency | More assets, fees and exits to manage |
+| Native issuer versions | Can avoid some bridge exposure | Still shares issuer risk |
+| Several tokens in one market | Diversifies token exposure | Shares the market's contract risk |
 
 ## Risks
 
@@ -33,6 +38,9 @@ Issuers may share banks or custodians. One stablecoin may hold another as backin
 ## Example
 
 A $1,000 position split equally between two coins loses about $50 of market value if one falls 10% and the other holds its price, before costs. If both depend on the same failed custodian and fall together, the split provides much less protection. This is scenario arithmetic, not a suggested allocation.
+
+> [!NOTE]
+> Count independent dependencies, not tickers. Two labels can lead back to the same issuer, custodian, bridge or lending market.
 
 ## When it may not make sense
 

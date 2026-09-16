@@ -26,7 +26,14 @@ The ability to combine protocols is useful, but it also combines failure paths. 
 
 ## Before using an application
 
-Draw a four-box map: asset → contract → source of revenue → exit. Add anyone who can change the rules. If you cannot explain how to exit, or why someone pays you, read further before depositing.
+Draw a four-part map:
+
+1. **Asset:** what exactly are you depositing?
+2. **Contract:** which program accounts for the position?
+3. **Revenue:** who pays the return, and why?
+4. **Exit:** what must work for you to withdraw?
+
+Add anyone who can change the rules. If you cannot explain the exit or revenue source, read further before depositing.
 
 Next, distinguish trading [liquidity](../liquidity/en.md) from borrowing through a [lending market](../lending/en.md).
 

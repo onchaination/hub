@@ -26,6 +26,13 @@ List collateral and debt quantities for one position. Use a common value unit an
 
 Example: 2 units of collateral at $4,000 each gives $8,000. A $2,400 debt produces `2,400 ÷ 8,000 × 100 = 30%`. At $3,000 per collateral unit, the same debt gives 40%. If debt also grows, the ratio rises further.
 
+<details>
+<summary>❓ If collateral value falls while debt stays fixed, does LTV rise or fall?</summary>
+
+It rises because the same debt is divided by a smaller collateral value. A higher LTV usually means less room before a market's liquidation boundary, but use the market's actual health model to assess that boundary.
+
+</details>
+
 ## If something differs
 
 If the interface disagrees, check collateral eligibility, oracle prices, decimals, interest and whether multiple debts are included. Never substitute an exchange quote without recognizing the difference from the protocol’s oracle. A low LTV does not remove contract risk.
