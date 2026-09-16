@@ -1,0 +1,44 @@
+---
+import Home from '../../views/Home.astro';
+import Article from '../../views/Article.astro';
+import SectionPage from '../../views/Section.astro';
+import Browse from '../../views/Browse.astro';
+import About from '../../views/About.astro';
+import Search from '../../views/Search.astro';
+import { locales, type Locale, localePath } from '../../lib/locales';
+import { sitePaths } from '../../lib/routes';
+import { loadItems, resolveContent, tagAliases } from '../../lib/content';
+import { sectionKeys, type Section } from '../../lib/site';
+export function getStaticPaths() {
+  return locales
+    .filter((locale) => locale !== 'en')
+    .flatMap((locale) =>
+      sitePaths().map((path) => ({
+        params: { locale, path: path || undefined },
+      })),
+    );
+}
+const locale = Astro.params.locale as Locale;
+const path = Astro.params.path ?? '';
+const [kind, value] = path.split('/');
+const item = loadItems().find((item) => item.contentKey === path);
+if (kind === 'tags') {
+  const canonical = tagAliases()[value] ?? value;
+  const redirect = localePath(`tags/${canonical}`, locale);
+  if (canonical !== value) return Astro.redirect(redirect, 301);
+}
+---
+
+{path === '' ? (
+  <Home />
+) : path === 'about' ? (
+  <About />
+) : path === 'search' ? (
+  <Search />
+) : item ? (
+  <Article item={resolveContent(item, locale)} />
+) : sectionKeys.includes(path as Section) ? (
+  <SectionPage section={path as Section} />
+) : (
+  <Browse kind={kind as 'tags' | 'levels'} value={value} />
+)}

@@ -11,7 +11,7 @@ Content MUST be chain-neutral by default. Where examples depend on a network, na
 
 ## Current implementation boundary
 
-This repository implements **Phase 1 — Knowledge plane** (§57), with one useful item per path, language representations, and an Ethereum/Solana `network-fee-calculator`. The four-path model is:
+This repository implements **Phase 1 — Knowledge plane** (§57), with 58 knowledge items, site-level language views, and an Ethereum/Solana `network-fee-calculator`. The four-path model is:
 
 ```text
 Learn       → understand something
@@ -573,7 +573,7 @@ learn/
 
 Languages are discovered from lowercase language-tag filenames, such as `uk.md` or `pt-br.md`. No language registry or i18n framework is required. A translation must have a nonempty body; incomplete placeholders must not be published as available translations.
 
-Canonical English HTML is `/learn/transaction`; German HTML is `/learn/transaction/de`. Canonical Markdown sources retain their repository paths: `/learn/transaction/en.md` and `/learn/transaction/de.md`. The same convention applies to Tools, Strategies, and Skills. The four section `README.md` files remain plain index content, not knowledge items.
+Canonical English HTML is `/learn/transaction/`; another locale uses a top-level prefix such as `/uk/learn/transaction/`. Canonical Markdown sources keep their repository paths, such as `/learn/transaction/en.md` and `/learn/transaction/uk.md`. The same convention applies to Tools, Strategies, and Skills. The four section `README.md` files remain plain index content, not knowledge items.
 
 An item has a static language route only when its matching `<language>.md` file exists. Missing and unknown translations return 404; the content resolver, related content, and search never substitute English under a localized URL. English `en.md` remains required as the canonical source representation for every item.
 

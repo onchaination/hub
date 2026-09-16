@@ -1,0 +1,47 @@
+---
+import type { Item } from '../lib/content';
+import { ui } from '../lib/ui';
+import { REPO } from '../lib/site';
+interface Props {
+  item: Item;
+}
+const { item } = Astro.props;
+const t = ui[item.interfaceLocale];
+const filename = `${item.directory}/${item.interfaceLocale}.md`;
+const template = `---\nschema: 1\ntitle: ${JSON.stringify(item.title)}\ndescription: ${JSON.stringify(item.description)}\n---\n\n${item.body}`;
+const contribute = `${REPO}/new/main?filename=${encodeURIComponent(filename)}&value=${encodeURIComponent(template)}`;
+---
+
+<aside
+  class="translation-notice"
+  data-pagefind-ignore
+  data-auto-translate
+  data-locale={item.interfaceLocale}
+  data-messages={JSON.stringify({
+    original: t.original,
+    translating: t.translating,
+    translated: t.machineTranslated,
+    unavailable: t.translationUnavailable,
+  })}
+>
+  <p>
+    {t.missing} <a href={contribute}>{t.helpTranslate} ↗</a>
+  </p>
+  <label>
+    <input type="checkbox" role="switch" disabled data-translate-toggle />{' '}
+    {t.autoTranslate}
+  </label>
+  <button type="button" class="text-button" data-translate-original hidden>
+    {t.original}
+  </button>
+  <noscript>
+    <p>{t.translationUnavailable}</p>
+  </noscript>
+  <p class="small muted" role="status" data-translate-status>
+    {t.original}
+  </p>
+</aside>
+<script>
+  import { setupTranslation } from '../lib/auto-translate';
+  setupTranslation();
+</script>

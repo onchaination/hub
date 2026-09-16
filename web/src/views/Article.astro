@@ -1,0 +1,166 @@
+---
+import Site from '../layouts/Site.astro';
+import Markdown from '../components/Markdown.astro';
+import LearnWithAI from '../components/LearnWithAI.astro';
+import Discussion from '../components/Discussion.astro';
+import ContentRows from '../components/ContentRows.astro';
+import AutoTranslate from '../components/AutoTranslate.astro';
+import { localePath } from '../lib/locales';
+import { ui } from '../lib/ui';
+import {
+  loadItems,
+  renderMarkdown,
+  relatedItems,
+  contentRoute,
+  type Item,
+} from '../lib/content';
+import { REPO } from '../lib/site';
+import { ogImageRoute } from '../lib/og';
+interface Props {
+  item: Item;
+}
+const { item } = Astro.props;
+const items = loadItems();
+const locale = item.interfaceLocale;
+const t = ui[locale];
+const link = (path: string) => localePath(path, locale);
+const alternates = Object.keys(item.translations).map((language) => ({
+  language,
+  route: contentRoute(item, language),
+}));
+const { parts, headings } = await renderMarkdown(
+  item.body,
+  item.file,
+  items,
+  locale,
+);
+const related = relatedItems(item, items);
+---
+
+<Site
+  title={item.title}
+  description={item.description}
+  markdown={`/${item.file}`}
+  language={locale}
+  canonicalPath={contentRoute(item, item.language)}
+  socialImage={ogImageRoute(item)}
+  socialImageAlt={`${item.title} · Onchaination`}
+  alternates={alternates}
+>
+  <div class="shell article-layout">
+    <aside class="article-sidebar">
+      <div class="on-this-page" aria-label={t.onThisPage}>
+        <p class="eyebrow">{t.onThisPage}</p>
+        <nav>
+          {headings.map((heading) => (
+            <a href={`#${heading.id}`}>{heading.text}</a>
+          ))}
+        </nav>
+        <div class="aside-note">
+          <span aria-hidden="true">↗</span>
+          <p>{t.improve}</p>
+          <a href={`${REPO}/edit/main/${item.file}`}>{t.edit}</a>
+        </div>
+      </div>
+    </aside>
+    <article
+      class="article"
+      data-pagefind-body
+      data-content-key={item.contentKey}
+      data-pagefind-meta="id[data-content-key]"
+    >
+      <header class="article-heading">
+        <a
+          class="eyebrow breadcrumb symbol-link"
+          href={link(`/${item.section}`)}
+        >
+          <span class="link-symbol link-symbol-back" aria-hidden="true">
+            ←
+          </span>
+          <span
+            class="link-label"
+            data-pagefind-filter={`Type:${item.section}`}
+          >
+            {t[item.section]}
+          </span>
+        </a>
+        <h1
+          data-translate-block
+          lang={item.language}
+          data-pagefind-meta="title"
+        >
+          {item.title}
+        </h1>
+        <p
+          class="lead"
+          data-translate-block
+          lang={item.language}
+          data-pagefind-meta="description"
+        >
+          {item.description}
+        </p>
+        <div class="tags">
+          {item.tags.map((tag) => (
+            <a href={link(`/tags/${tag}`)} data-pagefind-filter="Tags">
+              #{tag}
+            </a>
+          ))}
+        </div>
+        <div class="article-meta">
+          {item.level && (
+            <a
+              href={link(`/levels/${item.level}`)}
+              data-pagefind-filter="Level"
+            >
+              {t[item.level]}
+            </a>
+          )}
+          {item.updated && (
+            <span>
+              {t.updated} <time datetime={item.updated}>{item.updated}</time>
+            </span>
+          )}
+          <span>
+            {Math.max(1, Math.ceil(item.body.split(/\s+/).length / 220))}{' '}
+            {t.readTime}
+          </span>
+        </div>
+        <div class="source-links" data-pagefind-ignore>
+          <a class="symbol-link" href={`${REPO}/edit/main/${item.file}`}>
+            <span class="link-label">{t.edit}</span>
+            <span class="link-symbol" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+          <a class="symbol-link" href={`${REPO}/blob/main/${item.file}`}>
+            <span class="link-label">{t.viewSource}</span>
+            <span class="link-symbol" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+          <a class="symbol-link" href={`/${item.file}`}>
+            <span class="link-label">Markdown</span>
+            <span class="link-symbol link-symbol-down" aria-hidden="true">
+              ↓
+            </span>
+          </a>
+        </div>
+      </header>
+      {item.isFallback && <AutoTranslate item={item} />}
+      <LearnWithAI item={item} />
+      <div class="prose" data-translate-content lang={item.language}>
+        <Markdown parts={parts} />
+      </div>
+    </article>
+    <div class="article-after">
+      {related.length > 0 && (
+        <section class="related">
+          <p class="eyebrow">{t.related}</p>
+          <h2>{t.related}</h2>
+          <ContentRows items={related} language={locale} />
+        </section>
+      )}
+      <Discussion />
+    </div>
+  </div>
+</Site>

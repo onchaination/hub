@@ -1,20 +1,27 @@
 ---
-import { availableLanguages, translationFor, type Item } from '../lib/content';
-import { languageName } from '../lib/languages';
+import { levels, resolveContent, type Item } from '../lib/content';
+import { localePath, type Locale } from '../lib/locales';
+import { ui } from '../lib/ui';
 import { sections } from '../lib/site';
 interface Props {
   items: Item[];
   showSection?: boolean;
-  language?: string;
+  language?: Locale;
 }
 const { items, showSection = true, language = 'en' } = Astro.props;
-const translatedItems = items.flatMap((item) => {
-  const translation = translationFor(item, language);
-  return translation ? [translation] : [];
-});
+const t = ui[language];
+const translatedItems = items
+  .map((item) => resolveContent(item, language))
+  .sort(
+    (a, b) =>
+      levels.indexOf(a.level ?? 'beginner') -
+        levels.indexOf(b.level ?? 'beginner') ||
+      a.title.localeCompare(b.title, language),
+  );
 ---
 
 <div class="content-rows">
+  {items.length === 0 && <p>{t.empty}</p>}
   {translatedItems.map((item, index) => {
     return (
       <article class="content-row">
@@ -24,7 +31,7 @@ const translatedItems = items.flatMap((item) => {
         <div class="row-copy">
           {showSection && (
             <span class="eyebrow row-section">
-              {sections[item.section].emoji} {sections[item.section].label}
+              {sections[item.section].emoji} {t[item.section]}
             </span>
           )}
           <h3>
@@ -38,25 +45,16 @@ const translatedItems = items.flatMap((item) => {
           <p lang={item.language}>{item.description}</p>
           <div class="tags">
             {item.tags.map((tag) => (
-              <a href={`/tags/${tag}`}>#{tag}</a>
+              <a href={localePath(`/tags/${tag}`, language)}>#{tag}</a>
             ))}
           </div>
-          {Object.keys(item.translations).length > 1 && (
-            <div
-              class="language-links small"
-              aria-label={`Languages for ${item.title}`}
-            >
-              {availableLanguages([item]).map((language) => (
-                <a href={translationFor(item, language)!.route} lang={language}>
-                  {languageName(language)}
-                </a>
-              ))}
-            </div>
-          )}
         </div>
         {item.level && (
-          <a class="row-level" href={`/levels/${item.level}`}>
-            {item.level}
+          <a
+            class="row-level"
+            href={localePath(`/levels/${item.level}`, language)}
+          >
+            {t[item.level]}
           </a>
         )}
       </article>

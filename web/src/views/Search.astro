@@ -1,0 +1,192 @@
+---
+import Site from '../layouts/Site.astro';
+import ContentRows from '../components/ContentRows.astro';
+import { loadItems, tagAliases } from '../lib/content';
+import { localeFromPath } from '../lib/locales';
+import { ui } from '../lib/ui';
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui[locale];
+import { sectionKeys } from '../lib/site';
+const items = loadItems();
+---
+
+<Site title={t.search} noindex>
+  <div class="shell section-page">
+    <header class="page-heading">
+      <p class="eyebrow">{t.search}</p>
+      <h1>{t.searchKnowledge}</h1>
+      <p class="lead">{t.searchPlaceholder}</p>
+    </header>
+    <form
+      id="search-form"
+      class="search-form"
+      role="search"
+      data-aliases={JSON.stringify(tagAliases())}
+      data-locale={locale}
+      data-messages={JSON.stringify({
+        browseAll: t.browseAll,
+        searching: t.searching,
+        results: t.results,
+        noResults: t.noResults,
+        searchError: t.searchError,
+      })}
+    >
+      <label for="query" class="sr-only">
+        {t.searchKnowledge}
+      </label>
+      <input
+        id="query"
+        name="q"
+        type="search"
+        placeholder={t.searchPlaceholder}
+        autocomplete="off"
+      />
+      <label for="section-filter" class="sr-only">
+        {t.contentType}
+      </label>
+      <select id="section-filter" name="type">
+        <option value="">{t.allPaths}</option>
+        {sectionKeys.map((section) => (
+          <option value={section}>{t[section]}</option>
+        ))}
+      </select>
+      <button class="button primary" type="submit">
+        {t.search} →
+      </button>
+    </form>
+    <p id="search-status" class="muted small" role="status">
+      {t.browseAll}
+    </p>
+    <noscript>
+      <p>{t.searchNoJS}</p>
+    </noscript>
+    <div id="search-results" hidden></div>
+    <button id="more-results" class="button" type="button" hidden>
+      {t.moreResults}
+    </button>
+    <div id="browse-fallback">
+      <ContentRows items={items} language={locale} />
+    </div>
+  </div>
+</Site>
+<script>
+  type Data = {
+    url: string;
+    meta: { id: string; title?: string; description?: string };
+  };
+  type Engine = {
+    search(
+      query: string | null,
+      options: { filters: Record<string, string> },
+    ): Promise<{ results: { data(): Promise<Data> }[] }>;
+  };
+  type Pagefind = { createInstance(): Engine };
+  const form = document.querySelector<HTMLFormElement>('#search-form')!;
+  const input = document.querySelector<HTMLInputElement>('#query')!;
+  const type = document.querySelector<HTMLSelectElement>('#section-filter')!;
+  const requested = form.dataset.locale!;
+  const messages = JSON.parse(form.dataset.messages!);
+  const status = document.querySelector('#search-status')!;
+  const output = document.querySelector<HTMLDivElement>('#search-results')!;
+  const fallback = document.querySelector<HTMLDivElement>('#browse-fallback')!;
+  const more = document.querySelector<HTMLButtonElement>('#more-results')!;
+  const aliases: Record<string, string> = JSON.parse(form.dataset.aliases!);
+  const engines = new Map<string, Engine>();
+  let generation = 0;
+  let results: Data[] = [];
+  let shown = 0;
+  function showMore() {
+    for (const result of results.slice(shown, shown + 20)) {
+      const row = document.createElement('article');
+      row.className = 'search-result';
+      const heading = document.createElement('h2');
+      const link = document.createElement('a');
+      link.href = result.url;
+      link.textContent = result.meta.title ?? result.url;
+      const description = document.createElement('p');
+      description.textContent = result.meta.description ?? '';
+      heading.append(link);
+      row.append(heading, description);
+      output.append(row);
+    }
+    shown += 20;
+    more.hidden = shown >= results.length;
+  }
+  async function search(updateUrl = true) {
+    const version = ++generation;
+    const params = new URLSearchParams();
+    if (input.value.trim()) params.set('q', input.value.trim());
+    if (type.value) params.set('type', type.value);
+    if (updateUrl)
+      history.replaceState(
+        null,
+        '',
+        location.pathname + (params.size ? '?' + params.toString() : ''),
+      );
+    if (!params.size) {
+      output.hidden = true;
+      more.hidden = true;
+      fallback.hidden = false;
+      status.textContent = messages.browseAll;
+      return;
+    }
+    status.textContent = messages.searching;
+    more.hidden = true;
+    try {
+      const term = input.value
+        .toLowerCase()
+        .replace(/#/g, '')
+        .trim()
+        .split(/\s+/)
+        .map((word) => (Object.hasOwn(aliases, word) ? aliases[word] : word))
+        .join(' ');
+      if (!engines.has(requested)) {
+        const bundle = '/pagefind/pagefind.js?language=' + requested;
+        const pagefind = (await import(/* @vite-ignore */ bundle)) as Pagefind;
+        engines.set(requested, pagefind.createInstance());
+      }
+      const response = await engines.get(requested)!.search(term || null, {
+        filters: type.value ? { Type: type.value } : {},
+      });
+      const exactResults = await Promise.all(
+        response.results.map((result) => result.data()),
+      );
+      if (version !== generation) return;
+      results = exactResults;
+      shown = 0;
+      output.replaceChildren();
+      output.hidden = false;
+      fallback.hidden = true;
+      status.textContent = results.length
+        ? `${messages.results}: ${results.length}`
+        : messages.noResults;
+      showMore();
+    } catch {
+      if (version !== generation) return;
+      engines.clear();
+      output.hidden = true;
+      more.hidden = true;
+      fallback.hidden = false;
+      status.textContent = messages.searchError;
+    }
+  }
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    void search();
+  });
+  type.addEventListener('change', () => void search());
+  let timer: ReturnType<typeof setTimeout>;
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => void search(), 180);
+  });
+  more.addEventListener('click', showMore);
+  function restore() {
+    const params = new URLSearchParams(location.search);
+    input.value = params.get('q') ?? '';
+    type.value = params.get('type') ?? '';
+    void search(false);
+  }
+  window.addEventListener('popstate', restore);
+  restore();
+</script>

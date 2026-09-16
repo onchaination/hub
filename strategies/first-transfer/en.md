@@ -5,7 +5,7 @@ description: Use a small test and explicit checks to reduce uncertainty before r
 tags: [transactions, wallets, fees, security, ethereum, solana]
 level: beginner
 updated: 2026-09-13
-related: [transaction, network-fee-calculator, check-transaction]
+related: [learn/transaction, tools/network-fee-calculator, skills/check-transaction]
 ---
 
 **Outcome:** confirm that you can send the intended asset on the intended network and verify its arrival before considering a larger transfer.
@@ -39,6 +39,12 @@ A test takes time and usually adds another network fee. It can uncover an incorr
 
 > [!WARNING]
 > If the test is pending or you cannot reconcile the result, do not repeat the transfer just to see whether it works. First establish what happened to the original transaction.
+
+## Example and stopping point
+
+You want to send 100 token units to a service whose documented minimum deposit is 5. A 1-unit test would not satisfy that minimum. If you choose a test that meets the service’s rules, account for its fee and wait for the service to credit it before considering the remaining transfer. These are hypothetical quantities, not a recommended amount.
+
+A separate test may not make sense when its extra fee is disproportionate to the entire transfer or when the receiving system does not support it. Do not substitute a token approval or an unexplained contract call for a transfer. If the network, recipient requirements or result remain unclear, stop.
 
 ## Success criteria
 

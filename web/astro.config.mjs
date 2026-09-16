@@ -1,11 +1,17 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
+import { locales, defaultLocale } from './src/lib/locales.ts';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 export default defineConfig({
   site: 'https://onchaination.org',
   output: 'static',
+  i18n: {
+    locales: [...locales],
+    defaultLocale,
+    routing: { prefixDefaultLocale: false },
+  },
   trailingSlash: 'ignore',
   integrations: [react()],
   vite: {

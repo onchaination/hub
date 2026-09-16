@@ -11,7 +11,7 @@ test('navigation, static pages and clean canonical links', async ({ page }) => {
   );
   await page.getByRole('link', { name: /Start here/ }).click();
   await expect(page).toHaveURL(/\/learn\/?$/);
-  await page.locator('.content-row h3 a').click();
+  await page.locator('.content-row h3 a[href="/learn/transaction/"]').click();
   await expect(page.locator('.prose')).toContainText(
     'From intention to confirmation',
   );
@@ -45,7 +45,9 @@ test('path pages prioritize discovery and collapse contribution guidance', async
 
     await expect(heading).toBeVisible();
     await expect(content).toBeVisible();
-    await expect(contribution.locator('summary')).toHaveText(/^How to add .+\?$/);
+    await expect(contribution.locator('summary')).toHaveText(
+      'How can I contribute?',
+    );
     await expect(contribution).not.toHaveAttribute('open', '');
     await expect(contribution.locator('.section-guide-content')).toBeHidden();
     expect(
@@ -78,7 +80,7 @@ test('widget responds to inputs, validates, and resets', async ({ page }) => {
   await expect(page.locator('output')).toContainText('0.00042');
   await page.getByLabel('Gas units', { exact: true }).fill('');
   await expect(page.locator('.widget-result')).toContainText(
-    'Enter both values',
+    'Enter all values',
   );
   await page.getByRole('button', { name: 'Reset example' }).click();
   await expect(page.locator('output')).toContainText('0.00021');
@@ -97,58 +99,39 @@ test('Solana calculator uses its own units and formula', async ({ page }) => {
   await expect(page.locator('output')).toContainText('0.000005');
 });
 
-test('languages are discovered and missing translations are real 404s', async ({
+test('locale prefix selects UI and source while missing translations stay available', async ({
   page,
 }) => {
-  await page.goto('/learn/transaction/de');
-  await expect(page.locator('html')).toHaveAttribute('lang', 'de');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Was passiert',
-  );
-  await expect(page.locator('link[type="text/markdown"]')).toHaveAttribute(
-    'href',
-    'https://onchaination.org/learn/transaction/de.md',
-  );
-  await expect(
-    page.getByRole('navigation', { name: 'Content language' }),
-  ).toBeHidden();
-  await page.locator('.language-menu summary').click();
-  await page
-    .getByRole('navigation', { name: 'Content language' })
-    .getByRole('link', { name: 'Українська' })
-    .click();
+  await page.goto('/uk/learn/wallet/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'uk');
+  await expect(page.locator('.prose')).toHaveAttribute('lang', 'uk');
+  await expect(page.locator('h1')).toContainText('Що контролює');
   await expect(page.locator('link[rel=canonical]')).toHaveAttribute(
     'href',
-    'https://onchaination.org/learn/transaction/',
+    'https://onchaination.org/uk/learn/wallet/',
   );
-  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
-    'content',
-    'https://onchaination.org/og/learn/transaction/uk.png',
+  await expect(page.locator('link[hreflang=en]')).toHaveAttribute(
+    'href',
+    'https://onchaination.org/learn/wallet/',
   );
+  await expect(page.locator('[data-auto-translate]')).toHaveCount(0);
+  await page.locator('.language-select summary').click();
+  await page.locator('.language-select a[lang=es]').click();
+  await expect(page).toHaveURL(/\/es\/learn\/wallet\/$/);
+  await expect(page.locator('h1')).toContainText('Qué controla');
+  await page.goto('/uk/learn/mev/');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'uk');
+  await expect(page.locator('.prose')).toHaveAttribute('lang', 'en');
+  await expect(page.locator('link[rel=canonical]')).toHaveAttribute(
+    'href',
+    'https://onchaination.org/learn/mev/',
+  );
+  await expect(page.locator('link[hreflang=uk]')).toHaveCount(0);
+  await expect(page.getByRole('switch')).not.toBeChecked();
+  await expect(page.locator('.desktop-nav')).toContainText('Навчання');
   await expect(
-    page.getByRole('heading', { name: '💬 Discussion' }),
-  ).toBeVisible();
-  const missingTranslation = await page.goto('/tools/network-fee-calculator/de');
-  expect(missingTranslation?.status()).toBe(404);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    "This page isn't here.",
-  );
-  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await page.goto('/search?lang=de');
-  await expect(page.locator('#search-results .search-result')).toHaveCount(1);
-  await expect(page.locator('#search-results')).toContainText('Was passiert');
-  await page.getByLabel('Search knowledge').fill('Netzwerk');
-  await expect(page.locator('#search-results')).toContainText('Was passiert');
-  await page.goto('/');
-  await expect(page.locator('.level-card')).toHaveCount(3);
-  await expect(
-    page.getByRole('heading', { name: /Find your starting point/ }),
-  ).toBeVisible();
-  await expect(page.locator('.browse-section')).toContainText('Beginner');
-  await expect(page.locator('.browse-section')).toContainText('Intermediate');
-  await expect(page.locator('.browse-section')).toContainText('Advanced');
-  await expect(page.locator('.level-description')).toHaveCount(3);
+    page.locator('.prose a[href="/uk/learn/liquidity/"]'),
+  ).toHaveCount(1);
 });
 
 test('Pagefind searches body text and aliases, filters types, and handles no results', async ({
@@ -158,8 +141,10 @@ test('Pagefind searches body text and aliases, filters types, and handles no res
   await expect(page.locator('#search-results')).toContainText(
     'Network fee calculator',
   );
-  await page.getByLabel('Content type').selectOption('Tools');
-  await expect(page.locator('#search-results .search-result')).toHaveCount(1);
+  await page.getByLabel('Content type').selectOption('tools');
+  expect(
+    await page.locator('#search-results .search-result').count(),
+  ).toBeGreaterThan(0);
   await page.getByLabel('Search knowledge').fill('zzzzzzzzzz');
   await expect(page.getByRole('status')).toContainText('No matching pages');
   await page.getByLabel('Content type').selectOption('');
@@ -173,12 +158,12 @@ test('Pagefind searches body text and aliases, filters types, and handles no res
 
 test('levels link pages across all knowledge paths', async ({ page }) => {
   await page.goto('/learn/transaction');
-  await page.getByRole('link', { name: 'beginner', exact: true }).click();
+  await page.getByRole('link', { name: 'Beginner', exact: true }).click();
   await expect(page).toHaveURL(/\/levels\/beginner\/?$/);
   await expect(
     page.getByRole('heading', { level: 1, name: 'Beginner' }),
   ).toBeVisible();
-  await expect(page.locator('.content-row')).toHaveCount(4);
+  expect(await page.locator('.content-row').count()).toBeGreaterThan(4);
 });
 
 test('AI clipboard denial has a fallback; Telegram loads when discussion is viewed', async ({
@@ -204,7 +189,7 @@ test('AI clipboard denial has a fallback; Telegram loads when discussion is view
   await page.locator('.ai-panel summary').click();
   await page.getByRole('button', { name: 'Copy context' }).click();
   await expect(page.locator('#copy-status')).toContainText(
-    'Copy the selected text manually',
+    'Select the text to copy it manually',
   );
   await expect(page.locator('#ai-context')).toHaveValue(/step by step/);
   await page.locator('.discussion').scrollIntoViewIfNeeded();
@@ -243,9 +228,7 @@ test('knowledge and the calculator formula remain readable without JavaScript', 
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto(
-    'http://127.0.0.1:4321/tools/network-fee-calculator',
-  );
+  await page.goto('http://127.0.0.1:4321/tools/network-fee-calculator');
   await expect(page.locator('.prose')).toContainText('21,000 × 10');
   await expect(page.getByRole('link', { name: 'Markdown' })).toBeVisible();
   await context.close();

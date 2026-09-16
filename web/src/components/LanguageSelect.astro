@@ -1,49 +1,34 @@
 ---
-import { contentRoute, type Item } from '../lib/content';
+import { locales, localePath, localeFromPath } from '../lib/locales';
 import { languageName } from '../lib/languages';
-
-interface Props {
-  item: Item;
-  languages: string[];
-}
-
-const { item, languages } = Astro.props;
+import { ui } from '../lib/ui';
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui[locale];
+const route = /^\/404(?:\.html)?\/?$/.test(Astro.url.pathname)
+  ? '/'
+  : Astro.url.pathname;
 ---
 
-<section class="language-switcher" aria-labelledby="language-title">
-  <p class="eyebrow" id="language-title">
-    Language
-  </p>
-  <details class="language-menu">
-    <summary>
-      <span class="sr-only">Choose page language. Current: </span>
-      <span lang={item.language}>{languageName(item.language)}</span>
-      <span class="language-menu-indicator" aria-hidden="true">
-        ▼
-      </span>
-    </summary>
-    <nav aria-label="Content language">
-      {languages.map((language) =>
-        item.translations[language] ? (
-          <a
-            href={contentRoute(item, language)}
-            lang={language}
-            aria-current={item.language === language ? 'page' : undefined}
-          >
-            {languageName(language)}
-          </a>
-        ) : (
-          <span
-            class="is-unavailable"
-            lang={language}
-            aria-disabled="true"
-            title="Translation unavailable"
-          >
-            {languageName(language)}
-            <span class="sr-only"> — translation unavailable</span>
-          </span>
-        ),
-      )}
-    </nav>
-  </details>
-</section>
+<details class="language-select">
+  <summary>
+    <span class="sr-only">{t.language}: </span>
+    <span class="language-name" lang={locale}>
+      {languageName(locale)}
+    </span>
+    <span class="language-code" aria-hidden="true">
+      {locale.toUpperCase()}
+    </span>
+    <span aria-hidden="true"> ▾</span>
+  </summary>
+  <nav aria-label={t.language}>
+    {locales.map((language) => (
+      <a
+        href={localePath(route, language)}
+        lang={language}
+        aria-current={locale === language ? 'page' : undefined}
+      >
+        {languageName(language)}
+      </a>
+    ))}
+  </nav>
+</details>

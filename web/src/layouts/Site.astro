@@ -1,5 +1,13 @@
 ---
 import '../styles/global.css';
+import LanguageSelect from '../components/LanguageSelect.astro';
+import {
+  localeFromPath,
+  localePath,
+  getContentKey,
+  locales,
+} from '../lib/locales';
+import { ui } from '../lib/ui';
 import ThemeSelect from '../components/ThemeSelect.astro';
 import { SITE, REPO, sections, sectionKeys } from '../lib/site';
 interface Props {
@@ -18,13 +26,22 @@ const {
   description = 'An open group learning, building and sharing value onchain.',
   markdown,
   noindex = false,
-  language = 'en',
+  language = localeFromPath(Astro.url.pathname),
   canonicalPath,
   socialImage,
   socialImageAlt = `${title} · Onchaination`,
-  alternates = [],
+  alternates = noindex
+    ? []
+    : locales.map((language) => ({
+        language,
+        route: localePath(Astro.url.pathname, language),
+      })),
 } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const locale = localeFromPath(path);
+const t = ui[locale];
+const link = (path: string) => localePath(path, locale);
+const logicalPath = '/' + getContentKey(path);
 const canonicalPathname = canonicalPath ?? path;
 const pageUrl = (pathname: string) =>
   SITE + (pathname.endsWith('/') ? pathname : `${pathname}/`);
@@ -154,46 +171,64 @@ const alternateOpenGraphLocales = alternates
       </>
     )}
   </head>
-  <body>
-    <a class="skip-link" href="#main" lang="en">
-      Skip to content
+  <body
+    data-ui={JSON.stringify({
+      copy: t.copy,
+      copied: t.copied,
+      copyManual: t.copyManual,
+    })}
+  >
+    <a class="skip-link" href="#main">
+      {t.skip}
     </a>
-    <header class="site-header" lang="en">
+    <header class="site-header">
       <div class="shell header-inner">
-        <a class="brand" href="/" aria-label="Onchaination home">
-          <span class="brand-mark" aria-hidden="true">
-            ▣
-          </span>{' '}
-          Onchaination
-        </a>
-        <nav class="desktop-nav" aria-label="Main navigation">
+        <div class="header-identity">
+          <a
+            class="brand"
+            href={link('/')}
+            aria-label={`Onchaination · ${t.home}`}
+          >
+            <span class="brand-mark" aria-hidden="true">
+              ▣
+            </span>{' '}
+            Onchaination
+          </a>
+          <LanguageSelect />
+        </div>
+        <nav class="desktop-nav" aria-label={t.navigation}>
           {sectionKeys.map((key) => (
             <a
-              href={`/${key}`}
-              aria-current={path.startsWith('/' + key) ? 'page' : undefined}
+              href={link(`/${key}`)}
+              aria-current={
+                logicalPath.startsWith('/' + key) ? 'page' : undefined
+              }
             >
-              {sections[key].label}
+              {t[key]}
             </a>
           ))}
         </nav>
         <ThemeSelect class="desktop-theme" />
-        <a class="search-link" href="/search">
-          <span aria-hidden="true">⌕</span> Search <kbd>/</kbd>
+        <a class="search-link" href={link('/search')} aria-label={t.search}>
+          <span aria-hidden="true">⌕</span>{' '}
+          <span class="search-label">{t.search}</span> <kbd>/</kbd>
         </a>
         <details class="mobile-menu">
-          <summary>Menu</summary>
-          <nav aria-label="Mobile navigation">
+          <summary>{t.menu}</summary>
+          <nav aria-label={t.mobileNavigation}>
             <ThemeSelect />
             {sectionKeys.map((key) => (
               <a
                 class="symbol-link"
-                href={`/${key}`}
-                aria-current={path.startsWith('/' + key) ? 'page' : undefined}
+                href={link(`/${key}`)}
+                aria-current={
+                  logicalPath.startsWith('/' + key) ? 'page' : undefined
+                }
               >
                 <span class="link-symbol" aria-hidden="true">
                   {sections[key].emoji}
                 </span>{' '}
-                <span class="link-label">{sections[key].label}</span>
+                <span class="link-label">{t[key]}</span>
               </a>
             ))}
           </nav>
@@ -203,20 +238,16 @@ const alternateOpenGraphLocales = alternates
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    <footer class="site-footer" lang="en">
+    <footer class="site-footer">
       <div class="shell footer-top">
         <div>
-          <a class="brand" href="/">
+          <a class="brand" href={link('/')}>
             <span aria-hidden="true">▣</span> Onchaination
           </a>
-          <p>
-            An open group learning, building
-            <br />
-            and sharing value onchain.
-          </p>
+          <p>{t.intro}</p>
         </div>
-        <nav aria-label="Community links">
-          <a href="/about">Our principles</a>
+        <nav aria-label={t.community}>
+          <a href={link('/about')}>{t.principles}</a>
           <a class="symbol-link" href={REPO}>
             <span class="link-label">GitHub</span>
             <span class="link-symbol" aria-hidden="true">
@@ -230,13 +261,13 @@ const alternateOpenGraphLocales = alternates
             </span>
           </a>
           <a class="symbol-link" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
-            <span class="link-label">Contribute</span>
+            <span class="link-label">{t.contribute}</span>
             <span class="link-symbol" aria-hidden="true">
               ↗
             </span>
           </a>
           <a class="symbol-link" href="/llms.txt">
-            <span class="link-label">For agents</span>
+            <span class="link-label">{t.agents}</span>
             <span class="link-symbol" aria-hidden="true">
               ↗
             </span>
@@ -244,8 +275,8 @@ const alternateOpenGraphLocales = alternates
         </nav>
       </div>
       <div class="shell footer-bottom">
-        <span>Open knowledge. Shared progress.</span>
-        <span>Built in public · Markdown first</span>
+        <span>{t.sharedProgress}</span>
+        <span>{t.markdownFirst}</span>
       </div>
     </footer>
     <script>
@@ -261,9 +292,11 @@ const alternateOpenGraphLocales = alternates
           )
         ) {
           event.preventDefault();
-          window.location.href = '/search';
+          window.location.href =
+            document.querySelector<HTMLAnchorElement>('.search-link')!.href;
         }
       });
+      const labels = JSON.parse(document.body.dataset.ui!);
       document
         .querySelectorAll<HTMLButtonElement>('.copy-code')
         .forEach((button) => {
@@ -272,12 +305,12 @@ const alternateOpenGraphLocales = alternates
               await navigator.clipboard.writeText(
                 button.parentElement?.querySelector('code')?.textContent ?? '',
               );
-              button.textContent = 'Copied!';
+              button.textContent = labels.copied;
             } catch {
-              button.textContent = 'Select code to copy';
+              button.textContent = labels.copyManual;
             }
             setTimeout(() => {
-              button.textContent = 'Copy';
+              button.textContent = labels.copy;
             }, 2400);
           });
         });

@@ -5,7 +5,7 @@ description: Use a transaction identifier (Ethereum hash or Solana signature) to
 tags: [transactions, security, wallets, ethereum, solana]
 level: beginner
 updated: 2026-09-13
-related: [transaction, first-transfer]
+related: [learn/transaction, strategies/first-transfer]
 ---
 
 **You need:** a transaction identifier (Ethereum hash or Solana signature), the network name, and the expected asset, amount, and destination. No private key or wallet connection is needed to read a public explorer.

@@ -1,40 +1,27 @@
+---
+import { localeFromPath, getContentKey, localePath } from '../lib/locales';
+import { ui } from '../lib/ui';
+import { SITE } from '../lib/site';
+const t = ui[localeFromPath(Astro.url.pathname)];
+const contentKey = getContentKey(Astro.url.pathname);
+---
+
 <section
   class="discussion"
+  data-content-key={contentKey}
+  data-discussion-url={SITE + localePath(contentKey)}
   data-pagefind-ignore
   aria-labelledby="discussion-title"
 >
-  <p class="eyebrow">Keep the conversation going</p>
-  <h2 id="discussion-title">💬 Discussion</h2>
-  <p class="muted">
-    Comments live in Telegram. They appear here once this page is shared in our
-    updates channel.
-  </p>
+  <h2 id="discussion-title">💬 {t.discussion}</h2>
+  <p class="muted">{t.discussionNote}</p>
   <details class="discussion-embed">
-    <summary>Load Telegram comments</summary>
+    <summary>{t.loadComments}</summary>
     <div id="telegram-comments"></div>
   </details>
   <p class="small muted">
-    Nothing here yet? Visit{' '}
-    <a
-      class="symbol-link underlined-link"
-      href="https://t.me/onchaination_info"
-    >
-      <span class="link-label">the updates channel</span>
-      <span class="link-symbol" aria-hidden="true">
-        ↗
-      </span>
-    </a>{' '}
-    or join{' '}
-    <a
-      class="symbol-link underlined-link"
-      href="https://t.me/onchaination_group"
-    >
-      <span class="link-label">the community forum</span>
-      <span class="link-symbol" aria-hidden="true">
-        ↗
-      </span>
-    </a>
-    .
+    <a href="https://t.me/onchaination_info">{t.updates} ↗</a> ·{' '}
+    <a href="https://t.me/onchaination_group">{t.forum} ↗</a>
   </p>
 </section>
 <script>
@@ -49,6 +36,7 @@
     script.src = 'https://telegram.org/js/telegram-widget.js?22';
     script.async = true;
     script.dataset.telegramDiscussion = 'onchaination_info';
+    script.dataset.pageUrl = discussion!.dataset.discussionUrl!;
     script.dataset.commentsLimit = '5';
     const dark = document.documentElement.dataset.theme === 'dark';
     script.dataset.dark = dark ? '1' : '0';

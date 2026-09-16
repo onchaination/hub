@@ -1,14 +1,17 @@
 ---
+import { ui } from '../lib/ui';
+import { localeFromPath } from '../lib/locales';
+const t = ui[localeFromPath(Astro.url.pathname)];
 interface Props {
   class?: string;
 }
 ---
 
 <label class:list={['theme-picker', Astro.props.class]} hidden>
-  <span class="sr-only">Color theme</span>
+  <span class="sr-only">{t.theme}</span>
   <select data-theme-select>
-    <option value="system">🌓 System</option>
-    <option value="dark">🌑 Dark</option>
-    <option value="light">🌕 Light</option>
+    <option value="system">🌓 {t.system}</option>
+    <option value="dark">🌑 {t.dark}</option>
+    <option value="light">🌕 {t.light}</option>
   </select>
 </label>
