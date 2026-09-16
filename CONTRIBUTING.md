@@ -10,18 +10,18 @@ A typo fix, clearer explanation, useful question, updated source, or tested proc
 2. Change the Markdown.
 3. Open a pull request describing the improvement.
 
-For a new page, choose a path such as `learn/my-topic/en.md`, use an existing page as an example, and update its metadata and links. Check the [curriculum](./docs/CURRICULUM.md) first to avoid duplicate topics. Questions, corrections and suggestions are welcome in any language in the same [Telegram group](https://t.me/onchaination_group).
+For a new page, choose a path such as `learn/my-topic/en.md`, use an existing page as an example, and update its metadata and links. Questions, corrections and suggestions are welcome in any language in the same [Telegram group](https://t.me/onchaination_group).
 
 The site discovers pages automatically. There is no menu or content registry to edit.
 
 ## Choose a path
 
-| Path | Purpose | Working example to copy |
-| --- | --- | --- |
-| 📚 [Learn](./learn/) | Understand something | [What happens when you send a transaction?](./learn/transaction/en.md) |
-| 🛠️ [Tools](./tools/) | Use an interface | [Network fee calculator](./tools/network-fee-calculator/en.md) |
-| 🎯 [Strategies](./strategies/) | Pursue an outcome | [Make your first transfer easier to verify](./strategies/first-transfer/en.md) |
-| ⚡ [Skills](./skills/) | Perform a procedure | [Check a transaction on a block explorer](./skills/check-transaction/en.md) |
+| Path                           | Purpose              | Working example to copy                                                        |
+| ------------------------------ | -------------------- | ------------------------------------------------------------------------------ |
+| 📚 [Learn](./learn/)           | Understand something | [What happens when you send a transaction?](./learn/transaction/en.md)         |
+| 🛠️ [Tools](./tools/)           | Use an interface     | [Network fee calculator](./tools/network-fee-calculator/en.md)                 |
+| 🎯 [Strategies](./strategies/) | Pursue an outcome    | [Make your first transfer easier to verify](./strategies/first-transfer/en.md) |
+| ⚡ [Skills](./skills/)         | Perform a procedure  | [Check a transaction on a block explorer](./skills/check-transaction/en.md)    |
 
 A Learn page explains a concept. A Tool describes or exposes an interface; widgets are optional. A Strategy gives an approach, assumptions, risks, trade-offs, and stopping criteria. A Skill gives prerequisites, steps, and a verifiable result.
 
@@ -52,7 +52,7 @@ updated: 2026-09-13
 
 Translate the body too, including relevant examples and limits. Do not add `id`, `tags`, `related`, or `level`: every representation gets its knowledge identity from the shared section-and-folder path, and translations inherit classification from English. Optional `updated` and `authors` describe that representation. There is no `language` metadata field; the filename supplies it.
 
-Use `en.md`, `uk.md`, `es.md`, `pt.md` or `de.md`. English is required; other translations are optional. Click **Help translate this page** on a fallback article to open a new Markdown file prefilled with its English source. Translate the title, description and body, then open a pull request. Preserve existing human translations; do not replace them automatically. The initial AI-assisted additions are identified in the [review report](./docs/IMPLEMENTATION.md) and still need native-speaker review.
+Use `en.md`, `uk.md`, `es.md`, `pt.md` or `de.md`. English is required; other translations are optional. Click **Help translate this page** on a fallback article to open a new Markdown file prefilled with its English source. Translate the title, description and body, then open a pull request.
 
 The URL selects the interface language: `/uk/learn/transaction/` uses Ukrainian. If Ukrainian Markdown is missing, English remains available with an optional browser translation control. Translations do not create separate items or conversations. Every language shares one Telegram discussion, and everyone may participate in any language.
 
@@ -161,11 +161,11 @@ The first registered widget is `network-fee`. It can appear in **any** of the fo
 
 All parameters are optional. The widget offers both network models; `chain` chooses the initial view. Ethereum inputs below apply to its Ethereum view:
 
-| Parameter | Allowed values | Default |
-| --- | --- | --- |
-| `chain` | `ethereum` or `solana` | `ethereum` |
-| `gas` | Integer from 1 to 100,000,000 | 21,000 |
-| `gwei` | Number from 0 to 1,000,000 | 10 |
+| Parameter | Allowed values                | Default    |
+| --------- | ----------------------------- | ---------- |
+| `chain`   | `ethereum` or `solana`        | `ethereum` |
+| `gas`     | Integer from 1 to 100,000,000 | 21,000     |
+| `gwei`    | Number from 0 to 1,000,000    | 10         |
 
 The comment stays invisible on GitHub. Always include the formula, a worked example, or another useful static explanation beside it. Directives inside code fences are examples and remain inert.
 

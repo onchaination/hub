@@ -1,7 +1,5 @@
 # ▣ Onchaination — Implementation Specification v0.1
 
-> **Content and localization update (2026-09-16):** [docs/IMPLEMENTATION.md](./docs/IMPLEMENTATION.md) and [CONTRIBUTING.md](./CONTRIBUTING.md) describe the current knowledge site. They supersede the historical locale-suffix URLs, missing-translation 404s, English-only UI, globally unique basename IDs and canonical-based Telegram lookup described below. Identity is now the path without locale; each language view shares one explicit discussion URL. Phase 2 infrastructure remains unimplemented.
-
 **Status:** Phase 1
 **Project:** Onchaination  
 **Canonical repository:** `github.com/onchaination/hub`  

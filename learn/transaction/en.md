@@ -63,7 +63,8 @@ Sending ETH on Ethereum and sending SOL on Solana are separate operations on sep
 <summary>❓ You have a transaction identifier, but the explorer says pending. Has the recipient definitely received the funds?</summary>
 
 **No.** Wait for inclusion and check the result on the correct network.
-</details >
+
+</details>
 
 For a careful first attempt, follow [Make your first transfer easier to verify](../../strategies/first-transfer/en.md).
 

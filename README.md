@@ -108,7 +108,7 @@ Onchaination is not tied to one blockchain, a DAO by default, a token project, a
 
 **v0.1 — knowledge first. The current implementation is Phase 1 / knowledge foundation.**
 
-It includes 58 knowledge items (20 Learn, 10 Tools, 9 Strategies and 19 Skills), initial translations, and an Ethereum/Solana fee calculator. See the [curriculum](./docs/CURRICULUM.md) for prerequisites and the [implementation report](./docs/IMPLEMENTATION.md) for coverage and review notes. You do not need an Onchaination account, wallet, or token to read or contribute.
+It includes foundational context across Learn, Tools, Strategies and Skills, with localization support.
 
 Identity, passkeys, verified claims, attribution infrastructure, rewards, and reward destinations are **later work, not shipped features**. [SPEC.md’s implementation order](./SPEC.md#57-recommended-implementation-order) separates the current foundation from the Phase 2 design.
 
