@@ -124,11 +124,17 @@ const levelEmojis = {
     </section>
     <section class="contribute-banner">
       <div>
-        <p class="eyebrow">{t.contribute}</p>
-        <h2>{t.improve}</h2>
+        <p class="eyebrow">{t.contributeEyebrow}</p>
+        <h2>
+          {t.contributeTitle} <span aria-hidden="true">🌱</span>
+        </h2>
       </div>
       <div>
-        <p>{t.contributionSteps}</p>
+        <p class="contribution-action">
+          <strong>{t.contributionPrompt}</strong>
+          <br />
+          <span>{t.contributionImpact}</span>
+        </p>
         <a class="button primary" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
           {t.contribute} 🚀
         </a>

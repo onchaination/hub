@@ -692,7 +692,7 @@ main:focus {
   line-height: 1.25;
   margin-top: 15px;
 }
-.contribute-banner > div > p:not(.eyebrow) {
+.contribution-action {
   font-size: 14px;
   color: var(--muted);
   margin-bottom: 20px;
