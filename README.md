@@ -166,7 +166,7 @@ Each folder is one stable item, with one Markdown file per language.
 
 English (`en.md`) is required and supplies shared tags, level and related paths. Translations are Markdown files beside it. The supported interface languages are `en`, `uk`, `es`, `pt`, `de` etc.; adding another language requires registering it and supplying UI strings. Missing article translations are allowed: the selected interface remains localized while the article falls back to English. Page lists and search retain the complete knowledge base.
 
-English uses `/learn/transaction/`; other locale, for example Ukrainian uses `/uk/learn/transaction/`. Stored translation sources remain directly readable, for example `/learn/wallet/uk.md`. Stored translations have self-canonical URLs and genuine language alternates; fallback views canonicalize to English. Optional browser Auto-translate starts off, changes presentation only, and never replaces repository translations. See [how to translate an item](./CONTRIBUTING.md#translate-an-item).
+English uses `/learn/transaction/`; another locale, for example Ukrainian, uses `/uk/learn/transaction/`. Stored translation sources remain directly readable, for example `/learn/wallet/uk.md`. Stored translations have self-canonical URLs and genuine language alternates; fallback views canonicalize to English. Optional browser Auto-translate starts off, changes presentation only, and never replaces repository translations. See [how to translate an item](./CONTRIBUTING.md#translate-an-item).
 
 ### Website, search, and publishing
 
