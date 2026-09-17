@@ -29,17 +29,8 @@ Humans and agents share these four folders. Describe separate execution paths in
 
 ## Translate an item
 
-One folder is one item, not a separate item for each translation:
-
-```text
-learn/transaction/
-  en.md
-  de.md
-  uk.md
-  images/
-```
-
-`en.md` is required. To translate it, add a language file alongside it; for example, `de.md`:
+One folder is one item, not a separate item for each translation.
+`en.md` is required. To translate it, add a language file alongside it; for example, `uk.md`, `es.md`, `de.md` etc.
 
 ```yaml
 ---
@@ -52,9 +43,9 @@ updated: 2026-09-13
 
 Translate the body too, including relevant examples and limits. Do not add `id`, `tags`, `related`, or `level`: every representation gets its knowledge identity from the shared section-and-folder path, and translations inherit classification from English. Optional `updated` and `authors` describe that representation. There is no `language` metadata field; the filename supplies it.
 
-Use `en.md`, `uk.md`, `es.md`, `pt.md` or `de.md`. English is required; other translations are optional. Click **Help translate this page** on a fallback article to open a new Markdown file prefilled with its English source. Translate the title, description and body, then open a pull request.
+Use `en.md`, `uk.md`, `es.md`, `pt.md`, `de.md` etc. English is required; other translations are optional. Click **Help translate this page** on a fallback article to open a new Markdown file prefilled with its English source. Translate the title, description and body, then open a pull request.
 
-The URL selects the interface language: `/uk/learn/transaction/` uses Ukrainian. If Ukrainian Markdown is missing, English remains available with an optional browser translation control. Translations do not create separate items or conversations. Every language shares one Telegram discussion, and everyone may participate in any language.
+The URL selects the interface language, for example: `/uk/learn/transaction/` uses Ukrainian. If Ukrainian Markdown is missing, English remains available with an optional browser translation control. Translations do not create separate items or conversations. Every language shares one Telegram discussion, and everyone may participate in any language.
 
 Link to existing source files, such as `../../tools/network-fee-calculator/en.md`. The website retains the reader’s selected language and resolves the target translation or English fallback. When a translated heading differs, an English fragment links to the top of that translated page. Shared images stay inside the item folder. Do not add empty translation placeholders.
 
