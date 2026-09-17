@@ -162,21 +162,11 @@ npm run preview
 
 ### Content folders and languages
 
-Each folder is one stable item, with one Markdown file per language:
+Each folder is one stable item, with one Markdown file per language.
 
-```text
-learn/transaction/en.md
-learn/wallet/en.md
-learn/wallet/de.md
-learn/wallet/uk.md
-tools/network-fee-calculator/en.md
-strategies/first-transfer/en.md
-skills/check-transaction/en.md
-```
+English (`en.md`) is required and supplies shared tags, level and related paths. Translations are Markdown files beside it. The supported interface languages are `en`, `uk`, `es`, `pt`, `de` etc.; adding another language requires registering it and supplying UI strings. Missing article translations are allowed: the selected interface remains localized while the article falls back to English. Page lists and search retain the complete knowledge base.
 
-English (`en.md`) is required and supplies shared tags, level and related paths. Translations are Markdown files beside it. The supported interface languages are `en`, `uk`, `es`, `pt` and `de`; adding another language requires registering it and supplying UI strings. Missing article translations are allowed: the selected interface remains localized while the article falls back to English. Page lists and search retain the complete knowledge base.
-
-English uses `/learn/transaction/`; Ukrainian uses `/uk/learn/transaction/`. Stored translation sources remain directly readable, for example `/learn/wallet/uk.md`. The transaction translations were intentionally removed, so its non-English views currently use English fallback. Stored translations have self-canonical URLs and genuine language alternates; fallback views canonicalize to English. Optional browser Auto-translate starts off, changes presentation only, and never replaces repository translations. See [how to translate an item](./CONTRIBUTING.md#translate-an-item).
+English uses `/learn/transaction/`; other locale, for example Ukrainian uses `/uk/learn/transaction/`. Stored translation sources remain directly readable, for example `/learn/wallet/uk.md`. Stored translations have self-canonical URLs and genuine language alternates; fallback views canonicalize to English. Optional browser Auto-translate starts off, changes presentation only, and never replaces repository translations. See [how to translate an item](./CONTRIBUTING.md#translate-an-item).
 
 ### Website, search, and publishing
 
