@@ -46,6 +46,7 @@ const en = {
   system: 'System',
   dark: 'Dark',
   light: 'Light',
+  title: 'Learn, build, and share value onchain',
   intro: 'An open group learning, building and sharing value onchain.',
   hub: 'An open knowledge hub',
   hero: 'Understand more.',
@@ -62,8 +63,7 @@ const en = {
   contributeEyebrow: 'Grow by doing',
   contributeTitle: 'Your experience could make something better',
   contributionPrompt: 'Share ideas. Explain a concept. Create value.',
-  contributionImpact:
-    'Small, useful contributions are how things compound.',
+  contributionImpact: 'Small, useful contributions are how things compound.',
   improve: 'Found something wrong or missing? Improve this page.',
   contributionSteps:
     'Edit the Markdown, then open a pull request. Questions and suggestions are welcome in any language.',
@@ -175,6 +175,7 @@ export const ui: Record<Locale, UI> = {
     system: 'Системна',
     dark: 'Темна',
     light: 'Світла',
+    title: 'Навчайся, створюй і поділяй цінність ончейн',
     intro:
       'Відкрита спільнота, що навчається, створює та ділиться цінністю ончейн.',
     hub: 'Відкритий простір знань',
@@ -193,8 +194,7 @@ export const ui: Record<Locale, UI> = {
     contributeTitle: 'Ваш досвід може допомогти щось покращити',
     contributionPrompt:
       'Діліться ідеями. Пояснюйте концепції. Створюйте цінність.',
-    contributionImpact:
-      'Невеликі корисні внески допомагають усьому зростати.',
+    contributionImpact: 'Невеликі корисні внески допомагають усьому зростати.',
     improve: 'Помітили помилку або прогалину? Покращте цю сторінку.',
     contributionSteps:
       'Змініть Markdown і відкрийте запит на злиття. Запитання та пропозиції приймаємо будь-якою мовою.',
@@ -308,6 +308,7 @@ export const ui: Record<Locale, UI> = {
     system: 'Sistema',
     dark: 'Oscuro',
     light: 'Claro',
+    title: 'Aprende, construye y comparte valor onchain',
     intro: 'Un grupo abierto que aprende, construye y comparte valor onchain.',
     hub: 'Un espacio abierto de conocimiento',
     hero: 'Entiende más.',
@@ -437,6 +438,7 @@ export const ui: Record<Locale, UI> = {
     system: 'Sistema',
     dark: 'Escuro',
     light: 'Claro',
+    title: 'Aprenda, construa e compartilhe valor onchain',
     intro: 'Um grupo aberto que aprende, constrói e compartilha valor onchain.',
     hub: 'Um espaço aberto de conhecimento',
     hero: 'Entenda mais.',
@@ -452,10 +454,8 @@ export const ui: Record<Locale, UI> = {
     exploreTopic: 'Explore um tema',
     contributeEyebrow: 'Cresça fazendo',
     contributeTitle: 'Sua experiência pode melhorar alguma coisa',
-    contributionPrompt:
-      'Compartilhe ideias. Explique um conceito. Crie valor.',
-    contributionImpact:
-      'Pequenas contribuições úteis fazem tudo crescer.',
+    contributionPrompt: 'Compartilhe ideias. Explique um conceito. Crie valor.',
+    contributionImpact: 'Pequenas contribuições úteis fazem tudo crescer.',
     improve: 'Encontrou algo errado ou faltando? Melhore esta página.',
     contributionSteps:
       'Edite o Markdown e abra um pedido de alteração. Aceitamos perguntas e sugestões em qualquer idioma.',
@@ -568,6 +568,7 @@ export const ui: Record<Locale, UI> = {
     system: 'System',
     dark: 'Dunkel',
     light: 'Hell',
+    title: 'Lerne, entwickle und teile Werte onchain',
     intro: 'Eine offene Gruppe, die onchain lernt, entwickelt und Werte teilt.',
     hub: 'Ein offener Wissensraum',
     hero: 'Mehr verstehen.',
